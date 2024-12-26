@@ -12,3 +12,4 @@ Route::get('/mylist', [ItemController::class, 'mylist'])->middleware('auth')->na
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
+<!-- test -->
