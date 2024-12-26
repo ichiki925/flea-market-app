@@ -1,0 +1,169 @@
+/* リセット */
+body,
+h1,
+p,
+ul,
+li,
+input,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    /* デフォルトの余白をリセット */
+    padding: 0;
+    /* パディングをリセット */
+    width: 100%;
+    /* 幅を全体に広げる */
+}
+
+/* 全体の設定 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ヘッダー */
+.header {
+    background-color: #000;
+    color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .container {
+    display: flex;
+    /* 子要素を横並びにする */
+    align-items: center;
+    /* 縦方向の中央揃え */
+    width: 100%;
+    /* ヘッダー全体に広げる */
+    justify-content: space-between;
+    /* ロゴ、検索フォーム、ナビゲーションを均等に配置 */
+}
+
+.header .logo {
+    flex: 1;
+    /* 左寄せに配置 */
+}
+
+.header .logo img {
+    height: 28px;
+}
+
+.header .search-form {
+    flex: 2;
+    /* 中央に配置 */
+    display: flex;
+    justify-content: center;
+}
+
+.search-form input {
+    width: 70%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.header .nav {
+    flex: 1;
+    /* 右寄せに配置 */
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav a {
+    font-size: 20px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.nav .sell-btn {
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #000;
+    text-decoration: none;
+    text-align: center;
+    width: 25%;
+
+}
+
+/* メイン */
+.main {
+    padding: 0px;
+}
+
+/* タブ */
+
+
+.tabs-container {
+    margin-top: 10px;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+    /* ボーダーを画面幅いっぱいに */
+}
+
+.tabs {
+    display: flex;
+    margin-left: 10%;
+    font-size: 20px;
+    font-weight: bold;
+
+    /* タブを中央揃えに */
+
+    /* 縦方向を中央揃え */
+    gap: 7%;
+    /* タブ間の間隔を設定 */
+    padding-top: 10px ;
+    /* 上下に適切な余白を追加 */
+}
+
+.tab-link {
+    padding: 5px 15px;
+    /* 内側の余白を設定 */
+    text-decoration: none;
+    color: #333;
+    margin: 0;
+    /* 外側の余白をリセット */
+}
+
+.tab-link.active {
+    color: red;
+}
+
+
+/* 商品一覧 */
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.item {
+    text-align: center;
+}
+
+.item-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.item-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
