@@ -17,6 +17,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'profile_image',
+        'postal_code',
+        'address',
+        'building',
     ];
 
 
@@ -30,10 +34,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function profile()
-    {
-        return $this->hasOne(Profile::class);
-    }
 
     public function items()
     {
