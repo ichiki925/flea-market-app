@@ -1,18 +1,14 @@
-<?php
+use App\Http\Controllers\ItemController;
+use Illuminate\Support\Facades\Log;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
-use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// 商品一覧ページ（未認証でも閲覧可能）
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
+
+// マイリストページ（認証済みユーザーのみ）
+Route::get('/mylist', [ItemController::class, 'mylist'])->middleware('auth')->name('items.mylist');
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
