@@ -1,5 +1,7 @@
+<?php
+
 use App\Http\Controllers\ItemController;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 
@@ -12,4 +14,3 @@ Route::get('/mylist', [ItemController::class, 'mylist'])->middleware('auth')->na
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-<!-- test -->

@@ -24,7 +24,7 @@
             <nav class="nav">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button type="submit">ログアウト</button>
+                    <button type="submit" >ログアウト</button>
                 </form>
                 <a href="/mypage">マイページ</a>
                 <a href="/sell" class="sell-btn">出品</a>

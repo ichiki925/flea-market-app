@@ -21,9 +21,9 @@ class ItemController extends Controller
     {
         // ログイン中のユーザーが登録した商品のみ取得
         $user = auth()->user();
-        $mylistItems = $user->mylistItems; // リレーションを使った例
+        $items = $user->mylistItems()->paginate(8); // リレーションを使った例
 
-        return view('mylist', compact('mylistItems'));
+        return view('mylist', compact('items'));
     }
 
 

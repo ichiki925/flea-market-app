@@ -1,0 +1,99 @@
+/* リセット */
+body,
+h1,
+p,
+ul,
+li,
+input,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    /* デフォルトの余白をリセット */
+    padding: 0;
+    /* パディングをリセット */
+    width: 100%;
+    /* 幅を全体に広げる */
+}
+
+/* 全体の設定 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+/* メイン */
+.main {
+    padding: 0px;
+}
+
+/* タブ */
+
+
+.tabs-container {
+    margin-top: 10px;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+    /* ボーダーを画面幅いっぱいに */
+}
+
+.tabs {
+    display: flex;
+    margin-left: 10%;
+    font-size: 20px;
+    font-weight: bold;
+
+    /* タブを中央揃えに */
+
+    /* 縦方向を中央揃え */
+    gap: 7%;
+    /* タブ間の間隔を設定 */
+    padding-top: 10px;
+    /* 上下に適切な余白を追加 */
+}
+
+.tab-link {
+    padding: 5px 15px;
+    /* 内側の余白を設定 */
+    text-decoration: none;
+    color: red;
+    margin: 0;
+    /* 外側の余白をリセット */
+}
+
+.tab-link.active {
+    color: #333;
+}
+
+
+/* 商品一覧 */
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+}
+
+.item {
+    text-align: center;
+}
+
+.item-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+}
+
+.item-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
