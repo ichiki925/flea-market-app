@@ -30,10 +30,6 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function image()
-    {
-        return $this->hasOne(ItemImage::class);
-    }
 
     public function likes()
     {
