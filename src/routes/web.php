@@ -3,6 +3,7 @@
 use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\MyPageController;
 
 
 
@@ -14,3 +15,11 @@ Route::get('/mylist', [ItemController::class, 'mylist'])->middleware('auth')->na
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
+
+Route::post('/mypage/update', [MyPageController::class, 'update'])->name('mypage.update');
+
+// ビュー作成用
+
+Route::get('/mypage', function () {
+    return view('mypage');
+});
