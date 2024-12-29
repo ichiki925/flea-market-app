@@ -23,3 +23,7 @@ Route::post('/mypage/update', [MyPageController::class, 'update'])->name('mypage
 Route::get('/mypage', function () {
     return view('mypage');
 });
+
+Route::get('/sell', function () {
+    return view('sell');
+});
