@@ -27,3 +27,11 @@ Route::get('/mypage', function () {
 Route::get('/sell', function () {
     return view('sell');
 });
+
+Route::get('/item', function () {
+    return view('item_detail');
+});
+
+Route::get('/purchase', function () {
+    return view('purchase');
+});
