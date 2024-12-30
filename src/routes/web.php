@@ -35,3 +35,7 @@ Route::get('/item', function () {
 Route::get('/purchase', function () {
     return view('purchase');
 });
+
+Route::get('/purchase/address', function () {
+    return view('address');
+});

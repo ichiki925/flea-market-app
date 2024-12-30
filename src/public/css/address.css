@@ -1,0 +1,62 @@
+.address-container {
+    max-width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.address-container h2 {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 30px;
+    color: #333;
+}
+
+.address-form {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 20px;
+}
+
+.form-group input {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 50px;
+}
+
+.error {
+    color: red;
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+.btn-submit {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn-submit:hover {
+    background-color: #ff4c4c;
+}
