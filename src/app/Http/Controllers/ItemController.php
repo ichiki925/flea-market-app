@@ -10,8 +10,12 @@ class ItemController extends Controller
     // 未認証ユーザー用の商品一覧
     public function index()
     {
-        // 商品一覧データを取得
-        $items = Item::paginate(8);
+        $user = auth()->user();
+        $items = Item::where('status', '!=', 'sold')
+                    ->when($user, function ($query) use ($user) {
+                        $query->where('user_id', '!=', $user->id);
+                    })
+                    ->get();
 
         return view('index', compact('items'));
     }

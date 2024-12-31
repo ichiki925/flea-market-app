@@ -38,20 +38,19 @@
         </div>
 
         <!-- 商品一覧 -->
-        <div class="item-list">
+        <div class="item-list grid-container">
             @foreach ($items as $item)
                 <div class="item">
                     <div class="item-image">
-                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}">
+                        <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
                     </div>
                     <div class="item-name">{{ $item->name }}</div>
+                    @if($item->status === 'sold')
+                        <div class="item-status">Sold</div>
+                    @endif
                 </div>
             @endforeach
 
-            <!-- ページネーションリンク -->
-            <div>
-                {{ $items->links() }}
-            </div>
         </div>
     </main>
 </body>

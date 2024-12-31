@@ -41,4 +41,10 @@ class Item extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function isSold()
+    {
+        return $this->status === 'sold';
+    }
+
 }
