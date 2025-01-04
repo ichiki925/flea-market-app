@@ -8,10 +8,11 @@ use App\Http\Controllers\MyPageController;
 
 
 // 商品一覧ページ（未認証でも閲覧可能）
-Route::get('/', [ItemController::class, 'index'])->name('items.index');
+Route::get('/', [ItemController::class, 'index'])->name('index');
+Route::get('/item/{id}', [ItemController::class, 'showGuest'])->name('item.detail.guest');
 
 // マイリストページ（認証済みユーザーのみ）
-Route::get('/mylist', [ItemController::class, 'mylist'])->middleware('auth')->name('items.mylist');
+Route::get('/mylist', [ItemController::class, 'mylist'])->middleware('auth')->name('mylist');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 

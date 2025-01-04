@@ -8,26 +8,42 @@
 
 
 @section('content')
-
+<main class="main">
     <div class="tabs-container">
         <div class="tabs">
-            <a href="/" class="tab-link active">おすすめ</a>
-            <a href="/?tab=mylist" class="tab-link">マイリスト</a>
+            <a href="{{ route('index', ['search' => request('search')]) }}"
+            class="tab-link {{ request()->routeIs('index') ? 'active' : '' }}">
+                おすすめ
+            </a>
+            <a href="{{ route('mylist', ['search' => request('search')]) }}"
+            class="tab-link {{ request()->routeIs('mylist') ? 'active' : '' }}">
+                マイリスト
+            </a>
         </div>
     </div>
 
-    <div class="item-list">
+    <div class="item-list grid-container">
         @foreach ($items as $item)
         <div class="item">
-            <div class="item-image">
-                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}">
-            </div>
-            <div class="item-name">{{ $item->name }}</div>
+            @if($item->status !== 'sold')
+                <a href="{{ route('item.detail.guest', ['id' => $item->id]) }}">
+                    <div class="item-image">
+                        <img src="{{ $item->item_image ? asset('storage/' . rawurlencode($item->item_image)) : asset('images/default.png') }}" alt="{{ $item->name }}">
+                    </div>
+                    <div class="item-name">{{ $item->name }}</div>
+                </a>
+            @else
+                <div class="item-image">
+                    <img src="{{ $item->item_image ? asset('storage/' . rawurlencode($item->item_image)) : asset('images/default.png') }}" alt="{{ $item->name }}">
+                </div>
+                <div class="item-name">{{ $item->name }}</div>
+                <div class="item-status">Sold</div>
+            @endif
         </div>
         @endforeach
 
-        <div>
-            {{ $items->links() }}
-        </div>
+
     </div>
+</main>
+
 @endsection

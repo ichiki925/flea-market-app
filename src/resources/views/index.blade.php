@@ -17,8 +17,8 @@
             <div class="logo">
                 <img src="{{ asset('images/logo.svg') }}" alt="Logo">
             </div>
-            <form class="search-form">
-                <input type="text" placeholder="なにをお探しですか？">
+            <form class="search-form" action="{{ route('index') }}" method="GET">
+                <input type="text" name="search" placeholder="なにをお探しですか？" value="{{ request('search') }}">
             </form>
             <nav class="nav">
                 <a href="/login">ログイン</a>
@@ -32,8 +32,14 @@
         <!-- タブ -->
         <div class="tabs-container">
             <div class="tabs">
-                <a href="/" class="tab-link active">おすすめ</a>
-                <a href="/?tab=mylist" class="tab-link">マイリスト</a>
+                <a href="{{ route('index', ['search' => request('search')]) }}"
+                class="tab-link {{ request()->routeIs('index') ? 'active' : '' }}">
+                    おすすめ
+                </a>
+                <a href="{{ route('mylist', ['search' => request('search')]) }}"
+                class="tab-link {{ request()->routeIs('mylist') ? 'active' : '' }}">
+                    マイリスト
+                </a>
             </div>
         </div>
 
@@ -41,13 +47,17 @@
         <div class="item-list grid-container">
             @foreach ($items as $item)
                 <div class="item">
-                    <div class="item-image">
-                        <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                    <a href="{{ route('item.detail.guest', ['id' => $item->id]) }}">
+                        <div class="item-image">
+                            <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                        </div>
+                    <div class="item-info">
+                        <div class="item-name">{{ $item->name }}</div>
+                    </a>
+                        @if($item->status === 'sold')
+                            <div class="item-status">Sold</div>
+                        @endif
                     </div>
-                    <div class="item-name">{{ $item->name }}</div>
-                    @if($item->status === 'sold')
-                        <div class="item-status">Sold</div>
-                    @endif
                 </div>
             @endforeach
 

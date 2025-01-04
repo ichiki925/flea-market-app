@@ -27,6 +27,10 @@ class CategorySeeder extends Seeder
             ['name' => 'ベビー・キッズ'],
         ];
 
+        foreach ($categories as &$category) {
+            $category['name'] = mb_convert_encoding($category['name'], 'UTF-8', 'UTF-8');
+        }
+
         DB::table('categories')->insert($categories);
     }
 }

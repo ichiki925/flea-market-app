@@ -131,17 +131,31 @@ body {
 }
 
 .tab-link {
-    padding: 5px 15px;
-    /* 内側の余白を設定 */
+    color: #000;
+    /* 通常の文字色 */
     text-decoration: none;
-    color: #333;
-    margin: 0;
-    /* 外側の余白をリセット */
+    /* 下線を消す */
 }
 
 .tab-link.active {
     color: red;
+    /* アクティブ時の文字色 */
+    font-weight: bold;
+    /* 強調表示 */
 }
+/*
+.tab-link {
+    padding: 5px 15px;
+
+    text-decoration: none;
+    color: #333;
+    margin: 0;
+
+}
+
+.tab-link.active {
+    color: red;
+} */
 
 
 /* 商品一覧 */
@@ -175,11 +189,19 @@ body {
     object-fit: cover;
 }
 
-.item-name {
+.item-info {
+    display: flex;
+    justify-content: space-between;
+    /* 左右に配置 */
+    align-items: center;
     margin-top: 8px;
     font-size: 20px;
+}
+
+.item-name {
     color: #333;
     text-align: left;
+    text-decoration: none;
 }
 
 .item-status {
@@ -187,5 +209,4 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     /* すべて大文字 */
-    font-size: 14px;
 }

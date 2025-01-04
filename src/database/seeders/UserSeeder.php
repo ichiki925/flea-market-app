@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
@@ -11,27 +12,30 @@ class UserSeeder extends Seeder
 
     public function run()
     {
-        // 変更必要
+        // 外部キー制約を無効化
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        // 既存データを削除
+        DB::table('users')->truncate();
+
+        // 外部キー制約を再度有効化
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+        // 新しいデータを挿入
         User::create([
-            'name' => 'testuser1',
+            'id' => 1,
+            'name' => 'Test User 1',
             'email' => 'test1@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('Password1234'),
-            'profile_image' => null,
-            'postal_code' => '123-4567',
-            'address' => '東京都新宿区テスト町1-1-1',
-            'building' => 'テストビル101号室',
+            'password' => Hash::make('password123'),
         ]);
 
         User::create([
-            'name' => 'testuser2',
+            'id' => 2,
+            'name' => 'Test User 2',
             'email' => 'test2@example.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('Password5678'),
-            'profile_image' => null,
-            'postal_code' => '987-6543',
-            'address' => '大阪府大阪市テスト区2-2-2',
-            'building' => 'テストマンション202号室',
+            'password' => Hash::make('password123'),
         ]);
     }
 }

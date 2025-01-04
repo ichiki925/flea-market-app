@@ -61,39 +61,78 @@ body {
 }
 
 .tab-link {
+    color: #000;
+    /* 通常の文字色 */
+    text-decoration: none;
+    /* 下線を消す */
+}
+
+.tab-link.active {
+    color: red;
+    /* アクティブ時の文字色 */
+    font-weight: bold;
+    /* 強調表示 */
+}
+/*
+.tab-link {
     padding: 5px 15px;
-    /* 内側の余白を設定 */
+
     text-decoration: none;
     color: red;
     margin: 0;
-    /* 外側の余白をリセット */
 }
 
 .tab-link.active {
     color: #333;
 }
-
+ */
 
 /* 商品一覧 */
-.item-list {
+.grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+    padding: 0 16px;
+    margin: 50px auto;
+    max-width: 95%;
 }
 
 .item {
     text-align: center;
+    position: relative;
+}
+
+.item-image {
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .item-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px;
-    background-color: #f0f0f0;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
 }
 
 .item-name {
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 8px;
+    font-size: 20px;
     color: #333;
+    text-align: left;
+    text-decoration: none;
+}
+
+.item-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
 }
