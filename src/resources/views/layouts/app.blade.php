@@ -18,8 +18,8 @@
             <div class="logo">
                 <img src="{{ asset('images/logo.svg') }}" alt="Logo">
             </div>
-            <form class="search-form">
-                <input type="text" placeholder="なにをお探しですか？">
+            <form class="search-form" action="{{ route('mylist') }}" method="GET">
+                <input type="text" name="search" placeholder="なにをお探しですか？" value="{{ request('search') }}">
             </form>
             <nav class="nav">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">
@@ -31,9 +31,9 @@
             </nav>
         </div>
     </header>
-    <main>
+
         @yield('content')
-    </main>
+
 </body>
 
 </html>

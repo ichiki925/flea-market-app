@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: flex-start;
     padding: 20px;
-    max-width: 90%;
+    max-width: 1200px;
     margin: 50px auto;
 }
 
@@ -14,6 +14,15 @@
     align-items: center;
     margin-right: 5%;
 
+}
+
+.item-detail__image {
+    max-width: 100%;
+    /* 親コンテナの幅に合わせる */
+    height: auto;
+    /* アスペクト比を維持 */
+    border-radius: 10px;
+    /* 少し角を丸くする */
 }
 
 .item-detail__right {
@@ -63,18 +72,13 @@
         'wght' 400,
         'GRAD' 0,
         'opsz' 36;
-    
     font-size: 36px;
-    
 }
 
 .likes_count, .comments_count {
     font-size: 16px;
-    
     margin-top: 5px;
-    
     color: #666;
-    
 }
 
 
@@ -84,6 +88,11 @@
 .item-info,
 .item-comments {
     margin-bottom: 20px;
+}
+
+.item-description {
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .item-comments h2 {
@@ -113,22 +122,15 @@
 
 .info-row {
     display: flex;
-    /* ラベルと値を横並びに */
     align-items: center;
-    /* 縦方向を中央揃え */
     margin-bottom: 20px;
-    /* 各行の余白を設定 */
 }
 
 .info-label {
     font-weight: bold;
-    /* ラベルを太字に */
     margin-right: 20px;
-    /* ラベルと値の間隔を設定 */
     width: 100px;
-    /* ラベルの固定幅を設定 */
     text-align: left;
-    /* ラベルを左揃え */
 }
 
 .category-value {
@@ -205,4 +207,26 @@
     width: 100%;
     font-size: 16px;
     font-weight: bold;
+}
+
+@media (max-width: 850px) {
+    .item-detail {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+
+    .item-detail__left,
+    .item-detail__right {
+        margin: 0;
+        width: 100%;
+    }
+
+    .item-detail__image {
+        max-width: 80%;
+    }
+
+    .price {
+        font-size: 20px;
+    }
 }

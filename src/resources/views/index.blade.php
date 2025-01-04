@@ -36,8 +36,8 @@
                 class="tab-link {{ request()->routeIs('index') ? 'active' : '' }}">
                     おすすめ
                 </a>
-                <a href="{{ route('mylist', ['search' => request('search')]) }}"
-                class="tab-link {{ request()->routeIs('mylist') ? 'active' : '' }}">
+                <a href="?tab=mylist"
+                class="tab-link {{ request('tab') === 'mylist' ? 'active' : '' }}">
                     マイリスト
                 </a>
             </div>
@@ -45,21 +45,44 @@
 
         <!-- 商品一覧 -->
         <div class="item-list grid-container">
+            @if(request('tab') === 'mylist')
+            @if(auth()->check())
             @foreach ($items as $item)
-                <div class="item">
-                    <a href="{{ route('item.detail.guest', ['id' => $item->id]) }}">
+                < class="item">
+                    <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
                             <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
                         </div>
                     <div class="item-info">
                         <div class="item-name">{{ $item->name }}</div>
+                    </div>
                     </a>
                         @if($item->status === 'sold')
                             <div class="item-status">Sold</div>
                         @endif
-                    </div>
                 </div>
             @endforeach
+            @else
+            <p>ログインしていないため、マイリストを表示できません。</p>
+                @endif
+            @else
+                <!-- 「おすすめ」タブの場合 -->
+                @foreach ($items as $item)
+                    <div class="item">
+                        <a href="{{ route('item.detail', ['id' => $item->id]) }}">
+                            <div class="item-image">
+                                <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                            </div>
+                            <div class="item-info">
+                                <div class="item-name">{{ $item->name }}</div>
+                            </div>
+                        </a>
+                        @if($item->status === 'sold')
+                            <div class="item-status">Sold</div>
+                        @endif
+                    </div>
+                @endforeach
+            @endif
 
         </div>
     </main>

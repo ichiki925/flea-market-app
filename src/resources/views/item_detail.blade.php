@@ -8,42 +8,48 @@
 @section('content')
 <div class="item-detail">
     <div class="item-detail__left">
-        <div class="item-detail__image">
-            <div class="image-placeholder">商品画像</div>
-        </div>
+        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="item-detail__image">
     </div>
     <div class="item-detail__right">
         <div class="item-detail__info">
-            <h1 class="item-title">商品名がここに入る</h1>
-            <p class="brand-name">ブランド名</p>
-            <p class="price">¥47,000 <span class="tax">(税込)</span></p>
+            <h1 class="item-title">{{ $item->name }}</h1>
+            <p class="price">¥{{ number_format($item->price) }} <span class="tax">(税込)</span></p>
             <div class="actions">
-                <span class="material-symbols-outlined">
-                star
-                </span>
-                <span class="likes_count"> 3</span>
+                <form action="{{ route('likes.toggle', ['itemId' => $item->id]) }}" method="POST" style="display: inline;">
+                    @csrf
+                    <button type="submit" style="background: none; border: none; cursor: pointer; padding: 0;">
+                        <span class="material-symbols-outlined" style="color: {{ $item->likes->contains('user_id', auth()->id()) ? 'red' : 'black' }};">
+                            star
+                        </span>
+                    </button>
+                </form>
+                <span class="likes_count">{{ $item->likes->count() }}</span>
+
                 <span class="material-symbols-outlined">
                 chat_bubble
                 </span>
                 <span class="comments_count"> 1</span>
             </div>
-            <button class="buy-button">購入手続きへ</button>
+
+        <form action="{{ route('purchase', ['item_id' => $item->id]) }}" method="GET" style="display: inline;">
+            @csrf
+            <button type="submit" class="buy-button">購入手続きへ</button>
+        </form>
+
         </div>
         <div class="item-description">
             <h2>商品説明</h2>
-            <p>カラー：グレー</p>
-            <p>新品<br>商品の状態は良好です。傷もありません。</p>
-            <p>購入後、即発送いたします。</p>
+            <p>{{ $item->description }}</p>
         </div>
         <div class="item-info">
             <h2>商品の情報</h2>
             <div class="info-row">
                 <span class="info-label">カテゴリー</span>
-                <span class="category-value">洋服</span>
+                <span class="category-value">{{ $item->categories->pluck('name')->join(', ') }}</span>
             </div>
             <div class="info-row">
                 <span class="info-label">商品の状態</span>
-                <span class="status-value">良好</span>
+                <span class="status-value">{{ $item->condition->name ?? '未設定' }}</span>
             </div>
         </div>
         <div class="item-comments">

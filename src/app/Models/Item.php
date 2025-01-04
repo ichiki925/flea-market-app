@@ -16,13 +16,19 @@ class Item extends Model
         'user_id',
         'status',
         'item_image',
+        'condition_id',
     ];
 
 
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'item_categories', 'item_id', 'category_id')
-                    ->withTimestamps(); // 中間テーブルのタイムスタンプも利用
+                    ->withTimestamps();
+    }
+
+    public function condition()
+    {
+        return $this->belongsTo(Condition::class);
     }
 
 
