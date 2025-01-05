@@ -13,6 +13,7 @@
     <div class="item-detail__right">
         <div class="item-detail__info">
             <h1 class="item-title">{{ $item->name }}</h1>
+            <p class="brand-name">{{ $item->brand ?? '' }}</p>
             <p class="price">¥{{ number_format($item->price) }} <span class="tax">(税込)</span></p>
             <div class="actions">
                 <form action="{{ route('likes.toggle', ['itemId' => $item->id]) }}" method="POST" style="display: inline;">
@@ -28,7 +29,7 @@
                 <span class="material-symbols-outlined">
                 chat_bubble
                 </span>
-                <span class="comments_count"> 1</span>
+                <span class="comments_count">{{ $item->comments->count() }}</span>
             </div>
 
         <form action="{{ route('purchase', ['item_id' => $item->id]) }}" method="GET" style="display: inline;">
@@ -53,17 +54,29 @@
             </div>
         </div>
         <div class="item-comments">
-            <h2>コメント(1)</h2>
+            <h2>コメント({{ $item->comments->count() }})</h2>
+            @foreach($item->comments as $comment)
             <div class="comment">
                 <div class="comment-header">
                     <img src="{{ asset('images/user.png') }}" alt="User" class="comment-avatar">
-                    <span class="comment-author">admin</span>
+                    <span class="comment-author">{{ $comment->user->name }}</span>
                 </div>
-                <p class="comment-text">こちらにコメントが入ります。</p>
+                <p class="comment-text">{{ $comment->content }}</p>
             </div>
-            <label for="comment-input" class="comment-label">商品へのコメント</label>
-            <textarea id="comment-input" class="comment-input"></textarea>
-            <button class="comment-submit">コメントを送信する</button>
+            @endforeach
+
+            @auth
+            <form action="{{ route('comments.store') }}" method="POST">
+                @csrf
+                <label for="comment-input" class="comment-label">商品へのコメント</label>
+                <textarea id="comment-input" name="content" class="comment-input">{{ old('content') }}</textarea>
+                @if ($errors->has('content'))
+                    <p class="error-message">{{ $errors->first('content') }}</p>
+                @endif
+                <input type="hidden" name="item_id" value="{{ $item->id }}">
+                <button type="submit" class="comment-submit">コメントを送信する</button>
+            </form>
+            @endauth
         </div>
     </div>
 </div>

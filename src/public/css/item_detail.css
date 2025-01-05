@@ -209,6 +209,12 @@
     font-weight: bold;
 }
 
+.error-message {
+    color: red;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
 @media (max-width: 850px) {
     .item-detail {
         flex-direction: column;
@@ -229,4 +235,6 @@
     .price {
         font-size: 20px;
     }
+
+
 }

@@ -37,6 +37,7 @@
                 <div class="item-detail__right">
                     <div class="item-detail__info">
                         <h1 class="item-title">{{ $item->name }}</h1>
+                        <p class="brand-name">{{ $item->brand ?? '' }}</p>
                         <p class="price">¥{{ number_format($item->price) }} <span class="tax">(税込)</span></p>
                         <div class="actions">
                             <span class="material-symbols-outlined" style="color: black; cursor: default;">
@@ -46,7 +47,7 @@
                             <span class="material-symbols-outlined">
                             chat_bubble
                             </span>
-                            <span class="comments_count"> 1</span>
+                            <span class="comments_count">{{ $item->comments->count() }}</span>
                         </div>
                         <button class="buy-button">購入手続きへ</button>
                     </div>
@@ -66,17 +67,17 @@
                         </div>
                     </div>
                     <div class="item-comments">
-                        <h2>コメント(1)</h2>
-                        <div class="comment">
-                            <div class="comment-header">
-                                <img src="{{ asset('images/user.png') }}" alt="User" class="comment-avatar">
-                                <span class="comment-author">admin</span>
+                        <h2>コメント({{ $item->comments->count() }})</h2>
+                        @foreach($item->comments as $comment)
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <img src="{{ asset('images/user.png') }}" alt="User" class="comment-avatar">
+                                    <span class="comment-author">{{ $comment->user->name }}</span>
+                                </div>
+                                <p class="comment-text">{{ $comment->content }}</p>
                             </div>
-                            <p class="comment-text">こちらにコメントが入ります。</p>
-                        </div>
-                        <label for="comment-input" class="comment-label">商品へのコメント</label>
-                        <textarea id="comment-input" class="comment-input"></textarea>
-                        <button class="comment-submit">コメントを送信する</button>
+                        @endforeach
+
                     </div>
                 </div>
             </div>

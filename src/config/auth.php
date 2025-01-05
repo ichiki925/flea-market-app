@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'fortify' => [ // Fortify用の認証ガード
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*

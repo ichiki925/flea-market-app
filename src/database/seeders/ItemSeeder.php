@@ -28,6 +28,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Armani+Mens+Clock.jpg',
                 'condition_id' => 1,
+                'brand' => 'Armani',
             ],
             [
                 'name' => 'HDD',
@@ -37,6 +38,7 @@ class ItemSeeder extends Seeder
                 'status' => 'sold',
                 'item_image' => 'items/HDD+Hard+Disk.jpg',
                 'condition_id' => 2,
+                'brand' => null,
             ],
             [
                 'name' => '玉ねぎ3束',
@@ -46,6 +48,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/iLoveIMG+d.jpg',
                 'condition_id' => 3,
+                'brand' => null,
             ],
             [
                 'name' => '革靴',
@@ -55,6 +58,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Leather+Shoes+Product+Photo.jpg',
                 'condition_id' => 4,
+                'brand' => null,
             ],
             [
                 'name' => 'ノートPC',
@@ -64,6 +68,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Living+Room+Laptop.jpg',
                 'condition_id' => 1,
+                'brand' => null,
             ],
             [
                 'name' => 'マイク',
@@ -73,6 +78,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Music+Mic+4632231.jpg',
                 'condition_id' => 2,
+                'brand' => null,
             ],
             [
                 'name' => 'ショルダーバッグ',
@@ -82,6 +88,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Purse+fashion+pocket.jpg',
                 'condition_id' => 3,
+                'brand' => null,
             ],
             [
                 'name' => 'タンブラー',
@@ -91,6 +98,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Tumbler+souvenir.jpg',
                 'condition_id' => 4,
+                'brand' => null,
             ],
             [
                 'name' => 'コーヒーミル',
@@ -100,6 +108,7 @@ class ItemSeeder extends Seeder
                 'status' => 'available',
                 'item_image' => 'items/Waitress+with+Coffee+Grinder.jpg',
                 'condition_id' => 1,
+                'brand' => null,
             ],
             [
                 'name' => 'メイクセット',
@@ -107,8 +116,9 @@ class ItemSeeder extends Seeder
                 'price' => 2500,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'items/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
+                'item_image' => 'items/makeup_set.jpg',
                 'condition_id' => 2,
+                'brand' => null,
             ],
         ]);
 
@@ -125,19 +135,6 @@ class ItemSeeder extends Seeder
             ['item_id' => 9, 'category_id' => 10],
             ['item_id' => 10, 'category_id' => 6],
         ]);
-        // foreach ($items as &$item) {
-        //     // 外部URLから画像をダウンロードして保存
-        //     $filename = basename($item['item_image_url']); // URLからファイル名を取得
-        //     $directory = 'items'; // 保存先ディレクトリ
-
-        //     $path = $this->storeImageFromUrl($item['item_image_url'], $directory, $filename);
-
-        //     // 保存した画像のパスを`item_image`として設定
-        //     $item['item_image'] = $path;
-
-        //     // URLは不要なので削除
-        //     unset($item['item_image_url']);
-        // }
 
 
     }
