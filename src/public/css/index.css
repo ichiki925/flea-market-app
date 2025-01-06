@@ -170,6 +170,7 @@ body {
 
 .item {
     text-align: center;
+    position: relative;
 }
 
 .item-image {
@@ -189,6 +190,16 @@ body {
     object-fit: cover;
 }
 
+.item-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+}
+
 .item-info {
     display: flex;
     justify-content: space-between;
@@ -204,9 +215,6 @@ body {
     text-decoration: none;
 }
 
-.item-status {
-    color: red;
-    font-weight: bold;
-    text-transform: uppercase;
-    /* すべて大文字 */
+a {
+    text-decoration: none;
 }

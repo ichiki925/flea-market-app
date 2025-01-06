@@ -22,9 +22,11 @@ Route::post('/likes/toggle/{itemId}', [LikeController::class, 'toggleLike'])->na
 
 Route::post('/likes/guest/{itemId}', [LikeController::class, 'guestLike'])->name('likes.guest');
 
+Route::post('/comments', [ItemController::class, 'storeComment'])->name('comments.store')->middleware('auth');
+
+// 商品購入ページ
 Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase')->middleware('auth');
 
-Route::post('/comments', [ItemController::class, 'storeComment'])->name('comments.store')->middleware('auth');
 
 
 

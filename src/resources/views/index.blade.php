@@ -48,38 +48,40 @@
             @if(request('tab') === 'mylist')
             @if(auth()->check())
             @foreach ($items as $item)
-                < class="item">
+                <div class="item">
                     <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
                             <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                            @if($item->status === 'sold')
+                                <div class="item-status">Sold</div>
+                            @endif
                         </div>
+
                     <div class="item-info">
                         <div class="item-name">{{ $item->name }}</div>
                     </div>
-                    </a>
-                        @if($item->status === 'sold')
-                            <div class="item-status">Sold</div>
-                        @endif
+                </a>
                 </div>
             @endforeach
             @else
             <p>ログインしていないため、マイリストを表示できません。</p>
                 @endif
             @else
-                <!-- 「おすすめ」タブの場合 -->
+
                 @foreach ($items as $item)
                     <div class="item">
                         <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                             <div class="item-image">
                                 <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                                @if($item->status === 'sold')
+                                    <div class="item-status">Sold</div>
+                                @endif
                             </div>
-                            <div class="item-info">
-                                <div class="item-name">{{ $item->name }}</div>
-                            </div>
-                        </a>
-                        @if($item->status === 'sold')
-                            <div class="item-status">Sold</div>
-                        @endif
+
+                        <div class="item-info">
+                            <div class="item-name">{{ $item->name }}</div>
+                        </div>
+                    </a>
                     </div>
                 @endforeach
             @endif

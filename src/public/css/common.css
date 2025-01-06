@@ -30,7 +30,7 @@ body {
 .header {
     background-color: #000;
     color: #fff;
-    padding: 0px 30px;
+    padding: 0px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -40,38 +40,33 @@ body {
 
 .header .container {
     display: flex;
-    /* 子要素を横並びにする */
     align-items: center;
-    /* 縦方向の中央揃え */
     width: 100%;
-    /* ヘッダー全体に広げる */
     justify-content: space-between;
-    /* ロゴ、検索フォーム、ナビゲーションを均等に配置 */
 }
 
 .header .logo {
     flex: 1;
-    /* 左寄せに配置 */
 }
 
 .header .logo img {
-    max-height: 100%;
+    max-height: 30px;
     height: auto;
+    max-width: 100%;
 }
 
 .header .search-form {
-    flex: 2;
-    /* 中央に配置 */
+    flex: 1;
     display: flex;
     justify-content: center;
 }
 
 .search-form input {
-    width: 70%;
-    padding: 10px;
+    width: 100%;
+    padding: 8px;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .header .nav {
@@ -97,10 +92,58 @@ body {
 
 .nav .sell-btn {
     background-color: #fff;
-    padding: 5px 10px;
+    padding: 4px 20px;
     border-radius: 5px;
     color: #000;
     text-decoration: none;
     text-align: center;
-    width: 25%;
+
+}
+@media (max-width: 850px) and (min-width: 768px) {
+    .header .logo img {
+            max-height: 23px;
+            height: auto;
+            max-width: 100%;
+        }
+
+    .header {
+        flex-direction: row;
+        /* 横並びを明示 */
+        height: auto;
+        padding: 5px;
+    }
+
+    .container {
+        flex-direction: row;
+        /* 横並びに調整 */
+        align-items: center;
+        justify-content: space-between;
+        /* 子要素を均等に配置 */
+    }
+
+    .search-form input {
+        width: 100%;
+        /* 検索フォームの幅を調整 */
+    }
+
+    .nav {
+        justify-content: flex-end;
+        /* ナビゲーションを右揃え */
+        gap: 10px;
+    }
+
+    #logout-form button {
+        font-size: 13px;
+        /* ボタンのフォントサイズ */
+    }
+
+    .nav a {
+        font-size: 13px;
+        /* ナビゲーションリンクのフォントサイズ */
+    }
+
+    .nav .sell-btn {
+        padding: 5px 8px;
+        font-size: 13px;
+    }
 }

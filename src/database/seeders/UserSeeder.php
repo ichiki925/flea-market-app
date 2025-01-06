@@ -28,6 +28,10 @@ class UserSeeder extends Seeder
             'email' => 'test1@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password123'),
+            'postal_code' => '123-4567',
+            'address' => '東京都渋谷区道玄坂1-2-3',
+            'building' => 'マンション101号室',
+            'profile_image' => 'user.png',
         ]);
 
         User::create([
@@ -36,6 +40,10 @@ class UserSeeder extends Seeder
             'email' => 'test2@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password123'),
+            'postal_code' => '987-6543',
+            'address' => '大阪府大阪市北区梅田1-2-3',
+            'building' => 'オフィスビル201号室',
+            'profile_image' => 'user.png',
         ]);
     }
 }

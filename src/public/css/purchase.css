@@ -33,17 +33,13 @@
     margin-top: 50px;
 }
 
-.product-image {
-    width: 150px;
-    height: 150px;
-    background-color: #e0e0e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: #555;
-    font-size: 14px;
-    margin-right: 20px;
+.product-image img {
+    width: 100%;
+    height: auto;
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 3px;
 }
 
 .product-info h2 {
@@ -181,4 +177,4 @@
 
 .btn-purchase:hover {
     background-color: #c0392b;
-} 
+}

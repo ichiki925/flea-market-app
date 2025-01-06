@@ -127,6 +127,10 @@ body {
     text-decoration: none;
 }
 
+a {
+    text-decoration: none;
+}
+
 .item-status {
     position: absolute;
     top: 10px;

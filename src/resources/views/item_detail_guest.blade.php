@@ -59,7 +59,11 @@
                         <h2>商品の情報</h2>
                         <div class="info-row">
                             <span class="info-label">カテゴリー</span>
-                            <span class="category-value">{{ $item->categories->pluck('name')->join(', ') }}</span>
+                            <div class="category-values">
+                                @foreach($item->categories as $category)
+                                    <span class="category-value">{{ $category->name }}</span>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="info-row">
                             <span class="info-label">商品の状態</span>

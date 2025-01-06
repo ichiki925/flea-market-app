@@ -133,11 +133,18 @@
     text-align: left;
 }
 
+.category-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .category-value {
     background-color: #e8e8e8;
     padding: 2px 25px;
     font-size: 14px;
     border-radius: 25px;
+    display: inline-block;
 }
 
 .status-value {

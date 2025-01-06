@@ -9,11 +9,11 @@
     <div class="left-section">
         <div class="product-detail">
             <div class="product-image">
-                商品画像
+                <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="product-image-img">
             </div>
             <div class="product-info">
-                <h2>商品名</h2>
-                <p class="product-price">¥47,000</p>
+                <h2>{{ $item->name }}</h2>
+                <p class="product-price">¥{{ number_format($item->price) }}</p>
             </div>
         </div>
         <div class="payment-method">
@@ -31,8 +31,9 @@
                 <h3>配送先</h3>
                 <a href="/address" class="change-address">変更する</a>
             </div>
-            <p>〒 XXX-YYYY</p>
-            <p>ここには住所と建物が入ります</p>
+            <p>〒 {{ $user->postal_code }}</p>
+            <p>{{ $user->address }}</p>
+            <p>{{ $user->building }}</p>
         </div>
     </div>
 
@@ -41,7 +42,7 @@
             <table>
                 <tr>
                     <th>商品代金</th>
-                    <td>¥47,000</td>
+                    <td>¥{{ number_format($item->price) }}</td>
                 </tr>
                 <tr>
                     <th>支払い方法</th>
