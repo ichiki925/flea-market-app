@@ -19,11 +19,14 @@
         <div class="payment-method">
             <h3>支払い方法</h3>
             <div class="custom-select-wrapper">
-                <select>
-                    <option>選択してください</option>
-                    <option>コンビニ払い</option>
-                    <option>カード支払い</option>
-                </select>
+                <form action="{{ route('purchase', ['item_id' => $item->id]) }}" method="GET">
+                    <select name="payment_method" onchange="this.form.submit()">
+                        <option value="">選択してください</option>
+                        <option value="コンビニ払い" {{ request('payment_method') === 'コンビニ払い' ? 'selected' : '' }}>コンビニ払い</option>
+                        <option value="カード支払い" {{ request('payment_method') === 'カード支払い' ? 'selected' : '' }}>カード支払い</option>
+                    </select>
+                    <input type="hidden" name="item_id" value="{{ $item->id }}">
+                </form>
             </div>
         </div>
         <div class="shipping-address">
@@ -46,11 +49,14 @@
                 </tr>
                 <tr>
                     <th>支払い方法</th>
-                    <td>コンビニ払い</td>
+                    <td>{{ request('payment_method') ?: '未選択' }}</td>
                 </tr>
             </table>
         </div>
-        <button class="btn-purchase">購入する</button>
+        <form action="{{ route('purchase.store', ['item_id' => $item->id]) }}" method="POST">
+            @csrf
+        <button type="submit" class="btn-purchase">購入する</button>
+        </form>
     </div>
 </div>
 @endsection
