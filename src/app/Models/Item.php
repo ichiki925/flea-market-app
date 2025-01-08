@@ -54,4 +54,9 @@ class Item extends Model
         return $this->status === 'sold';
     }
 
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
 }

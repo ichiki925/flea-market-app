@@ -33,7 +33,6 @@
             </div>
 
         <form action="{{ route('purchase', ['item_id' => $item->id]) }}" method="GET" style="display: inline;">
-            @csrf
             <button type="submit" class="buy-button">購入手続きへ</button>
         </form>
 

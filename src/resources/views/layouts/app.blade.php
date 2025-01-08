@@ -26,7 +26,7 @@
                     @csrf
                     <button type="submit" >ログアウト</button>
                 </form>
-                <a href="/mypage">マイページ</a>
+                <a href="{{ route('mypage') }}">マイページ</a>
                 <a href="/sell" class="sell-btn">出品</a>
             </nav>
         </div>
