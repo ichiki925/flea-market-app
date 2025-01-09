@@ -32,7 +32,7 @@
                 <span class="comments_count">{{ $item->comments->count() }}</span>
             </div>
 
-        <form action="{{ route('purchase', ['item_id' => $item->id]) }}" method="GET" style="display: inline;">
+        <form action="{{ route('purchase.show', ['item_id' => $item->id]) }}" method="GET" style="display: inline;">
             <button type="submit" class="buy-button">購入手続きへ</button>
         </form>
 

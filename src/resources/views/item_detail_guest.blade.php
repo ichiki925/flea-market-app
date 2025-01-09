@@ -81,7 +81,10 @@
                                 <p class="comment-text">{{ $comment->content }}</p>
                             </div>
                         @endforeach
-
+                        <label for="comment-input" class="comment-label">商品へのコメント</label>
+                        <textarea id="comment-input" name="content" class="comment-input">{{ old('content') }}</textarea>
+                        <input type="hidden" name="item_id" value="{{ $item->id }}">
+                        <div class="comment-submit">コメントを送信する</div>
                     </div>
                 </div>
             </div>

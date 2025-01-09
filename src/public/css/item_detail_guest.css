@@ -269,6 +269,7 @@ body {
     border-radius: 50%;
     margin-right: 10px;
     background-color: #e8e8e8;
+    color: transparent;
 }
 
 .comment-author {
@@ -304,6 +305,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
+    resize: none;
 }
 
 .comment-submit {
@@ -317,6 +319,7 @@ body {
     width: 100%;
     font-size: 16px;
     font-weight: bold;
+    text-align: center;
 }
 
 @media (max-width: 850px) {
