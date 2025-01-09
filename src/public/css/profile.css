@@ -21,13 +21,11 @@
 .profile-image {
     display: flex;
     align-items: center;
-    /* 垂直方向を中央揃え */
     gap: 20px;
-    /* 画像とボタンの間隔 */
     margin-bottom: 20px;
 }
 
-.image-preview {
+.profile-preview {
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -36,12 +34,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: transparent;
 }
 
-.image-preview img {
-    width: 100%;
-    height: 100%;
+.profile-preview img {
+    width: 80%;
+    height: 80%;
     object-fit: cover;
+    border-radius: 50%;
+    margin: auto;
 }
 
 .file-label {
@@ -60,7 +61,6 @@
 
 .file-label input[type="file"] {
     display: none;
-    /* 実際のファイル選択ボタンを隠す */
 }
 
 .form-group {

@@ -32,16 +32,28 @@ Route::prefix('purchase')->middleware('auth')->group(function () {
 
 
 
+
+
+
+
 // ログアウト
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-// マイページ
+// マイページ商品出品
 Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage')->middleware('auth');
-Route::post('/mypage/update', [MyPageController::class, 'update'])->name('mypage.update');
+// マイページ商品購入
+Route::get('/mypage/purchases', [MyPageController::class, 'purchases'])->name('mypage.purchases')->middleware('auth');
 
-// プロフィール
-Route::get('/mypage/profile', [MyPageController::class, 'editProfile'])->name('mypage.profile')->middleware('auth');
 
+Route::middleware(['auth'])->group(function () {
+    // 新規登録
+    Route::get('/mypage/profile/create', [MyPageController::class, 'createProfile'])->name('mypage.create');
+    Route::post('/mypage/profile', [MyPageController::class, 'storeProfile'])->name('mypage.store');
+
+    // 編集
+    Route::get('/mypage/profile', [MyPageController::class, 'editProfile'])->name('mypage.profile');
+    Route::put('/mypage/profile', [MyPageController::class, 'updateProfile'])->name('mypage.update');
+});
 
 
 

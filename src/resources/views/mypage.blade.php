@@ -9,7 +9,9 @@
 
     <div class="profile-header">
         <div class="image-preview">
-            <img src="{{ asset('storage/' . (auth()->user()->profile_image ?? 'user.png')) }}" alt="{{ auth()->user()->name }}" class="profile-preview">
+            @if(auth()->user()->profile_image)
+                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="{{ auth()->user()->name }}" class="profile-preview">
+            @endif
         </div>
         <h2 class="user-name">{{ auth()->user()->name }}</h2>
         <label for="profile_image" class="file-label">
@@ -21,7 +23,8 @@
     <div class="tabs-container">
         <div class="tabs">
             <a href="{{ route('mypage', ['tab' => 'sell']) }}" class="tab-link {{ $tab === 'sell' ? 'active' : '' }}">出品した商品</a>
-            <a href="{{ route('mypage', ['tab' => 'purchase']) }}" class="tab-link {{ $tab === 'purchase' ? 'active' : '' }}">購入した商品</a>
+            <a href="{{ route('mypage.purchases') }}" class="tab-link {{ $tab === 'purchase' ? 'active' : '' }}">購入した商品</a>
+
         </div>
     </div>
 
