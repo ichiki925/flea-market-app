@@ -29,6 +29,10 @@ Route::prefix('purchase')->middleware('auth')->group(function () {
     Route::post('/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::post('/process-payment', [PurchaseController::class, 'processPayment'])->name('purchase.processPayment');
 });
+// 住所変更
+Route::get('/address', [MyPageController::class, 'editAddress'])->name('address.edit')->middleware('auth');
+Route::post('/address', [MyPageController::class, 'updateAddress'])->name('address.update')->middleware('auth');
+
 
 // 商品出品
 Route::middleware(['auth'])->group(function () {
@@ -41,6 +45,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage')->middleware('auth');
 // マイページ商品購入
 Route::get('/mypage/purchases', [MyPageController::class, 'purchases'])->name('mypage.purchases')->middleware('auth');
+
+
 
 
 Route::middleware(['auth'])->group(function () {

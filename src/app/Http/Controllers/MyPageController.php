@@ -6,6 +6,7 @@ use App\Http\Requests\AddressRequest;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Item;
 
@@ -101,5 +102,20 @@ class MyPageController extends Controller
         $user->update($validatedData);
 
         return redirect()->route('mypage.profile')->with('success', 'プロフィールが更新されました。');
+    }
+
+    public function editAddress()
+    {
+        $user = Auth::user();
+        return view('address', compact('user'));
+    }
+
+    public function updateAddress(AddressRequest $request)
+    {
+        $user = Auth::user();
+        $validated = $request->validated();
+        $user->update($request->validated());
+
+        return redirect()->route('purchase.show', ['item_id' => session('item_id')])->with('success', '住所を更新しました。');
     }
 }
