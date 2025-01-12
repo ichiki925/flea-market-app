@@ -5,15 +5,21 @@
 @endsection
 
 @section('content')
-
-<h1>商品の出品</h1>
-        <form action="#" method="post" enctype="multipart/form-data">
+<main>
+    <h1>商品の出品</h1>
+        <form action="{{ route('sell.store') }}" method="post" enctype="multipart/form-data">
+            @csrf
             <section>
-                <label for="product-image">商品画像</label>
+                <label for="item-image">商品画像</label>
                 <div class="image-upload">
-                    <label for="product-image" class="custom-file-label">画像を選択する</label>
-                    <input type="file" id="product-image" name="product_image" class="custom-file-input">
+                    <label for="item-image" class="custom-file-label">画像を選択する</label>
+                    <input type="file" id="item-image" name="item_image" class="custom-file-input">
+                    <img class="preview-image" src="{{ isset($item->item_image) ? asset('storage/' . $item->item_image) : asset('images/default.png') }}" alt="商品画像">
+
                 </div>
+                @error('item_image')
+                <p class="error">{{ $message }}</p>
+                @enderror
             </section>
 
 
@@ -23,59 +29,29 @@
                 <hr>
                 <label for="category">カテゴリー</label>
                 <div class="categories">
-                    <input type="radio" id="fashion" name="category" class="category-radio">
-                    <label for="fashion" class="category-label">ファッション</label>
-
-                    <input type="radio" id="electronics" name="category" class="category-radio">
-                    <label for="electronics" class="category-label">家電</label>
-
-                    <input type="radio" id="interior" name="category" class="category-radio">
-                    <label for="interior" class="category-label">インテリア</label>
-
-                    <input type="radio" id="ladies" name="category" class="category-radio">
-                    <label for="ladies" class="category-label">レディース</label>
-
-                    <input type="radio" id="mens" name="category" class="category-radio">
-                    <label for="mens" class="category-label">メンズ</label>
-
-                    <input type="radio" id="cosmetics" name="category" class="category-radio">
-                    <label for="cosmetics" class="category-label">コスメ</label>
-
-                    <input type="radio" id="books" name="category" class="category-radio">
-                    <label for="books" class="category-label">本</label>
-
-                    <input type="radio" id="games" name="category" class="category-radio">
-                    <label for="games" class="category-label">ゲーム</label>
-
-                    <input type="radio" id="sports" name="category" class="category-radio">
-                    <label for="sports" class="category-label">スポーツ</label>
-
-                    <input type="radio" id="kitchen" name="category" class="category-radio">
-                    <label for="kitchen" class="category-label">キッチン</label>
-
-                    <input type="radio" id="handmade" name="category" class="category-radio">
-                    <label for="handmade" class="category-label">ハンドメイド</label>
-
-                    <input type="radio" id="accessories" name="category" class="category-radio">
-                    <label for="accessories" class="category-label">アクセサリー</label>
-
-                    <input type="radio" id="toys" name="category" class="category-radio">
-                    <label for="toys" class="category-label">おもちゃ</label>
-
-                    <input type="radio" id="baby_kids" name="category" class="category-radio">
-                    <label for="baby_kids" class="category-label">ベビー・キッズ</label>
+                    @foreach ($categories as $category)
+                        <input type="checkbox" id="category-{{ $category->id }}" name="item_categories[]" value="{{ $category->id }}" class="category-checkbox"
+                            {{ is_array(old('item_categories')) && in_array($category->id, old('item_categories')) ? 'checked' : '' }}>
+                        <label for="category-{{ $category->id }}" class="category-label">{{ $category->name }}</label>
+                    @endforeach
                 </div>
-
+                @error('item_categories')
+                <p class="error">{{ $message }}</p>
+                @enderror
             </section>
 
             <section>
                 <label for="status">商品の状態</label>
                 <div class="custom-select-wrapper">
-                    <select id="status" name="status" class="custom-select">
+                    <select id="status" name="condition" class="custom-select">
                         <option value="" disabled selected>選択してください</option>
-                        <option value="new">新品</option>
-                        <option value="used">中古</option>
+                        @foreach ($conditions as $condition)
+                            <option value="{{ $condition->id }}">{{ $condition->name }}</option>
+                        @endforeach
                     </select>
+                    @error('condition')
+                    <p class="error">{{ $message }}</p>
+                    @enderror
                 </div>
             </section>
 
@@ -83,15 +59,39 @@
                 <h2>商品名と説明</h2>
                 <hr>
                 <label for="product-name">商品名</label>
-                <input type="text" id="product-name" name="product_name">
+                <input type="text" id="product-name" name="name" value="{{ old('name') }}">
+                @error('name')
+                <p class="error">{{ $message }}</p>
+                @enderror
 
                 <label for="description">商品の説明</label>
-                <textarea id="description" name="description"></textarea>
+                <textarea id="description" name="description">{{ old('description') }}</textarea>
+                @error('description')
+                <p class="error">{{ $message }}</p>
+                @enderror
 
                 <label for="price">販売価格</label>
-                <input type="text" id="price" name="price" placeholder="¥">
+                <input type="text" id="price" name="price" value="{{ old('price') }}" placeholder="¥">
+                @error('price')
+                <p class="error">{{ $message }}</p>
+                @enderror
             </section>
 
             <button type="submit" class="submit-button">出品する</button>
         </form>
+</main>
+
+<script>
+    // 動的画像プレビューの設定
+    document.getElementById('item-image').addEventListener('change', function (event) {
+        const [file] = event.target.files; // 選択されたファイルを取得
+        if (file) {
+            const preview = document.querySelector('.preview-image');
+            preview.src = URL.createObjectURL(file); // プレビュー用にファイルのURLを生成
+            preview.style.display = 'block'; // プレビューを表示
+        }
+    });
+</script>
+
+
 @endsection

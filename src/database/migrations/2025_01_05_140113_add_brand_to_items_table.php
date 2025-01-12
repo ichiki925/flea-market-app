@@ -22,3 +22,4 @@ class AddBrandToItemsTable extends Migration
         });
     }
 }
+

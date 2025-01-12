@@ -6,6 +6,7 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SellController;
 
 
 
@@ -29,15 +30,12 @@ Route::prefix('purchase')->middleware('auth')->group(function () {
     Route::post('/process-payment', [PurchaseController::class, 'processPayment'])->name('purchase.processPayment');
 });
 
+// 商品出品
+Route::middleware(['auth'])->group(function () {
+    Route::get('/sell', [SellController::class, 'index'])->name('sell.index');
+    Route::post('/sell/store', [SellController::class, 'store'])->name('sell.store');
+});
 
-
-
-
-
-
-
-// ログアウト
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 // マイページ商品出品
 Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage')->middleware('auth');
@@ -56,4 +54,5 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
+// ログアウト
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
