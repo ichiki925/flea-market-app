@@ -16,6 +16,9 @@ class PurchaseController extends Controller
         $user = Auth::user();
         $paymentMethod = $request->input('payment_method');
 
+        // 商品IDをセッションに保存
+        session(['item_id' => $item_id]);
+
         return view('purchase', compact('item', 'user', 'paymentMethod'));
     }
 
@@ -28,25 +31,35 @@ class PurchaseController extends Controller
             return redirect()->route('mypage');
         }
 
-        // Stripe支払いの確認をここに追加
+        // Stripe支払いの確認（Stripe未実装の場合は仮の条件を使う）
         $paymentIntentId = $request->input('payment_intent_id');
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $paymentSucceeded = true; // Stripe未実装の仮フラグ（後で置き換える）
 
-        $paymentIntent = \Stripe\PaymentIntent::retrieve($paymentIntentId);
+        // Stripeが有効になった場合に以下を使用
+        // Stripe::setApiKey(env('STRIPE_SECRET'));
+        // $paymentIntent = \Stripe\PaymentIntent::retrieve($paymentIntentId);
+        // $paymentSucceeded = $paymentIntent->status === 'succeeded';
 
-        if ($paymentIntent->status === 'succeeded') {
-            // 購入情報を保存
+        if ($paymentSucceeded) {
+            // 購入情報の保存
             Purchase::create([
-                'user_id' => Auth::id(),
                 'item_id' => $item->id,
+                'buyer_id' => Auth::id(),
+                'address' => Auth::user()->address,
+                'building' => Auth::user()->building,
+                'postal_code' => Auth::user()->postal_code,
+                'payment_method' => $request->input('payment_method', 'card'),
             ]);
 
-            // 商品の状態を更新
+            // 商品のステータスを「sold」に更新
             $item->update(['status' => 'sold']);
 
-            return redirect()->route('mypage');
+            return redirect()->route('mypage', ['tab' => 'purchase'])->with('success', '購入が完了しました');
         }
-        return back()->withErrors(['message' => 'Payment failed']);
+
+        // 支払いが失敗した場合
+        return back()->withErrors(['message' => '支払いが完了しませんでした']);
+
     }
 
     public function processPayment(Request $request)

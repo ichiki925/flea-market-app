@@ -19,7 +19,7 @@
         <div class="payment-method">
             <h3>支払い方法</h3>
             <div class="custom-select-wrapper">
-                <form action="{{ route('purchase', ['item_id' => $item->id]) }}" method="GET">
+                <form action="{{ route('purchase.show', ['item_id' => $item->id]) }}" method="GET">
                     <select name="payment_method" onchange="this.form.submit()">
                         <option value="">選択してください</option>
                         <option value="コンビニ払い" {{ request('payment_method') === 'コンビニ払い' ? 'selected' : '' }}>コンビニ払い</option>
@@ -32,7 +32,7 @@
         <div class="shipping-address">
             <div class="shipping-header">
                 <h3>配送先</h3>
-                <a href="/address" class="change-address">変更する</a>
+                <a href="{{ route('mypage.editAddress', ['item_id' => $item->id]) }}" class="change-address">変更する</a>
             </div>
             <p>〒 {{ $user->postal_code }}</p>
             <p>{{ $user->address }}</p>

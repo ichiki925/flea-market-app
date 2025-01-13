@@ -85,14 +85,8 @@ a {
     margin-left: 10%;
     font-size: 20px;
     font-weight: bold;
-
-    /* タブを中央揃えに */
-
-    /* 縦方向を中央揃え */
     gap: 7%;
-    /* タブ間の間隔を設定 */
     padding-top: 10px;
-    /* 上下に適切な余白を追加 */
 }
 
 .tabs-container .tab-link {

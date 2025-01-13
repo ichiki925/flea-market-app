@@ -30,8 +30,8 @@ Route::prefix('purchase')->middleware('auth')->group(function () {
     Route::post('/process-payment', [PurchaseController::class, 'processPayment'])->name('purchase.processPayment');
 });
 // 住所変更
-Route::get('/address', [MyPageController::class, 'editAddress'])->name('address.edit')->middleware('auth');
-Route::post('/address', [MyPageController::class, 'updateAddress'])->name('address.update')->middleware('auth');
+Route::get('/address/edit', [MyPageController::class, 'editAddress'])->name('mypage.editAddress')->middleware('auth');
+Route::post('/address/update', [MyPageController::class, 'updateAddress'])->name('mypage.updateAddress')->middleware('auth');
 
 
 // 商品出品

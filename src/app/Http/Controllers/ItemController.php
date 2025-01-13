@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Comment;
 use App\Http\Requests\CommentRequest;
 
+
 class ItemController extends Controller
 {
     public function index(Request $request)
@@ -38,10 +39,12 @@ class ItemController extends Controller
             })->get();
         }
 
+
+
         return view('mylist', compact('items', 'tab'));
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $item = Item::with(['categories', 'condition', 'comments.user'])->findOrFail($id);
 

@@ -22,9 +22,7 @@ class MyPageController extends Controller
             $items = Item::where('user_id', $user->id)->get();
         } else {
             // 購入した商品
-            $items = Item::whereHas('purchases', function ($query) use ($user) {
-                $query->where('user_id', $user->id);
-            })->get();
+            $items = $user->purchases()->with('item')->get()->map->item; // リレーションからアイテムを取得
         }
 
         return view('mypage', compact('items', 'tab'));
@@ -58,8 +56,9 @@ class MyPageController extends Controller
     // プロフィール新規保存処理
     public function storeProfile(ProfileRequest $request)
     {
-        // 新しいユーザー作成
-        $user = new User($request->validated());
+        $validated = $request->validated();
+
+        $user = new User($validated);
 
         // プロフィール画像の保存
         if ($request->hasFile('profile_image')) {
@@ -69,7 +68,7 @@ class MyPageController extends Controller
 
         $user->save();
 
-        return redirect()->route('mypage.profile')->with('success', 'プロフィールが登録されました。');
+        return redirect()->route('mypage.profile');
     }
 
     // プロフィール編集画面
@@ -84,11 +83,10 @@ class MyPageController extends Controller
     }
 
     // プロフィール更新処理
-    public function updateProfile(AddressRequest $request)
+    public function updateProfile(ProfileRequest $request)
     {
         $user = auth()->user();
-
-        $validatedData = $request->validated();
+        $validated = $request->validated();
 
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
@@ -99,23 +97,30 @@ class MyPageController extends Controller
         }
 
         // その他のフィールドを更新
-        $user->update($validatedData);
+        $user->update($validated);
 
-        return redirect()->route('mypage.profile')->with('success', 'プロフィールが更新されました。');
+        return redirect()->route('mypage.profile');
     }
 
-    public function editAddress()
+    public function editAddress(Request $request)
     {
         $user = Auth::user();
-        return view('address', compact('user'));
+        $item_id = $request->query('item_id'); // アイテムIDを取得
+
+        return view('address', compact('user','item_id'));
     }
 
     public function updateAddress(AddressRequest $request)
     {
-        $user = Auth::user();
-        $validated = $request->validated();
-        $user->update($request->validated());
 
-        return redirect()->route('purchase.show', ['item_id' => session('item_id')])->with('success', '住所を更新しました。');
+        $user = Auth::user();
+
+        $validated = $request->validated();
+
+        $user->update($validated);
+
+        $item_id = $request->input('item_id');
+
+        return redirect()->route('purchase.show', ['item_id' => $item_id]);
     }
 }

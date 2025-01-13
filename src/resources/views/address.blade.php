@@ -7,8 +7,9 @@
 @section('content')
 <div class="address-container">
     <h2>住所の変更</h2>
-    <form action="{{ route('address.update') }}" method="POST" class="address-form">
+    <form action="{{ route('mypage.updateAddress') }}" method="POST" class="address-form">
         @csrf
+        <input type="hidden" name="item_id" value="{{ $item_id }}">
         <div class="form-group">
             <label for="postal_code">郵便番号</label>
             <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code ?? '') }}">
@@ -32,7 +33,6 @@
             <p class="error">{{ $message }}</p>
             @enderror
         </div>
-
         <button type="submit" class="btn-submit">更新する</button>
     </form>
 </div>
