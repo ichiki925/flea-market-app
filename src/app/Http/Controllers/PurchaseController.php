@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use App\Models\Purchase;
 use Stripe\Stripe;
+use Stripe\Checkout\Session as StripeSession;
 
 class PurchaseController extends Controller
 {
@@ -31,55 +32,61 @@ class PurchaseController extends Controller
             return redirect()->route('mypage');
         }
 
-        // Stripe支払いの確認（Stripe未実装の場合は仮の条件を使う）
-        $paymentIntentId = $request->input('payment_intent_id');
-        $paymentSucceeded = true; // Stripe未実装の仮フラグ（後で置き換える）
+        // Stripeの秘密キーを設定
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        // Stripeが有効になった場合に以下を使用
-        // Stripe::setApiKey(env('STRIPE_SECRET'));
-        // $paymentIntent = \Stripe\PaymentIntent::retrieve($paymentIntentId);
-        // $paymentSucceeded = $paymentIntent->status === 'succeeded';
-
-        if ($paymentSucceeded) {
-            // 購入情報の保存
-            Purchase::create([
-                'item_id' => $item->id,
-                'buyer_id' => Auth::id(),
-                'address' => Auth::user()->address,
-                'building' => Auth::user()->building,
-                'postal_code' => Auth::user()->postal_code,
-                'payment_method' => $request->input('payment_method', 'card'),
+        try {
+            // Stripe Checkoutセッションを作成
+            $session = StripeSession::create([
+                'payment_method_types' => ['card'], // 支払い方法
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'jpy', // 通貨
+                        'product_data' => [
+                            'name' => $item->name, // 商品名
+                        ],
+                        'unit_amount' => $item->price * 100, // 商品価格（単位：最小通貨単位）
+                    ],
+                    'quantity' => 1, // 購入数
+                ]],
+                'mode' => 'payment', // 支払いモード
+                'success_url' => route('payment.success', ['item_id' => $item_id]), // 決済成功時のURL
+                'cancel_url' => route('payment.cancel', ['item_id' => $item_id]),  // キャンセル時のURL
             ]);
 
-            // 商品のステータスを「sold」に更新
-            $item->update(['status' => 'sold']);
+            // Stripeの決済ページへリダイレクト
+            return redirect($session->url);
 
-            return redirect()->route('mypage', ['tab' => 'purchase'])->with('success', '購入が完了しました');
+        } catch (\Exception $e) {
+            // エラーハンドリング
+            return back()->withErrors(['message' => '決済セッションの作成中にエラーが発生しました: ' . $e->getMessage()]);
         }
-
-        // 支払いが失敗した場合
-        return back()->withErrors(['message' => '支払いが完了しませんでした']);
-
     }
 
-    public function processPayment(Request $request)
-        {
-            // Stripeの秘密キーを設定
-            Stripe::setApiKey(env('STRIPE_SECRET'));
+    public function paymentSuccess(Request $request, $item_id)
+    {
+        $item = Item::findOrFail($item_id);
 
-            try {
-                $paymentIntent = \Stripe\PaymentIntent::create([
-                    'amount' => $request->input('amount'), // 金額
-                    'currency' => 'jpy', // 通貨
-                    'payment_method' => $request->input('payment_method_id'), // 支払い方法ID
-                    'confirmation_method' => 'manual', // 手動確認
-                    'confirm' => true, // 即時確認
-                ]);
+        // 購入情報の保存
+        Purchase::create([
+            'item_id' => $item->id,
+            'buyer_id' => Auth::id(),
+            'address' => Auth::user()->address,
+            'building' => Auth::user()->building,
+            'postal_code' => Auth::user()->postal_code,
+            'payment_method' => 'card',
+        ]);
 
-                return response()->json(['clientSecret' => $paymentIntent->client_secret]);
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
-            }
-        }
+        // 商品のステータスを「sold」に更新
+        $item->update(['status' => 'sold']);
+
+        return redirect()->route('mypage', ['tab' => 'purchase'])->with('success', '購入が完了しました！');
+    }
+
+    public function paymentCancel(Request $request, $item_id)
+    {
+        return redirect()->route('item.detail', ['id' => $item_id])->withErrors(['message' => '支払いがキャンセルされました。']);
+    }
+
 
 }

@@ -28,7 +28,13 @@ Route::prefix('purchase')->middleware('auth')->group(function () {
     Route::get('/{item_id}', [PurchaseController::class, 'show'])->name('purchase.show');
     Route::post('/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::post('/process-payment', [PurchaseController::class, 'processPayment'])->name('purchase.processPayment');
+
+    // 決済成功・キャンセル用のルート
+    Route::get('/success/{item_id}', [PurchaseController::class, 'paymentSuccess'])->name('payment.success');
+    Route::get('/cancel/{item_id}', [PurchaseController::class, 'paymentCancel'])->name('payment.cancel');
 });
+
+
 // 住所変更
 Route::get('/address/edit', [MyPageController::class, 'editAddress'])->name('mypage.editAddress')->middleware('auth');
 Route::post('/address/update', [MyPageController::class, 'updateAddress'])->name('mypage.updateAddress')->middleware('auth');
