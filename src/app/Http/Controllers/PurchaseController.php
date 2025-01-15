@@ -45,7 +45,7 @@ class PurchaseController extends Controller
                         'product_data' => [
                             'name' => $item->name, // 商品名
                         ],
-                        'unit_amount' => $item->price * 100, // 商品価格（単位：最小通貨単位）
+                        'unit_amount' => (int)$item->price, // 商品価格（単位：最小通貨単位）
                     ],
                     'quantity' => 1, // 購入数
                 ]],
