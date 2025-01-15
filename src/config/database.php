@@ -63,6 +63,22 @@ return [
             ]) : [],
         ],
 
+        'mysql_test' => [
+            'driver' => 'mysql',
+            'host' => env('DB_TEST_HOST', '127.0.0.1'), // テスト用のホスト
+            'port' => env('DB_TEST_PORT', '3306'),     // テスト用のポート
+            'database' => env('DB_TEST_DATABASE', 'demo_test'), // テスト用データベース
+            'username' => env('DB_TEST_USERNAME', 'test_user'), // テスト用ユーザー名
+            'password' => env('DB_TEST_PASSWORD', 'test_pass'), // テスト用パスワード
+            'unix_socket' => env('DB_TEST_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),
