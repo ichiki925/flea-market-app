@@ -10,12 +10,14 @@
     <div class="profile-header">
         <div class="image-preview">
             @if(auth()->user()->profile_image)
-                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="{{ auth()->user()->name }}" class="profile-preview">
+                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="プロフィール画像" class="profile-preview">
+            @else
+                <img src="{{ asset('images/default-placeholder.png') }}" alt="デフォルト画像" class="profile-preview">
             @endif
         </div>
         <h2 class="user-name">{{ auth()->user()->name }}</h2>
         <label for="profile_image" class="file-label">
-            <a href="{{ route('mypage.profile') }}" class="btn">プロフィールを編集</a>
+            <a href="{{ route('mypage.editProfile') }}" class="btn">プロフィールを編集</a>
             <input type="file" name="profile_image" id="profile_image" accept=".jpeg,.png">
         </label>
     </div>

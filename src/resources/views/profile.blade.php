@@ -7,14 +7,14 @@
 @section('content')
 <div class="profile-container">
     <h2>プロフィール設定</h2>
-    <form action="{{ route('mypage.update') }}" method="POST" enctype="multipart/form-data" class="profile-form">
+    <form action="{{ $isEdit ? route('mypage.updateProfile') : route('mypage.storeProfile') }}" method="POST" enctype="multipart/form-data" class="profile-form">
         @csrf
-        @method('PUT')
+        @if($isEdit)
+            @method('PUT')
+        @endif
 
         <div class="profile-image">
-            @if($user->profile_image)
-                <img src="{{ asset('storage/' . $user->profile_image) }}" alt="プロフィール画像" class="profile-preview">
-            @endif
+                <img id="profile-preview" class="profile-preview" src="{{ $user && $user->profile_image ? asset('storage/' . $user->profile_image) : asset('images/default-placeholder.png') }}" alt="プロフィール画像">
             <label for="profile_image" class="file-label">
                 画像を選択する
                 <input type="file" name="profile_image" id="profile_image" accept=".jpeg,.png">
@@ -57,4 +57,18 @@
         <button type="submit" class="btn-submit">更新する</button>
     </form>
 </div>
+
+<script>
+    document.getElementById('profile_image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const preview = document.getElementById('profile-preview');
+            if (preview) {
+                preview.src = URL.createObjectURL(file); // 選択された画像をプレビュー
+                preview.style.display = 'block'; // プレビューを表示
+            }
+        }
+    });
+</script>
+
 @endsection

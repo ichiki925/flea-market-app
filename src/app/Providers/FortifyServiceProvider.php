@@ -14,6 +14,8 @@ use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use App\Http\Requests\LoginRequest;
+use App\Http\Responses\RegisterResponse;
+use App\Http\Responses\LoginResponse;
 
 
 
@@ -27,6 +29,23 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
+
+        // RegisterResponse のカスタムバインディング
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            \App\Http\Responses\RegisterResponse::class
+        );
+
+        $this->app->bind(
+            \Laravel\Fortify\Http\Requests\LoginRequest::class,
+            \App\Http\Requests\LoginRequest::class
+        );
+
+        // LoginResponse のカスタムバインディングを追加
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\LoginResponse::class,
+            LoginResponse::class
+        );
 
     }
 
@@ -44,29 +63,41 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
 
+        // Fortify::authenticateUsing(function (LoginRequest $request) {
+        //     $credentials = $request->only('email', 'password');
+
+        //     if (Auth::attempt($credentials)) {
+        //         $user = Auth::user();
+
+        //         // メール認証確認
+        //         if (!$user->hasVerifiedEmail()) {
+        //             Auth::logout();
+        //             throw ValidationException::withMessages([
+        //                 'email' => __('auth.email_not_verified'),
+        //             ]);
+        //         }
+
+        //         return $user;
+        //     }
+
+        //     // 認証失敗時のエラーメッセージ
+        //     throw ValidationException::withMessages([
+        //         'email' => __('auth.failed'),
+        //     ]);
+        // });
+
         Fortify::authenticateUsing(function (LoginRequest $request) {
+            \Log::info('Login request received', $request->only('email', 'password'));
+
             $credentials = $request->only('email', 'password');
-
             if (Auth::attempt($credentials)) {
-                $user = Auth::user();
-
-                // メール認証確認
-                if (!$user->hasVerifiedEmail()) {
-                    Auth::logout();
-                    throw ValidationException::withMessages([
-                        'email' => __('auth.email_not_verified'),
-                    ]);
-                }
-
-                return $user;
+                \Log::info('Login successful', ['email' => $credentials['email']]);
+                return Auth::user();
             }
 
-            // 認証失敗時のエラーメッセージ
-            throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
-            ]);
+            \Log::warning('Login failed', ['email' => $credentials['email']]);
+            return null;
         });
-
 
 
         // リダイレクト先を設定

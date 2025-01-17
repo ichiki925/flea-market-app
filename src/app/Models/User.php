@@ -60,4 +60,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Comment::class);
     }
+
+    // 初回ログインの判定メソッド
+    public function isFirstLogin()
+    {
+        return $this->created_at->eq($this->updated_at); // 作成日時と更新日時が一致している場合、初回ログイン
+    }
 }

@@ -48,27 +48,34 @@ class MyPageController extends Controller
     public function createProfile()
     {
         return view('profile', [
-            'user' => null,
+            'user' => auth()->user(),
             'isEdit' => false,
         ]);
     }
 
-    // プロフィール新規保存処理
     public function storeProfile(ProfileRequest $request)
     {
+
         $validated = $request->validated();
 
-        $user = new User($validated);
+        $user = auth()->user();
 
-        // プロフィール画像の保存
+        $user->fill($validated);
+
+        // プロフィール画像がアップロードされた場合
         if ($request->hasFile('profile_image')) {
+            // 新しい画像を保存
             $path = $request->file('profile_image')->store('profiles', 'public');
-            $user->profile_image = $path;
+            $user->profile_image = $path; // 画像パスをユーザーに直接設定
         }
 
-        $user->save();
 
-        return redirect()->route('mypage.profile');
+        // ユーザー情報を保存
+        $user->save();
+        // ユーザー情報を更新
+        Auth::setUser($user);
+        // プロフィール編集画面にリダイレクト
+        return redirect()->route('mylist');
     }
 
     // プロフィール編集画面
@@ -88,18 +95,28 @@ class MyPageController extends Controller
         $user = auth()->user();
         $validated = $request->validated();
 
+        // プロフィール画像がアップロードされた場合のみ処理
         if ($request->hasFile('profile_image')) {
-            if ($user->profile_image) {
+            // 古い画像の削除
+            if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
                 Storage::disk('public')->delete($user->profile_image);
             }
+            // 新しい画像を保存
             $path = $request->file('profile_image')->store('profiles', 'public');
-            $user->profile_image = $path;
+            $validated['profile_image'] = $path; // validatedデータに画像パスを追加
+        } else {
+            // プロフィール画像がアップロードされていない場合は既存の画像を保持
+            $validated['profile_image'] = $user->profile_image;
         }
+
 
         // その他のフィールドを更新
         $user->update($validated);
 
-        return redirect()->route('mypage.profile');
+        // ユーザー情報を更新
+        Auth::setUser($user);
+
+        return redirect()->route('mypage');
     }
 
     public function editAddress(Request $request)

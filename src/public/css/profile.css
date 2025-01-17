@@ -34,7 +34,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: transparent;
+    object-fit: cover;
 }
 
 .profile-preview img {
