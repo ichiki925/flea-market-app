@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
 use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Responses\RegisterResponse;
@@ -63,28 +64,7 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
 
-        // Fortify::authenticateUsing(function (LoginRequest $request) {
-        //     $credentials = $request->only('email', 'password');
 
-        //     if (Auth::attempt($credentials)) {
-        //         $user = Auth::user();
-
-        //         // メール認証確認
-        //         if (!$user->hasVerifiedEmail()) {
-        //             Auth::logout();
-        //             throw ValidationException::withMessages([
-        //                 'email' => __('auth.email_not_verified'),
-        //             ]);
-        //         }
-
-        //         return $user;
-        //     }
-
-        //     // 認証失敗時のエラーメッセージ
-        //     throw ValidationException::withMessages([
-        //         'email' => __('auth.failed'),
-        //     ]);
-        // });
 
         Fortify::authenticateUsing(function (LoginRequest $request) {
             \Log::info('Login request received', $request->only('email', 'password'));

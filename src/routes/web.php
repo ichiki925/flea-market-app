@@ -7,6 +7,11 @@ use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+
+
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store'])->name('register');
 
 
 
@@ -68,3 +73,9 @@ Route::middleware(['auth'])->group(function () {
 
 // ログアウト
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+
+
+Route::get('/some-endpoint', function () {
+    return response('OK', 200);
+});

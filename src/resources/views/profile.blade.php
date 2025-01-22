@@ -7,7 +7,7 @@
 @section('content')
 <div class="profile-container">
     <h2>プロフィール設定</h2>
-    <form action="{{ $isEdit ? route('mypage.updateProfile') : route('mypage.storeProfile') }}" method="POST" enctype="multipart/form-data" class="profile-form">
+    <form action="{{ $isEdit ? route('mypage.update') : route('mypage.store') }}" method="POST" enctype="multipart/form-data" class="profile-form">
         @csrf
         @if($isEdit)
             @method('PUT')
