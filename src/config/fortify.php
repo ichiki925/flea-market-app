@@ -157,10 +157,5 @@ return [
         ]),
     ],
 
-    'redirects' => [
-        'register' => '/login', // 登録後にログイン画面へリダイレクト
-        'login' => '/mylist',
-        'logout' => '/', // ログアウト後にトップページへリダイレクト
-    ],
 
 ];

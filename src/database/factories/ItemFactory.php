@@ -20,7 +20,7 @@ class ItemFactory extends Factory
             'price' => $this->faker->numberBetween(100, 50000),
             'user_id' => User::factory(),
             'status' => $this->faker->randomElement(['available', 'sold']),
-            'item_image' => 'items/' . $this->faker->image('public/storage/items', 640, 480, null, false),
+            'item_image' => 'items/example.png',
             'condition_id' => Condition::factory(),
         ];
     }

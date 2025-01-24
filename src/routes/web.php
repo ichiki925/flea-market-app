@@ -72,7 +72,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 // ログアウト
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
 
 

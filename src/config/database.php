@@ -69,8 +69,8 @@ return [
             'host' => env('TEST_DB_HOST', '127.0.0.1'), // テスト環境用のDBホスト
             'port' => env('TEST_DB_PORT', '3306'), // テスト環境用のポート
             'database' => env('TEST_DB_DATABASE', 'test_database'), // テスト用データベース名
-            'username' => env('TEST_DB_USERNAME', 'test_user'), // テスト用DBユーザー
-            'password' => env('TEST_DB_PASSWORD', 'test_pass'), // テスト用パスワード
+            'username' => env('TEST_DB_USERNAME', 'root'), // テスト用DBユーザー
+            'password' => env('TEST_DB_PASSWORD', 'root'), // テスト用パスワード
             'unix_socket' => env('TEST_DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',

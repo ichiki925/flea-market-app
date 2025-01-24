@@ -14,8 +14,8 @@ class PurchaseFactory extends Factory
     public function definition()
     {
         return [
-            'item_id' => \App\Models\Item::inRandomOrder()->first()->id,
-            'buyer_id' => \App\Models\User::inRandomOrder()->first()->id,
+            'item_id' => Item::factory(),
+            'buyer_id' => User::factory(),
             'address' => $this->faker->address(),
             'building' => $this->faker->secondaryAddress(),
             'postal_code' => $this->faker->postcode(),
