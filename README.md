@@ -2,7 +2,7 @@
 
 ## 環境構築
 **Dockerビルド**
-1. `git clone git@github.com:estra-inc/confirmation-test-contact-form.git`
+1. `git clone git@github.com:ichiki925/flea-market-app.git`
 2. DockerDesktopアプリを立ち上げる
 3. `docker-compose up -d --build`
 
@@ -11,7 +11,7 @@
 ``` bash
 mysql:
     platform: linux/x86_64(この文追加)
-    image: mysql:8.0.26
+    image: mysql:8.0
     environment:
 ```
 
@@ -42,6 +42,16 @@ php artisan migrate
 ``` bash
 php artisan db:seed
 ```
+
+8. シンボリックリンク
+``` bash
+php artisan storage:link
+```
+
+9. StripeのAPIキーを取得してください
+- **公開可能キー（Publishable Key）**: フロントエンドで使用します。
+- **シークレットキー（Secret Key）**: サーバーサイドで使用します。
+
 
 ## 使用技術(実行環境)
 - PHP8.3.0
