@@ -8,7 +8,7 @@
 @section('content')
 <div class="item-detail">
     <div class="item-detail__left">
-        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="item-detail__image">
+        <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="item-detail__image">
     </div>
     <div class="item-detail__right">
         <div class="item-detail__info">

@@ -29,13 +29,13 @@
                 @if($item->status !== 'sold')
                     <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
-                            <img src="{{ $item->item_image ? asset('storage/' . rawurlencode($item->item_image)) : asset('images/default.png') }}" alt="{{ $item->name }}">
+                            <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
                         </div>
                         <div class="item-name">{{ $item->name }}</div>
                     </a>
                 @else
                     <div class="item-image">
-                        <img src="{{ $item->item_image ? asset('storage/' . rawurlencode($item->item_image)) : asset('images/default.png') }}" alt="{{ $item->name }}">
+                        <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
                     </div>
                     <div class="item-name">{{ $item->name }}</div>
                     <div class="item-status">Sold</div>

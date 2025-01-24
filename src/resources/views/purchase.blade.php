@@ -9,7 +9,7 @@
     <div class="left-section">
         <div class="product-detail">
             <div class="product-image">
-                <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="product-image-img">
+                <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="product-image-img">
             </div>
             <div class="product-info">
                 <h2>{{ $item->name }}</h2>

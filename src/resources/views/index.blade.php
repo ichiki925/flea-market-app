@@ -51,7 +51,7 @@
                 <div class="item">
                     <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
-                            <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                            <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
                             @if($item->status === 'sold')
                                 <div class="item-status">Sold</div>
                             @endif
@@ -72,7 +72,7 @@
                     <div class="item">
                         <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                             <div class="item-image">
-                                <img src="{{ asset('storage/' . rawurlencode($item->item_image)) }}" alt="{{ $item->name }}">
+                                <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
                                 @if($item->status === 'sold')
                                     <div class="item-status">Sold</div>
                                 @endif
