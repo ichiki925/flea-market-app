@@ -11,6 +11,10 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+
+        // 必要なテストでのみミドルウェアを無効化する
+        if (property_exists($this, 'disableCsrfMiddleware') && $this->disableCsrfMiddleware) {
+            $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+        }
     }
 }

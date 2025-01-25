@@ -15,16 +15,13 @@ class ItemRegistrationTest extends TestCase
 
     public function test_item_registration_saves_data_correctly()
     {
-        // テストデータの作成
         $user = User::factory()->create();
         $category1 = Category::factory()->create();
         $category2 = Category::factory()->create();
         $condition = Condition::factory()->create();
 
-        // ユーザーを認証
         $this->actingAs($user);
 
-        // 出品情報を送信
         $response = $this->post(route('sell.store'), [
             'name' => 'テスト商品',
             'description' => 'これはテスト商品の説明です。',
@@ -34,10 +31,8 @@ class ItemRegistrationTest extends TestCase
             'item_image' => null, // 画像は省略
         ]);
 
-        // ステータスコードが302であることを確認（リダイレクト）
         $response->assertStatus(302);
 
-        // 商品がデータベースに保存されていることを確認
         $this->assertDatabaseHas('items', [
             'name' => 'テスト商品',
             'description' => 'これはテスト商品の説明です。',
@@ -47,7 +42,6 @@ class ItemRegistrationTest extends TestCase
             'status' => 'available',
         ]);
 
-        // カテゴリーが中間テーブルに保存されていることを確認
         $this->assertDatabaseHas('item_categories', [
             'category_id' => $category1->id,
         ]);
@@ -58,17 +52,13 @@ class ItemRegistrationTest extends TestCase
 
     public function test_item_registration_validation_errors()
     {
-        // テストデータの作成
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        // 必須項目を空にして送信
         $response = $this->post(route('sell.store'), []);
 
-        // ステータスコードが302であることを確認（リダイレクト）
         $response->assertStatus(302);
 
-        // バリデーションエラーが返されていることを確認
         $response->assertSessionHasErrors([
             'name',
             'description',

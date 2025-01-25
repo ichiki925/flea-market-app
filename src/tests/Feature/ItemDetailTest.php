@@ -17,7 +17,6 @@ class ItemDetailTest extends TestCase
 
     public function test_item_detail_displays_required_information()
     {
-        // テストデータの作成
         $user = User::factory()->create();
         $category = Category::factory()->create(['name' => 'Electronics']);
         $item = Item::factory()->create([
@@ -36,13 +35,10 @@ class ItemDetailTest extends TestCase
 
         Like::factory()->count(3)->create(['item_id' => $item->id]);
 
-        // 商品詳細ページにアクセス
         $response = $this->get(route('item.detail', ['id' => $item->id]));
 
-        // ステータスコードが200であることを確認
         $response->assertStatus(200);
 
-        // 必要な情報が表示されていることを確認
         $response->assertSee('Test Item');
         $response->assertSee('Test Brand');
         $response->assertSee('This is a test description.');

@@ -76,6 +76,6 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->midd
 
 
 
-Route::get('/some-endpoint', function () {
-    return response('OK', 200);
+Route::get('/', function () {
+    return view('index');
 });

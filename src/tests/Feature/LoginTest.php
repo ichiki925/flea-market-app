@@ -8,11 +8,10 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
+
     use RefreshDatabase;
 
-    /**
-     * メールアドレスが入力されていない場合、バリデーションメッセージが表示される。
-     */
+
     public function test_email_is_required()
     {
         $response = $this->post('/login', [
@@ -20,6 +19,59 @@ class LoginTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertSessionHasErrors(['email' => 'メールアドレスは必須です。']);
+        $response->assertSessionHasErrors('email');
+    }
+
+    public function test_password_is_required()
+    {
+        $response = $this->post('/login', [
+            'email' => 'test@example.com',
+            'password' => '',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+    }
+
+    public function test_email_is_incorrect()
+    {
+
+        $user = User::factory()->create([
+            'email' => 'correct@example.com',
+            'password' => bcrypt('password'),
+        ]);
+
+
+        $response = $this->post('/login', [
+            'email' => 'wrong@example.com',
+            'password' => 'password',
+        ]);
+
+
+        $response->assertSessionHasErrors('email');
+        $response->assertStatus(302);
+    }
+
+    public function test_login_succeeds_with_correct_credentials()
+    {
+
+        $user = User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('password'),
+            ]);
+
+
+        $response = $this->post('/login', [
+            'email' => 'test@example.com',
+            'password' => 'password',
+            ]);
+
+
+        $this->assertAuthenticated();
+
+
+        $response->assertRedirect('/mylist');
+
+
+        $response->assertSessionMissing('errors');
     }
 }

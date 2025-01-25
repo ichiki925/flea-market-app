@@ -14,10 +14,20 @@ class MylistTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_example()
+    public function test_authenticated_user_can_access_mylist()
     {
-        $response = $this->get('/mypage');
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/mylist');
+
         $response->assertStatus(200);
+    }
+
+    public function test_guest_cannot_access_mylist()
+    {
+        $response = $this->get('/mylist');
+
+        $response->assertRedirect('/login');
     }
 
 }

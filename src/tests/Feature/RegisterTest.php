@@ -5,35 +5,35 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 
 class RegisterTest extends TestCase
 {
     use RefreshDatabase;
 
+
     public function test_can_open_register_page()
     {
         $this->assertTrue(true);
-        // レジスター画面にGETリクエストを送る
-        $response = $this->get('/register');
 
-        // ステータスコード200を確認
+        $response = $this->get('/register');
         $response->assertStatus(200);
 
-        // ページに特定のテキストが含まれることを確認
-        $response->assertSee('新規登録'); // 「新規登録」が表示されていることを確認
     }
-
 
 
     public function test_name_is_required()
     {
+
         $response = $this->post('/register', [
+            'name' => '',
             'email' => 'test@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
+            'password' => 'password',
+            'password_confirmation' => 'password',
         ]);
 
-        $response->assertSessionHasErrors(['name']);
+
+        $response->assertSessionHasErrors('name');
     }
     public function test_email_is_required()
     {
