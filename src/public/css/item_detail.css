@@ -18,11 +18,8 @@
 
 .item-detail__image {
     max-width: 100%;
-    /* 親コンテナの幅に合わせる */
     height: auto;
-    /* アスペクト比を維持 */
     border-radius: 10px;
-    /* 少し角を丸くする */
 }
 
 .item-detail__right {

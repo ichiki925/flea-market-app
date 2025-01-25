@@ -14,11 +14,8 @@ button {
 html,
 body {
     margin: 0;
-    /* デフォルトの余白をリセット */
     padding: 0;
-    /* パディングをリセット */
     width: 100%;
-    /* 幅を全体に広げる */
 }
 
 /* 全体の設定 */
@@ -42,7 +39,6 @@ body {
     margin-top: 10px;
     padding: 0;
     border-bottom: 1px solid #ccc;
-    /* ボーダーを画面幅いっぱいに */
 }
 
 .tabs {
@@ -50,42 +46,20 @@ body {
     margin-left: 10%;
     font-size: 20px;
     font-weight: bold;
-
-    /* タブを中央揃えに */
-
-    /* 縦方向を中央揃え */
     gap: 7%;
-    /* タブ間の間隔を設定 */
     padding-top: 10px;
-    /* 上下に適切な余白を追加 */
 }
 
 .tab-link {
     color: #000;
-    /* 通常の文字色 */
     text-decoration: none;
-    /* 下線を消す */
 }
 
 .tab-link.active {
     color: red;
-    /* アクティブ時の文字色 */
     font-weight: bold;
-    /* 強調表示 */
-}
-/*
-.tab-link {
-    padding: 5px 15px;
-
-    text-decoration: none;
-    color: red;
-    margin: 0;
 }
 
-.tab-link.active {
-    color: #333;
-}
- */
 
 /* 商品一覧 */
 .grid-container {

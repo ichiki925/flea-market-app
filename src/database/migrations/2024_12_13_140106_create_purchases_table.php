@@ -19,7 +19,6 @@ class CreatePurchasesTable extends Migration
             $table->enum('payment_method', ['card', 'convenience_store']);
             $table->timestamps();
 
-            // 複合ユニークキー
             $table->unique(['item_id', 'buyer_id']);
 
         });

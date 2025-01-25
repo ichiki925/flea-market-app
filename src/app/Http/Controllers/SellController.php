@@ -27,7 +27,6 @@ class SellController extends Controller
 
         $validated = $request->validated();
 
-        // 商品の保存
         $item = new Item();
         $item->name = $validated['name'];
         $item->description = $validated['description'];
@@ -36,22 +35,18 @@ class SellController extends Controller
         $item->status = 'available';
         $item->condition_id = $validated['condition'];
 
-        // 画像の保存
         if ($request->hasFile('item_image')) {
             $path = $request->file('item_image')->store('items', 'public');
             $item->item_image = $path;
 
         }
 
-        // データベース保存
         $item->save();
 
-        // カテゴリーの保存（多対多リレーション）
         if (isset($validated['item_categories'])) {
             $item->categories()->sync($validated['item_categories']);
         }
 
-        // 出品した商品一覧ページにリダイレクト
         return redirect()->route('mypage', ['tab' => 'sell'])->with('success', '商品を出品しました！');
     }
 

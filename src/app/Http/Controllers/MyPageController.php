@@ -18,11 +18,9 @@ class MyPageController extends Controller
         $tab = $request->input('tab', 'sell');
 
         if ($tab === 'sell') {
-            // 出品した商品
             $items = Item::where('user_id', $user->id)->get();
         } else {
-            // 購入した商品
-            $items = $user->purchases()->with('item')->get()->map->item; // リレーションからアイテムを取得
+            $items = $user->purchases()->with('item')->get()->map->item;
         }
 
         return view('mypage', compact('items', 'tab'));
@@ -32,19 +30,18 @@ class MyPageController extends Controller
     {
         $user = auth()->user();
 
-        // 購入した商品を取得するロジック
         $items = Item::whereHas('purchases', function ($query) use ($user) {
             $query->where('user_id', $user->id);
         })->get();
 
         return view('mypage', [
             'items' => $items,
-            'tab' => 'purchase', // 購入商品のタブを選択状態にする
+            'tab' => 'purchase',
         ]);
     }
 
 
-    // プロフィール新規作成画面
+
     public function createProfile()
     {
         return view('profile', [
@@ -62,58 +59,50 @@ class MyPageController extends Controller
 
         $user->fill($validated);
 
-        // プロフィール画像がアップロードされた場合
         if ($request->hasFile('profile_image')) {
-            // 新しい画像を保存
             $path = $request->file('profile_image')->store('profiles', 'public');
-            $user->profile_image = $path; // 画像パスをユーザーに直接設定
+            $user->profile_image = $path;
         }
 
 
-        // ユーザー情報を保存
         $user->save();
-        // ユーザー情報を更新
+
         Auth::setUser($user);
-        // プロフィール編集画面にリダイレクト
+
         return redirect()->route('mylist');
     }
 
-    // プロフィール編集画面
+
     public function editProfile()
     {
-        $user = auth()->user(); // 現在ログイン中のユーザー情報取得
+        $user = auth()->user();
 
         return view('profile', [
             'user' => $user,
-            'isEdit' => true, // 編集モード
+            'isEdit' => true,
         ]);
     }
 
-    // プロフィール更新処理
+
     public function updateProfile(ProfileRequest $request)
     {
         $user = auth()->user();
         $validated = $request->validated();
 
-        // プロフィール画像がアップロードされた場合のみ処理
+
         if ($request->hasFile('profile_image')) {
-            // 古い画像の削除
             if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
                 Storage::disk('public')->delete($user->profile_image);
             }
-            // 新しい画像を保存
             $path = $request->file('profile_image')->store('profiles', 'public');
-            $validated['profile_image'] = $path; // validatedデータに画像パスを追加
+            $validated['profile_image'] = $path;
         } else {
-            // プロフィール画像がアップロードされていない場合は既存の画像を保持
             $validated['profile_image'] = $user->profile_image;
         }
 
 
-        // その他のフィールドを更新
         $user->update($validated);
 
-        // ユーザー情報を更新
         Auth::setUser($user);
 
         return redirect()->route('mypage');
@@ -122,7 +111,7 @@ class MyPageController extends Controller
     public function editAddress(Request $request)
     {
         $user = Auth::user();
-        $item_id = $request->query('item_id'); // アイテムIDを取得
+        $item_id = $request->query('item_id');
 
         return view('address', compact('user','item_id'));
     }

@@ -10,7 +10,7 @@ class AddBrandToItemsTable extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->string('brand')->nullable(); // ブランド名を保存（null許可）
+            $table->string('brand')->nullable();
         });
     }
 
@@ -18,7 +18,7 @@ class AddBrandToItemsTable extends Migration
     public function down()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('brand'); // カラムを削除する場合
+            $table->dropColumn('brand');
         });
     }
 }

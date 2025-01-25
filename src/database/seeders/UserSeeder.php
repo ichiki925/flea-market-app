@@ -12,16 +12,16 @@ class UserSeeder extends Seeder
 
     public function run()
     {
-        // 外部キー制約を無効化
+
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // 既存データを削除
+
         DB::table('users')->truncate();
 
-        // 外部キー制約を再度有効化
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // 新しいデータを挿入
+
         User::create([
             'id' => 1,
             'name' => 'Test User 1',

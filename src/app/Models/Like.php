@@ -14,13 +14,13 @@ class Like extends Model
         'user_id',
     ];
 
-    // リレーション: Likeは1つのItemに属する
+
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
 
-    // リレーション: Likeは1人のUserに属する
+
     public function user()
     {
         return $this->belongsTo(User::class);

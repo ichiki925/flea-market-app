@@ -17,7 +17,6 @@ class PurchaseController extends Controller
         $user = Auth::user();
         $paymentMethod = $request->input('payment_method');
 
-        // 商品IDをセッションに保存
         session(['item_id' => $item_id]);
 
         return view('purchase', compact('item', 'user', 'paymentMethod'));
@@ -27,38 +26,33 @@ class PurchaseController extends Controller
     {
         $item = Item::findOrFail($item_id);
 
-        // 商品が購入可能か確認
         if ($item->status === 'sold') {
             return redirect()->route('mypage');
         }
 
-        // Stripeの秘密キーを設定
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
-            // Stripe Checkoutセッションを作成
             $session = StripeSession::create([
-                'payment_method_types' => ['card'], // 支払い方法
+                'payment_method_types' => ['card'],
                 'line_items' => [[
                     'price_data' => [
-                        'currency' => 'jpy', // 通貨
+                        'currency' => 'jpy',
                         'product_data' => [
-                            'name' => $item->name, // 商品名
+                            'name' => $item->name,
                         ],
-                        'unit_amount' => (int)$item->price, // 商品価格（単位：最小通貨単位）
+                        'unit_amount' => (int)$item->price,
                     ],
-                    'quantity' => 1, // 購入数
+                    'quantity' => 1,
                 ]],
-                'mode' => 'payment', // 支払いモード
-                'success_url' => route('payment.success', ['item_id' => $item_id]), // 決済成功時のURL
-                'cancel_url' => route('payment.cancel', ['item_id' => $item_id]),  // キャンセル時のURL
+                'mode' => 'payment',
+                'success_url' => route('payment.success', ['item_id' => $item_id]),
+                'cancel_url' => route('payment.cancel', ['item_id' => $item_id]),
             ]);
 
-            // Stripeの決済ページへリダイレクト
             return redirect($session->url);
 
         } catch (\Exception $e) {
-            // エラーハンドリング
             return back()->withErrors(['message' => '決済セッションの作成中にエラーが発生しました: ' . $e->getMessage()]);
         }
     }
@@ -67,7 +61,6 @@ class PurchaseController extends Controller
     {
         $item = Item::findOrFail($item_id);
 
-        // 購入情報の保存
         Purchase::create([
             'item_id' => $item->id,
             'buyer_id' => Auth::id(),
@@ -77,7 +70,6 @@ class PurchaseController extends Controller
             'payment_method' => 'card',
         ]);
 
-        // 商品のステータスを「sold」に更新
         $item->update(['status' => 'sold']);
 
         return redirect()->route('mypage', ['tab' => 'purchase'])->with('success', '購入が完了しました！');

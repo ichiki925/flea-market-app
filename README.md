@@ -59,7 +59,7 @@ php artisan storage:link
 - MySQL8.0
 
 ## ER図
-![alt](erd.png)
+![alt](diagram.png)
 
 
 

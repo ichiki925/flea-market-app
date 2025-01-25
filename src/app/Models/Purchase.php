@@ -18,13 +18,13 @@ class Purchase extends Model
         'payment_method',
     ];
 
-    // リレーション: Purchaseは1つのItemに属する
+
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
 
-    // リレーション: Purchaseは1人のBuyer(User)に属する
+
     public function buyer()
     {
         return $this->belongsTo(User::class, 'buyer_id');

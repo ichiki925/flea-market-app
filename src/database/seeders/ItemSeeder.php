@@ -146,7 +146,7 @@ class ItemSeeder extends Seeder
         if ($response->successful()) {
             $path = $directory . '/' . $filename;
             Storage::disk('public')->put($path, $response->body());
-            return $path; // 保存されたパスを返す
+            return $path;
         }
 
         throw new \Exception("画像のダウンロードに失敗しました: {$url}");

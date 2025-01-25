@@ -31,7 +31,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
 
-        // RegisterResponse のカスタムバインディング
+
         $this->app->singleton(
             \Laravel\Fortify\Contracts\RegisterResponse::class,
             \App\Http\Responses\RegisterResponse::class
@@ -42,7 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
             \App\Http\Requests\LoginRequest::class
         );
 
-        // LoginResponse のカスタムバインディングを追加
+
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             LoginResponse::class
@@ -80,12 +80,12 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
 
-        // リダイレクト先を設定
+
         Fortify::redirects('register', '/login');
         Fortify::redirects('login', '/mylist');
         Fortify::redirects('logout', '/');
 
-        // ログインのレートリミット
+
         RateLimiter::for('login', function (Request $request) {
             $login = (string) $request->input('login');
             return Limit::perMinute(10)->by($login . $request->ip());

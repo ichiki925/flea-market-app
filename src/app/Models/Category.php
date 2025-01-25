@@ -13,10 +13,10 @@ class Category extends Model
         'name',
     ];
 
-    // リレーション: Categoryは複数のItemに属する
+
     public function items()
     {
         return $this->belongsToMany(Item::class, 'item_categories', 'category_id', 'item_id')
-                    ->withTimestamps(); // 中間テーブルのタイムスタンプも利用
+                    ->withTimestamps();
     }
 }

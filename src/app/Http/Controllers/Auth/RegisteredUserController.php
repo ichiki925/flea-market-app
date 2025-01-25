@@ -24,10 +24,8 @@ class RegisteredUserController extends Controller
 
     public function store(RegisterRequest $request, RegisterResponse $response)
     {
-        // ユーザー作成
         $this->createNewUser->create($request->validated());
 
-        // 自動ログインを無効化し、ログイン画面にリダイレクト
         return $response->toResponse($request);
     }
 }

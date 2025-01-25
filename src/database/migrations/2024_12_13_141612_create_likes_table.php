@@ -15,7 +15,6 @@ class CreateLikesTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
-            // 複合ユニーク制約
             $table->unique(['item_id', 'user_id']);
         });
     }

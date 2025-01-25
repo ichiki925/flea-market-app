@@ -11,7 +11,7 @@ class Condition extends Model
 
     protected $fillable = ['name'];
 
-    // リレーション: Conditionは複数のItemを持つ
+
     public function items()
     {
         return $this->hasMany(Item::class);

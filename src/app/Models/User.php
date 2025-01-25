@@ -40,10 +40,10 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Item::class);
     }
 
-    // マイリスト用（`items()`と使い分ける場合）
+
     public function mylistItems()
     {
-        return $this->hasMany(Item::class); // 必要に応じてカスタムキーを設定
+        return $this->hasMany(Item::class);
     }
 
     public function purchases()
@@ -61,9 +61,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
-    // 初回ログインの判定メソッド
+
     public function isFirstLogin()
     {
-        return $this->created_at->eq($this->updated_at); // 作成日時と更新日時が一致している場合、初回ログイン
+        return $this->created_at->eq($this->updated_at);
     }
 }

@@ -15,13 +15,13 @@ class Comment extends Model
         'content',
     ];
 
-    // リレーション: コメントは1つのItemに属する
+
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
 
-    // リレーション: コメントは1人のUserに属する
+
     public function user()
     {
         return $this->belongsTo(User::class);
