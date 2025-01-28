@@ -12,10 +12,15 @@ class CreateNewUser implements CreatesNewUsers
 {
     public function create(array $input): User
     {
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        // ユーザー登録時にイベントを発火
+        event(new Registered($user));
+
+        return $user;
     }
 }
