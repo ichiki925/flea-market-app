@@ -32,7 +32,11 @@ class ItemSearchTest extends TestCase
     public function test_search_state_is_retained_in_mylist_tab()
     {
         $user = User::factory()->create();
-        Item::factory()->create(['name' => 'FavoriteProduct']);
+        $item = Item::factory()->create(['name' => 'FavoriteProduct']);
+
+        $user->likes()->create([
+            'item_id' => $item->id
+        ]);
 
         $this->actingAs($user);
 

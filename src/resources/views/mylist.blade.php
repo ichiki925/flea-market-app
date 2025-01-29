@@ -22,6 +22,7 @@
         </div>
     </div>
 
+
     <div class="item-list grid-container">
         @if(auth()->check() && $items->isNotEmpty())
             @foreach ($items as $item)

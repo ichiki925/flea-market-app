@@ -27,19 +27,32 @@ class ItemController extends Controller
         $search = $request->input('search');
         $tab = $request->input('tab', 'mylist');
 
+        // クエリビルダーを保持
+        $itemsQuery = Item::query();
+
         if ($tab === 'mylist') {
-            $items = Item::whereHas('likes', function ($query) use ($user) {
+            // ユーザーがいいねしたアイテム または 売り切れアイテムを取得
+            $itemsQuery->whereHas('likes', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })->when($search, function ($query, $search) {
-                return $query->where('name', 'like', '%' . $search . '%');
-            })->get();
+            })
+            ->orWhere(function ($query) use ($search) {
+                $query->where('status', 'sold')
+                        ->when($search, function ($query, $search) {
+                            return $query->where('name', 'like', '%' . $search . '%');
+                        });
+            });
         } else {
-            $items = Item::when($search, function ($query, $search) {
+            // 通常の検索
+            $itemsQuery->when($search, function ($query, $search) {
                 return $query->where('name', 'like', '%' . $search . '%');
-            })->get();
+            });
         }
 
+        // クエリのSQLをログに出力してデバッグ
+        \Log::info("Generated SQL: " . $itemsQuery->toSql(), $itemsQuery->getBindings());
 
+        // データを取得
+        $items = $itemsQuery->get();
 
         return view('mylist', compact('items', 'tab'));
     }
