@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 
 class LoginTest extends TestCase
 {
@@ -69,7 +70,7 @@ class LoginTest extends TestCase
         $this->assertAuthenticated();
 
 
-        $response->assertRedirect('/mylist');
+        $response->assertRedirect('/mypage/profile/create');
 
 
         $response->assertSessionMissing('errors');
