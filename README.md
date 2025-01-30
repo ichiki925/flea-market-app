@@ -52,7 +52,10 @@ php artisan storage:link
 - **公開可能キー（Publishable Key）**: フロントエンドで使用します。
 - **シークレットキー（Secret Key）**: サーバーサイドで使用します。
 
-10. testの実行b
+10. testの実行
+```bash
+vendor/bin/phpunit
+```
 
 
 ## 使用技術(実行環境)
