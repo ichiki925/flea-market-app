@@ -52,6 +52,8 @@ php artisan storage:link
 - **公開可能キー（Publishable Key）**: フロントエンドで使用します。
 - **シークレットキー（Secret Key）**: サーバーサイドで使用します。
 
+10. testの実行
+
 
 ## 使用技術(実行環境)
 - PHP8.3.0
