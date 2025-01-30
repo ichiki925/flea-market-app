@@ -46,6 +46,10 @@ class UserProfileRetrievalTest extends TestCase
         foreach ($purchasedItems as $item) {
             $user->purchases()->create([
                 'item_id' => $item->id,
+                'address' => 'テスト住所',
+                'building' => 'テスト建物名',
+                'postal_code' => '123-4567',
+                'payment_method' => 'card',
             ]);
         }
 

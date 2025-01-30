@@ -49,11 +49,14 @@ class AddressChangeTest extends TestCase
             'address' => '登録住所',
             'building' => '登録建物名',
         ]);
-        $item = Item::factory()->create();
+        $item = Item::factory()->create(['status' => 'available']);
 
         $this->actingAs($user);
 
         $response = $this->post(route('purchase.store', ['item_id' => $item->id]), [
+            'postal_code' => '123-4567',
+            'address' => '登録住所',
+            'building' => '登録建物名',
             'payment_method' => 'card',
         ]);
 

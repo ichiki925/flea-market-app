@@ -20,7 +20,7 @@ class MyPageController extends Controller
         if ($tab === 'sell') {
             $items = Item::where('user_id', $user->id)->get();
         } else {
-            $items = $user->purchases()->with('item')->get()->map->item;
+            $items = $user->purchases()->with('item')->get()->pluck('item');
         }
 
         return view('mypage', compact('items', 'tab'));
@@ -30,9 +30,7 @@ class MyPageController extends Controller
     {
         $user = auth()->user();
 
-        $items = Item::whereHas('purchases', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        })->get();
+        $items = $user->purchases()->with('item')->get()->pluck('item');
 
         return view('mypage', [
             'items' => $items,
@@ -69,7 +67,9 @@ class MyPageController extends Controller
 
         Auth::setUser($user);
 
-        return redirect()->route('mylist');
+        $redirectTo = $request->input('redirect_to', route('mylist'));
+
+        return redirect($redirectTo);
     }
 
 

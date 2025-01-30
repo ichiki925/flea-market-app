@@ -44,7 +44,7 @@ class UserProfileEditTest extends TestCase
 
         Storage::fake('public');
 
-        $file = UploadedFile::fake()->image('new_profile_image.png');
+        $file = UploadedFile::fake()->create('new_profile_image.png', 500, 'image/png');
 
         $response = $this->put(route('mypage.update'), [
             'name' => '更新後ユーザー名',

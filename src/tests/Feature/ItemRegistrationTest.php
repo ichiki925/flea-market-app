@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
@@ -22,13 +24,16 @@ class ItemRegistrationTest extends TestCase
 
         $this->actingAs($user);
 
+        Storage::fake('public');
+        $image = UploadedFile::fake()->create('item_image.png', 500, 'image/png');
+
         $response = $this->post(route('sell.store'), [
             'name' => 'テスト商品',
             'description' => 'これはテスト商品の説明です。',
             'price' => 1000,
             'condition' => $condition->id,
             'item_categories' => [$category1->id, $category2->id],
-            'item_image' => null, // 画像は省略
+            'item_image' => $image,
         ]);
 
         $response->assertStatus(302);
@@ -48,6 +53,8 @@ class ItemRegistrationTest extends TestCase
         $this->assertDatabaseHas('item_categories', [
             'category_id' => $category2->id,
         ]);
+
+        Storage::disk('public')->assertExists('items/' . $image->hashName());
     }
 
     public function test_item_registration_validation_errors()
