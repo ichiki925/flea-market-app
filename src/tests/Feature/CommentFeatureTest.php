@@ -37,7 +37,7 @@ class CommentFeatureTest extends TestCase
     {
         $item = Item::factory()->create();
 
-        $response = $this->post(route('comments.store', ['item_id' => $item->id]), [
+        $response = $this->postJson(route('comments.store', ['item_id' => $item->id]), [
             'content' => 'This is a test comment.',
         ]);
 

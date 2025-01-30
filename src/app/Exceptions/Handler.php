@@ -32,10 +32,10 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        return $request->expectsJson()
+            ? response()->json(['message' => 'Unauthenticated.'], 401)
+            : redirect()->guest(route('login'));
     }
 }

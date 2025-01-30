@@ -12,26 +12,40 @@ class LikeFeatureTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function toggleLike($itemId)
-    {
-        $user = auth()->user();
-        $like = Like::where('item_id', $itemId)->where('user_id', $user->id)->first();
+    // CSRFミドルウェアを無効化する
+    protected bool $disableCsrfMiddleware = true;
 
-        if ($like) {
-            $like->delete();
-            return response()->json(['status' => 'unliked']);
-        } else {
-            Like::create([
-                'item_id' => $itemId,
-                'user_id' => $user->id,
-            ]);
-            return response()->json(['status' => 'liked']);
-        }
+    public function testToggleLikeForAuthenticatedUser()
+    {
+        // 認証ユーザーを作成
+        $user = \App\Models\User::factory()->create();
+        $this->actingAs($user, 'web');
+
+        // 認証状態を確認
+        $this->assertTrue(auth()->check(), 'User is not authenticated.');
+
+        // テスト用の商品を作成
+        $item = \App\Models\Item::factory()->create();
+
+        // 初回いいね
+        $response = $this->postJson("/likes/toggle/{$item->id}");
+        $response->assertStatus(200)
+                ->assertJson(['status' => 'liked']);
+
+        // いいね解除
+        $response = $this->postJson("/likes/toggle/{$item->id}");
+        $response->assertStatus(200)
+                ->assertJson(['status' => 'unliked']);
     }
 
-    public function guestLike($itemId)
+    public function testGuestCannotLike()
     {
-        return response()->json(['message' => 'Please log in to like items'], 401);
+        $item = \App\Models\Item::factory()->create();
+
+        // 認証なしでいいねを試みる
+        $response = $this->postJson("/likes/toggle/{$item->id}");
+        $response->assertStatus(401)
+                ->assertJson(['message' => 'Unauthenticated.']);
     }
 
 

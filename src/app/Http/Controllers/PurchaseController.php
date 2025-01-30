@@ -50,6 +50,19 @@ class PurchaseController extends Controller
                 'cancel_url' => route('payment.cancel', ['item_id' => $item_id]),
             ]);
 
+            // 商品のステータスを`sold`に更新
+            $item->update(['status' => 'sold']);
+
+            // 購入データを保存
+            Purchase::create([
+                'item_id' => $item->id,
+                'buyer_id' => auth()->id(),
+                'address' => $request->address,
+                'building' => $request->building ?? '',
+                'postal_code' => $request->postal_code,
+                'payment_method' => 'card',
+            ]);
+
             return redirect($session->url);
 
         } catch (\Exception $e) {

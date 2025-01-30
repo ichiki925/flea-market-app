@@ -21,6 +21,9 @@ class ItemPurchaseTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('purchase.store', ['item_id' => $item->id]), [
+            'address' => '東京都港区六本木1-1-1',
+            'building' => '六本木ヒルズタワー',
+            'postal_code' => '106-0032',
             'payment_method' => 'card',
         ]);
 

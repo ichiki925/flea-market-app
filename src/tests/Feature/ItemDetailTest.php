@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Models\Category;
 use App\Models\Like;
+use App\Models\Condition;
 
 class ItemDetailTest extends TestCase
 {
@@ -19,14 +20,18 @@ class ItemDetailTest extends TestCase
     {
         $user = User::factory()->create();
         $category = Category::factory()->create(['name' => 'Electronics']);
+        $condition = Condition::factory()->create(['id' => 1, 'name' => '良好']);
+
         $item = Item::factory()->create([
             'name' => 'Test Item',
             'brand' => 'Test Brand',
             'description' => 'This is a test description.',
             'price' => 1000,
-            'condition_id' => 1,
+            'condition_id' => $condition->id,
             'user_id' => $user->id,
         ]);
+
+        $item->categories()->attach($category->id);
 
         Comment::factory()->count(2)->create([
             'item_id' => $item->id,
@@ -35,6 +40,7 @@ class ItemDetailTest extends TestCase
 
         Like::factory()->count(3)->create(['item_id' => $item->id]);
 
+
         $response = $this->get(route('item.detail', ['id' => $item->id]));
 
         $response->assertStatus(200);
@@ -42,9 +48,9 @@ class ItemDetailTest extends TestCase
         $response->assertSee('Test Item');
         $response->assertSee('Test Brand');
         $response->assertSee('This is a test description.');
-        $response->assertSee('1000');
+        $response->assertSee('¥1,000');
         $response->assertSee('Electronics');
-        $response->assertSee('2 コメント');
-        $response->assertSee('3 いいね');
+        $response->assertSee('コメント(2)');
+        $response->assertSeeInOrder(['<span class="likes_count">', '3', '</span>'], false);
     }
 }
