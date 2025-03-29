@@ -11,14 +11,16 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
-            $table->string('description', 255);
-            $table->decimal('price', 10, 2);
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->enum('status', ['available', 'sold']);
+            $table->foreignId('condition_id')->constrained('conditions')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->string('name', 255);
+            $table->integer('price');
+            $table->string('brand', 255)->nullable();
+            $table->string('description', 255);
+            $table->string('img_url', 255)->nullable();
+            $table->enum('status', ['available', 'sold'])->default('available');
             $table->timestamps();
-
         });
     }
 

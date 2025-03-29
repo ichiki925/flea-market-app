@@ -4,24 +4,23 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateItemCategoriesTable extends Migration
+class CreateCategoryItemsTable extends Migration
 {
 
     public function up()
     {
-        Schema::create('item_categories', function (Blueprint $table) {
-            $table->id();
+        Schema::create('category_items', function (Blueprint $table) {
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('item_id')->constrained()->onDelete('cascade');
             $table->timestamps();
-            $table->unique(['category_id', 'item_id']);
 
+            $table->primary(['category_id', 'item_id']); // IDカラム不要で複合PKでもOK
         });
     }
 
 
     public function down()
     {
-        Schema::dropIfExists('item_categories');
+        Schema::dropIfExists('category_items');
     }
 }
