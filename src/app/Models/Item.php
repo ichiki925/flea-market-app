@@ -16,21 +16,9 @@ class Item extends Model
         'price',
         'user_id',
         'status',
-        'item_image',
+        'img_url',
         'condition_id',
     ];
-
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'item_categories', 'item_id', 'category_id')
-                    ->withTimestamps();
-    }
-
-    public function condition()
-    {
-        return $this->belongsTo(Condition::class);
-    }
 
 
     public function user()
@@ -38,6 +26,16 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function condition()
+    {
+        return $this->belongsTo(Condition::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_items', 'item_id', 'category_id')
+                    ->withTimestamps();
+    }
 
     public function likes()
     {
@@ -49,14 +47,14 @@ class Item extends Model
         return $this->hasMany(Comment::class);
     }
 
+    public function soldItem()
+    {
+        return $this->hasOne(SoldItem::class);
+    }
+
     public function isSold()
     {
         return $this->status === 'sold';
     }
-
-    public function purchases()
-    {
-        return $this->hasMany(Purchase::class);
-    }
-
 }
+

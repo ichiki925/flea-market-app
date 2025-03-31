@@ -10,13 +10,13 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'category',
     ];
 
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'item_categories', 'category_id', 'item_id')
+        return $this->belongsToMany(Item::class, 'category_items', 'category_id', 'item_id')
                     ->withTimestamps();
     }
 }

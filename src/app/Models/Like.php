@@ -9,17 +9,17 @@ class Like extends Model
 {
     use HasFactory;
 
+    public $incrementing = false;
+
     protected $fillable = [
         'item_id',
         'user_id',
     ];
 
-
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
-
 
     public function user()
     {
