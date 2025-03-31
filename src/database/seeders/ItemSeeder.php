@@ -12,13 +12,18 @@ class ItemSeeder extends Seeder
 {
     public function run()
     {
-        // 外部キー制約を無効化してデータをリセット
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         DB::table('items')->truncate();
-        DB::table('item_categories')->truncate();
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // データ挿入
+
+
+
+
+        $now = now();
+
         DB::table('items')->insert([
             [
                 'name' => '腕時計',
@@ -26,9 +31,11 @@ class ItemSeeder extends Seeder
                 'price' => 15000,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/ArmaniMensClock.jpg',
+                'img_url' => 'images/ArmaniMensClock.jpg',
                 'condition_id' => 1,
                 'brand' => 'Armani',
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'HDD',
@@ -36,9 +43,11 @@ class ItemSeeder extends Seeder
                 'price' => 5000,
                 'user_id' => 1,
                 'status' => 'sold',
-                'item_image' => 'images/HDD_Hard_Disk.jpg',
+                'img_url' => 'images/HDD_Hard_Disk.jpg',
                 'condition_id' => 2,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => '玉ねぎ3束',
@@ -46,9 +55,11 @@ class ItemSeeder extends Seeder
                 'price' => 300,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/iLoveIMG_d.jpg',
+                'img_url' => 'images/iLoveIMG_d.jpg',
                 'condition_id' => 3,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => '革靴',
@@ -56,9 +67,11 @@ class ItemSeeder extends Seeder
                 'price' => 4000,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/LeatherShoesProductPhoto.jpg',
+                'img_url' => 'images/LeatherShoesProductPhoto.jpg',
                 'condition_id' => 4,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'ノートPC',
@@ -66,9 +79,11 @@ class ItemSeeder extends Seeder
                 'price' => 45000,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/LivingRoomLaptop.jpg',
+                'img_url' => 'images/LivingRoomLaptop.jpg',
                 'condition_id' => 1,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'マイク',
@@ -76,9 +91,11 @@ class ItemSeeder extends Seeder
                 'price' => 8000,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/MusicMic4632231.jpg',
+                'img_url' => 'images/MusicMic4632231.jpg',
                 'condition_id' => 2,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'ショルダーバッグ',
@@ -86,9 +103,11 @@ class ItemSeeder extends Seeder
                 'price' => 3500,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/PurseFashionPocket.jpg',
+                'img_url' => 'images/PurseFashionPocket.jpg',
                 'condition_id' => 3,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'タンブラー',
@@ -96,9 +115,11 @@ class ItemSeeder extends Seeder
                 'price' => 500,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/TumblerSouvenir.jpg',
+                'img_url' => 'images/TumblerSouvenir.jpg',
                 'condition_id' => 4,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'コーヒーミル',
@@ -106,9 +127,11 @@ class ItemSeeder extends Seeder
                 'price' => 4000,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/WaitressWithCoffeeGrinder.jpg',
+                'img_url' => 'images/WaitressWithCoffeeGrinder.jpg',
                 'condition_id' => 1,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'メイクセット',
@@ -116,24 +139,12 @@ class ItemSeeder extends Seeder
                 'price' => 2500,
                 'user_id' => 1,
                 'status' => 'available',
-                'item_image' => 'images/MakeupSet.jpg',
+                'img_url' => 'images/MakeupSet.jpg',
                 'condition_id' => 2,
                 'brand' => null,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
-        ]);
-
-        DB::table('item_categories')->insert([
-            ['item_id' => 1, 'category_id' => 1],
-            ['item_id' => 1, 'category_id' => 5],
-            ['item_id' => 2, 'category_id' => 2],
-            ['item_id' => 3, 'category_id' => 10],
-            ['item_id' => 4, 'category_id' => 1],
-            ['item_id' => 5, 'category_id' => 2],
-            ['item_id' => 6, 'category_id' => 2],
-            ['item_id' => 7, 'category_id' => 1],
-            ['item_id' => 8, 'category_id' => 10],
-            ['item_id' => 9, 'category_id' => 10],
-            ['item_id' => 10, 'category_id' => 6],
         ]);
 
 

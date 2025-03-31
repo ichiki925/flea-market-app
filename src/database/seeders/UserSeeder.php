@@ -5,45 +5,39 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+
 
 class UserSeeder extends Seeder
 {
 
     public function run()
     {
-
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
 
         DB::table('users')->truncate();
 
-
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-
-        User::create([
-            'id' => 1,
-            'name' => 'Test User 1',
-            'email' => 'test1@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password123'),
-            'postal_code' => '123-4567',
-            'address' => '東京都渋谷区道玄坂1-2-3',
-            'building' => 'マンション101号室',
-            'profile_image' => 'user.png',
+        DB::table('users')->insert([
+            [
+                'name' => 'テストユーザー1',
+                'email' => 'test1@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password1'),
+                'remember_token' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'テストユーザー2',
+                'email' => 'test2@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password2'),
+                'remember_token' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
 
-        User::create([
-            'id' => 2,
-            'name' => 'Test User 2',
-            'email' => 'test2@example.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password123'),
-            'postal_code' => '987-6543',
-            'address' => '大阪府大阪市北区梅田1-2-3',
-            'building' => 'オフィスビル201号室',
-            'profile_image' => 'user.png',
-        ]);
     }
 }

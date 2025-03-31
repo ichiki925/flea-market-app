@@ -10,25 +10,34 @@ class CategorySeeder extends Seeder
 
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+        DB::table('categories')->truncate();
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+
         $categories = [
-            ['name' => 'ファッション'],
-            ['name' => '家電'],
-            ['name' => 'インテリア'],
-            ['name' => 'レディース'],
-            ['name' => 'メンズ'],
-            ['name' => 'コスメ'],
-            ['name' => '本'],
-            ['name' => 'ゲーム'],
-            ['name' => 'スポーツ'],
-            ['name' => 'キッチン'],
-            ['name' => 'ハンドメイド'],
-            ['name' => 'アクセサリー'],
-            ['name' => 'おもちゃ'],
-            ['name' => 'ベビー・キッズ'],
+            ['category' => 'ファッション'],
+            ['category' => '家電'],
+            ['category' => 'インテリア'],
+            ['category' => 'レディース'],
+            ['category' => 'メンズ'],
+            ['category' => 'コスメ'],
+            ['category' => '本'],
+            ['category' => 'ゲーム'],
+            ['category' => 'スポーツ'],
+            ['category' => 'キッチン'],
+            ['category' => 'ハンドメイド'],
+            ['category' => 'アクセサリー'],
+            ['category' => 'おもちゃ'],
+            ['category' => 'ベビー・キッズ'],
         ];
 
+        $now = now();
         foreach ($categories as &$category) {
-            $category['name'] = mb_convert_encoding($category['name'], 'UTF-8', 'UTF-8');
+            $category['created_at'] = $now;
+            $category['updated_at'] = $now;
         }
 
         DB::table('categories')->insert($categories);
