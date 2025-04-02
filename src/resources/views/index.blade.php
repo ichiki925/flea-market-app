@@ -1,43 +1,21 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends($layout)
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>フリマアプリ</title>
-    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/index.css') }}" />
-</head>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/index.css') }}">
+@endsection
 
-
-<body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <img src="{{ asset('images/logo.svg') }}" alt="Logo">
-            </div>
-            <form class="search-form" action="{{ route('index') }}" method="GET">
-                <input type="text" name="search" placeholder="なにをお探しですか？" value="{{ request('search') }}">
-            </form>
-            <nav class="nav">
-                <a href="/login">ログイン</a>
-                <a href="/mypage">マイページ</a>
-                <a href="/sell" class="sell-btn">出品</a>
-            </nav>
-        </div>
-    </header>
+@section('content')
 
     <main class="main">
         <!-- タブ -->
         <div class="tabs-container">
             <div class="tabs">
                 <a href="{{ route('index', ['search' => request('search')]) }}"
-                class="tab-link {{ request()->routeIs('index') ? 'active' : '' }}">
+                class="tab-link {{ request()->get('tab') !== 'mylist' ? 'active' : '' }}">
                     おすすめ
                 </a>
-                <a href="?tab=mylist"
-                class="tab-link {{ request('tab') === 'mylist' ? 'active' : '' }}">
+                <a href="{{ route('index', ['tab' => 'mylist', 'search' => request('search')]) }}"
+                class="tab-link {{ request()->get('tab') === 'mylist' ? 'active' : '' }}">
                     マイリスト
                 </a>
             </div>
@@ -51,7 +29,7 @@
                 <div class="item">
                     <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
-                            <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
+                            <img src="{{ asset('storage/' . $item->img_url) }}" alt="商品画像：{{ $item->name }}" loading="lazy">
                             @if($item->status === 'sold')
                                 <div class="item-status">Sold</div>
                             @endif
@@ -72,7 +50,7 @@
                     <div class="item">
                         <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                             <div class="item-image">
-                                <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
+                                <img src="{{ asset('storage/' . $item->img_url) }}" alt="商品画像：{{ $item->name }}" loading="lazy">
                                 @if($item->status === 'sold')
                                     <div class="item-status">Sold</div>
                                 @endif
@@ -88,6 +66,4 @@
 
         </div>
     </main>
-</body>
-
-</html>
+@endsection

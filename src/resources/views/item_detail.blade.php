@@ -8,7 +8,7 @@
 @section('content')
 <div class="item-detail">
     <div class="item-detail__left">
-        <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="item-detail__image">
+        <img src="{{ asset('storage/' . $item->img_url) }}" alt="商品画像：{{ $item->name }}" class="item-detail__image" loading="lazy">
     </div>
     <div class="item-detail__right">
         <div class="item-detail__info">
@@ -47,13 +47,13 @@
                 <span class="info-label">カテゴリー</span>
                 <div class="category-values">
                     @foreach($item->categories as $category)
-                        <span class="category-value">{{ $category->name }}</span>
+                        <span class="category-value">{{ $category->category }}</span>
                     @endforeach
                 </div>
             </div>
             <div class="info-row">
                 <span class="info-label">商品の状態</span>
-                <span class="status-value">{{ $item->condition->name ?? '未設定' }}</span>
+                <span class="status-value">{{ $item->condition->condition ?? '未設定' }}</span>
             </div>
         </div>
         <div class="item-comments">
@@ -61,8 +61,8 @@
             @foreach($item->comments as $comment)
             <div class="comment">
                 <div class="comment-header">
-                    <img src="{{ asset('images/user.png') }}" alt="User" class="comment-avatar">
-                    <span class="comment-author">{{ $comment->user->name }}</span>
+                    <img src="{{ asset('img/user.png') }}" alt="User" class="comment-avatar">
+                    <span class="comment-author">{{ $comment->user->comment }}</span>
                 </div>
                 <p class="comment-text">{{ $comment->content }}</p>
             </div>
@@ -72,7 +72,7 @@
             <form action="{{ route('comments.store') }}" method="POST">
                 @csrf
                 <label for="comment-input" class="comment-label">商品へのコメント</label>
-                <textarea id="comment-input" name="content" class="comment-input">{{ old('content') }}</textarea>
+                <textarea id="comment-input" name="comment" class="comment-input">{{ old('content') }}</textarea>
                 @if ($errors->has('content'))
                     <p class="error-message">{{ $errors->first('content') }}</p>
                 @endif

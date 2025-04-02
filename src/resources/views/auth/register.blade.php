@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.minimal')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>会員登録</title>
-    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}" />
-</head>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/auth/register.css') }}">
+@endsection
 
-
-<body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <img src="{{ asset('images/logo.svg') }}" alt="Logo">
-            </div>
-        </div>
-    </header>
+@section('content')
 
     <main class="main">
         <div class="form-container">
@@ -42,12 +28,11 @@
                 </div>
                 <div class="form-group">
                     <label for="password_confirmation">確認用パスワード</label>
-                    <input type="password" name="password_confirmation" required>
+                    <input type="password" name="password_confirmation" id="password_confirmation" required>
                 </div>
                 <button type="submit" class="btn-submit">登録する</button>
             </form>
             <p class="link-to-login"><a href="{{ route('login') }}">ログインはこちら</a></p>
         </div>
     </main>
-</body>
-</html>
+@endsection

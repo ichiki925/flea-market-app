@@ -1,24 +1,10 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.minimal')
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ログイン</title>
-    <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}" />
-</head>
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/auth/login.css') }}">
+@endsection
 
-
-<body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <img src="{{ asset('images/logo.svg') }}" alt="Logo">
-            </div>
-        </div>
-    </header>
+@section('content')
 
     <main class="main">
         <div class="form-container">
@@ -48,5 +34,4 @@
             <p class="link-to-register"><a href="{{ route('register') }}">会員登録はこちら</a></p>
         </div>
     </main>
-</body>
-</html>
+@endsection

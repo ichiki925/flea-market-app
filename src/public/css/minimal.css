@@ -1,0 +1,66 @@
+body,
+h1,
+p,
+ul,
+li,
+input,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
+
+.header {
+    background-color: #000;
+    color: #fff;
+    padding: 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    box-sizing: border-box;
+}
+
+.header .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.header .logo {
+    flex: 1;
+}
+
+.header .logo img {
+    max-height: 30px;
+    height: auto;
+    max-width: 100%;
+}
+
+
+
+
+
+@media (max-width: 850px) and (min-width: 768px) {
+    .header .logo img {
+        max-height: 23px;
+        height: auto;
+        max-width: 100%;
+    }
+}

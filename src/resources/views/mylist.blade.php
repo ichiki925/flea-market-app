@@ -11,12 +11,16 @@
 <main class="main">
     <div class="tabs-container">
         <div class="tabs">
+            @php
+                $currentTab = request('tab') ?? (request('search') ? 'index' : 'mylist');
+            @endphp
+
             <a href="{{ route('mylist', ['tab' => 'index', 'search' => request('search')]) }}"
-            class="tab-link {{ request('tab') === 'index' ? 'active' : '' }}">
+            class="tab-link {{ $currentTab === 'index' ? 'active' : '' }}">
                 おすすめ
             </a>
             <a href="{{ route('mylist', ['tab' => 'mylist', 'search' => request('search')]) }}"
-            class="tab-link {{ request('tab', 'mylist') === 'mylist' ? 'active' : '' }}">
+            class="tab-link {{ $currentTab === 'mylist' ? 'active' : '' }}">
                 マイリスト
             </a>
         </div>
@@ -30,13 +34,13 @@
                 @if($item->status !== 'sold')
                     <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
-                            <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
+                            <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
                         </div>
                         <div class="item-name">{{ $item->name }}</div>
                     </a>
                 @else
                     <div class="item-image">
-                        <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
+                        <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
                     </div>
                     <div class="item-name">{{ $item->name }}</div>
                     <div class="item-status">Sold</div>
