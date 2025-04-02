@@ -18,14 +18,17 @@ class ItemController extends Controller
             return $query->where('name', 'like', '%' . $search . '%');
         })->get();
 
-        return view('index', compact('items'));
+        $layout = auth()->check() ? 'layouts.app' : 'layouts.guest';
+
+        return view('index', compact('items', 'layout'));
     }
 
     public function mylist(Request $request)
     {
         $user = auth()->user();
         $search = $request->input('search');
-        $tab = $request->input('tab', 'mylist');
+        $tab = $request->input('tab', $request->has('search') ? 'index' : 'mylist');
+
 
         // クエリビルダーを保持
         $itemsQuery = Item::query();
