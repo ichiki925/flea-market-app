@@ -11,19 +11,27 @@ class LikeController extends Controller
     public function toggleLike($itemId)
     {
         $user = auth()->user();
-        $like = Like::where('item_id', $itemId)->where('user_id', $user->id)->first();
+
+
+        $like = \App\Models\Like::where('item_id', $itemId)
+                    ->where('user_id', $user->id)
+                    ->first();
 
         if ($like) {
-            $like->delete();
-            return response()->json(['status' => 'unliked'], 200);
+
+            \App\Models\Like::where('item_id', $itemId)
+                ->where('user_id', $user->id)
+                ->delete();
+
+            return redirect()->back()->with('success', 'いいねを解除しました');
         } else {
-            Like::create([
+            \App\Models\Like::create([
                 'item_id' => $itemId,
                 'user_id' => $user->id,
             ]);
-            return response()->json(['status' => 'liked'], 200);
-        }
 
+            return redirect()->back()->with('success', 'いいねしました');
+        }
     }
 
 

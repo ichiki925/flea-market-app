@@ -25,7 +25,7 @@ Route::post('/email/verification-notification', [VerifyEmailController::class, '
 
 
 //商品
-Route::get('/', [ItemController::class, 'index'])->name('index');
+Route::get('/', [ItemController::class, 'redirectTop'])->name('index');
 Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist')->middleware('auth');
 Route::get('/item/{id}', [ItemController::class, 'show'])->name('item.detail');
 

@@ -62,9 +62,9 @@
             <div class="comment">
                 <div class="comment-header">
                     <img src="{{ asset('img/user.png') }}" alt="User" class="comment-avatar">
-                    <span class="comment-author">{{ $comment->user->comment }}</span>
+                    <span class="comment-author">{{ $comment->user->name }}</span>
                 </div>
-                <p class="comment-text">{{ $comment->content }}</p>
+                <p class="comment-text">{{ $comment->comment }}</p>
             </div>
             @endforeach
 
@@ -72,9 +72,9 @@
             <form action="{{ route('comments.store') }}" method="POST">
                 @csrf
                 <label for="comment-input" class="comment-label">商品へのコメント</label>
-                <textarea id="comment-input" name="comment" class="comment-input">{{ old('content') }}</textarea>
-                @if ($errors->has('content'))
-                    <p class="error-message">{{ $errors->first('content') }}</p>
+                <textarea id="comment-input" name="comment" class="comment-input">{{ old('comment') }}</textarea>
+                @if ($errors->has('comment'))
+                    <p class="error-message">{{ $errors->first('comment') }}</p>
                 @endif
                 <input type="hidden" name="item_id" value="{{ $item->id }}">
                 <button type="submit" class="comment-submit">コメントを送信する</button>

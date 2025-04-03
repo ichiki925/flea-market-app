@@ -56,13 +56,10 @@
                                 <img src="{{ asset('img/user.png') }}" alt="User" class="comment-avatar">
                                 <span class="comment-author">{{ $comment->user->name }}</span>
                             </div>
-                            <p class="comment-text">{{ $comment->content }}</p>
+                            <p class="comment-text">{{ $comment->comment }}</p>
                         </div>
                     @endforeach
-                    <label for="comment-input" class="comment-label">商品へのコメント</label>
-                    <textarea id="comment-input" name="content" class="comment-input">{{ old('content') }}</textarea>
-                    <input type="hidden" name="item_id" value="{{ $item->id }}">
-                    <div class="comment-submit">コメントを送信する</div>
+
                 </div>
             </div>
         </div>
