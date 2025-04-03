@@ -50,27 +50,31 @@ class MyPageController extends Controller
 
     public function storeProfile(ProfileRequest $request)
     {
-
+        $user = auth()->user();
         $validated = $request->validated();
 
-        $user = auth()->user();
-
-        $user->fill($validated);
-
-        if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profiles', 'public');
-            $user->profile_image = $path;
-        }
-
-
+        // ユーザー名などはusersテーブルに
+        $user->name = $validated['name'];
         $user->save();
 
-        Auth::setUser($user);
+        // 画像保存
+        if ($request->hasFile('profile_image')) {
+            $path = $request->file('profile_image')->store('profiles', 'public');
+        } else {
+            $path = null;
+        }
 
-        $redirectTo = $request->input('redirect_to', route('mylist'));
+        // Profileテーブルに保存
+        $user->profile()->create([
+            'img_url' => $path,
+            'postcode' => $validated['postcode'],
+            'address' => $validated['address'],
+            'building' => $validated['building'],
+        ]);
 
-        return redirect($redirectTo);
+        return redirect()->route('mylist');
     }
+
 
 
     public function editProfile()
@@ -89,24 +93,35 @@ class MyPageController extends Controller
         $user = auth()->user();
         $validated = $request->validated();
 
+        $user->name = $validated['name'];
+        $user->save();
 
-        if ($request->hasFile('profile_image')) {
-            if ($user->profile_image && Storage::disk('public')->exists($user->profile_image)) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-            $path = $request->file('profile_image')->store('profiles', 'public');
-            $validated['profile_image'] = $path;
-        } else {
-            $validated['profile_image'] = $user->profile_image;
+        $profile = $user->profile;
+
+        if (!$profile) {
+            $profile = $user->profile()->create([
+                'img_url' => null,
+                'postcode' => '',
+                'address' => '',
+                'building' => '',
+            ]);
         }
 
+        if ($request->hasFile('profile_image')) {
+            if ($profile->img_url && Storage::disk('public')->exists($profile->img_url)) {
+                Storage::disk('public')->delete($profile->img_url);
+            }
+            $profile->img_url = $request->file('profile_image')->store('profiles', 'public');
+        }
 
-        $user->update($validated);
-
-        Auth::setUser($user);
+        $profile->postcode = $validated['postcode'];
+        $profile->address = $validated['address'];
+        $profile->building = $validated['building'];
+        $profile->save();
 
         return redirect()->route('mypage');
     }
+
 
     public function editAddress(Request $request)
     {
@@ -123,7 +138,7 @@ class MyPageController extends Controller
 
         $validated = $request->validated();
 
-        $user->update($validated);
+        $user->profile->update($validated);
 
         $item_id = $request->input('item_id');
 

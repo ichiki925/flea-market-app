@@ -11,16 +11,16 @@
         @csrf
         <input type="hidden" name="item_id" value="{{ $item_id }}">
         <div class="form-group">
-            <label for="postal_code">郵便番号</label>
-            <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code ?? '') }}">
-            @error('postal_code')
+            <label for="postcode">郵便番号</label>
+            <input type="text" id="postcode" name="postcode" value="{{ old('postcode', $user->profile->postcode ?? '') }}">
+            @error('postcode')
             <p class="error">{{ $message }}</p>
             @enderror
         </div>
 
         <div class="form-group">
             <label for="address">住所</label>
-            <input type="text" id="address" name="address" value="{{ old('address', $user->address ?? '') }}">
+            <input type="text" id="address" name="address" value="{{ old('address', $user->profile->address ?? '') }}">
             @error('address')
             <p class="error">{{ $message }}</p>
             @enderror
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="building">建物名</label>
-            <input type="text" id="building" name="building" value="{{ old('building', $user->building ?? '') }}">
+            <input type="text" id="building" name="building" value="{{ old('building', $user->profile->building ?? '') }}">
             @error('building')
             <p class="error">{{ $message }}</p>
             @enderror

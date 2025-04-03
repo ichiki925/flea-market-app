@@ -30,11 +30,9 @@ class ItemController extends Controller
         $tab = $request->input('tab', $request->has('search') ? 'index' : 'mylist');
 
 
-        // クエリビルダーを保持
         $itemsQuery = Item::query();
 
         if ($tab === 'mylist') {
-            // ユーザーがいいねしたアイテム または 売り切れアイテムを取得
             $itemsQuery->whereHas('likes', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
@@ -45,20 +43,28 @@ class ItemController extends Controller
                         });
             });
         } else {
-            // 通常の検索
             $itemsQuery->when($search, function ($query, $search) {
                 return $query->where('name', 'like', '%' . $search . '%');
             });
         }
 
-        // クエリのSQLをログに出力してデバッグ
         \Log::info("Generated SQL: " . $itemsQuery->toSql(), $itemsQuery->getBindings());
 
-        // データを取得
         $items = $itemsQuery->get();
 
         return view('mylist', compact('items', 'tab'));
     }
+
+    public function redirectTop(Request $request)
+    {
+        if (auth()->check()) {
+            $request->merge(['tab' => 'index']);
+            return $this->mylist($request);
+        } else {
+            return $this->index($request);
+        }
+    }
+
 
     public function show(Request $request, $id)
     {
@@ -75,7 +81,7 @@ class ItemController extends Controller
         $validated = $request->validated();
 
         Comment::create([
-            'content' => $validated['content'],
+            'comment' => $validated['comment'],
             'item_id' => $request->input('item_id'),
             'user_id' => auth()->id(),
         ]);

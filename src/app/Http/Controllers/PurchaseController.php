@@ -24,6 +24,17 @@ class PurchaseController extends Controller
 
     public function store(Request $request, $item_id)
     {
+        $user = auth()->user();
+
+        if (
+            !$user->profile ||
+            !$user->profile->postcode ||
+            !$user->profile->address
+        ) {
+            return redirect()->route('mypage.editProfile')
+                ->withErrors(['address' => '配送先情報が未登録です。プロフィールを設定してください。']);
+        }
+
         $item = Item::findOrFail($item_id);
 
         if ($item->status === 'sold') {
@@ -59,7 +70,7 @@ class PurchaseController extends Controller
                 'buyer_id' => auth()->id(),
                 'address' => $request->address,
                 'building' => $request->building ?? '',
-                'postal_code' => $request->postal_code,
+                'postcode' => $request->postcode,
                 'payment_method' => 'card',
             ]);
 
@@ -79,7 +90,7 @@ class PurchaseController extends Controller
             'buyer_id' => Auth::id(),
             'address' => Auth::user()->address,
             'building' => Auth::user()->building,
-            'postal_code' => Auth::user()->postal_code,
+            'postcode' => Auth::user()->postcode,
             'payment_method' => 'card',
         ]);
 

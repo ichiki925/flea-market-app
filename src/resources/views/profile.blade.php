@@ -17,7 +17,7 @@
                 <img id="profile-preview" class="profile-preview" src="{{ $user && $user->profile_image ? asset('storage/' . $user->profile_image) : asset('images/default-placeholder.png') }}" alt="プロフィール画像">
             <label for="profile_image" class="file-label">
                 画像を選択する
-                <input type="file" name="profile_image" id="profile_image" accept=".jpeg,.png">
+                <input type="file" name="profile_image" id="profile_image" accept=".jpeg,.jpg,.png">
             </label>
         </div>
 
@@ -31,16 +31,16 @@
         </div>
 
         <div class="form-group">
-            <label for="postal_code">郵便番号</label>
-            <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}">
-            @error('postal_code')
+            <label for="postcode">郵便番号</label>
+            <input type="text" id="postcode" name="postcode" value="{{ old('postcode', optional($user->profile)->postcode) }}">
+            @error('postcode')
             <p class="error">{{ $message }}</p>
             @enderror
         </div>
 
         <div class="form-group">
             <label for="address">住所</label>
-            <input type="text" id="address" name="address" value="{{ old('address', $user->address) }}">
+            <input type="text" name="address" value="{{ old('address', optional($user->profile)->address) }}">
             @error('address')
             <p class="error">{{ $message }}</p>
             @enderror
@@ -48,7 +48,7 @@
 
         <div class="form-group">
             <label for="building">建物名</label>
-            <input type="text" id="building" name="building" value="{{ old('building', $user->building) }}">
+            <input type="text" name="building" value="{{ old('building', optional($user->profile)->building) }}">
             @error('building')
             <p class="error">{{ $message }}</p>
             @enderror

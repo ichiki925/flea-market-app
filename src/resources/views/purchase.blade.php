@@ -9,7 +9,7 @@
     <div class="left-section">
         <div class="product-detail">
             <div class="product-image">
-                <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}" class="product-image-img">
+                <img src="{{ asset('storage/' . $item->img_url) }}" alt="商品画像：{{ $item->name }}" class="product-image-img" loading="lazy">
             </div>
             <div class="product-info">
                 <h2>{{ $item->name }}</h2>
@@ -34,9 +34,13 @@
                 <h3>配送先</h3>
                 <a href="{{ route('mypage.editAddress', ['item_id' => $item->id]) }}" class="change-address">変更する</a>
             </div>
-            <p>〒 {{ $user->postal_code }}</p>
-            <p>{{ $user->address }}</p>
-            <p>{{ $user->building }}</p>
+            <p>〒 {{ $user->profile->postcode }}</p>
+            <p>{{ $user->profile->address }}</p>
+            <p>{{ $user->profile->building }}</p>
+
+            @error('address')
+                <p class="error-message">{{ $message }}</p>
+            @enderror
         </div>
     </div>
 
