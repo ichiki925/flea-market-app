@@ -13,11 +13,11 @@
                 <label for="item-image">商品画像</label>
                 <div class="image-upload">
                     <label for="item-image" class="custom-file-label">画像を選択する</label>
-                    <input type="file" id="item-image" name="item_image" class="custom-file-input">
-                    <img class="preview-image" src="{{ isset($item->item_image) ? asset('storage/' . $item->item_image) : asset('images/default.png') }}" alt="商品画像">
+                    <input type="file" id="item-image" name="img_url" class="custom-file-input">
+                    <img class="preview-image" src="{{ isset($item->img_url) ? asset('storage/' . $item->img_url) : asset('images/default.png') }}" alt="商品画像">
 
                 </div>
-                @error('item_image')
+                @error('img_url')
                 <p class="error">{{ $message }}</p>
                 @enderror
             </section>
@@ -32,7 +32,7 @@
                     @foreach ($categories as $category)
                         <input type="checkbox" id="category-{{ $category->id }}" name="item_categories[]" value="{{ $category->id }}" class="category-checkbox"
                             {{ is_array(old('item_categories')) && in_array($category->id, old('item_categories')) ? 'checked' : '' }}>
-                        <label for="category-{{ $category->id }}" class="category-label">{{ $category->name }}</label>
+                        <label for="category-{{ $category->id }}" class="category-label">{{ $category->category }}</label>
                     @endforeach
                 </div>
                 @error('item_categories')
@@ -46,7 +46,7 @@
                     <select id="status" name="condition" class="custom-select">
                         <option value="" disabled selected>選択してください</option>
                         @foreach ($conditions as $condition)
-                            <option value="{{ $condition->id }}">{{ $condition->name }}</option>
+                            <option value="{{ $condition->id }}">{{ $condition->condition }}</option>
                         @endforeach
                     </select>
                     @error('condition')

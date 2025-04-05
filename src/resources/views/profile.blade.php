@@ -14,7 +14,7 @@
         @endif
 
         <div class="profile-image">
-                <img id="profile-preview" class="profile-preview" src="{{ $user && $user->profile_image ? asset('storage/' . $user->profile_image) : asset('images/default-placeholder.png') }}" alt="プロフィール画像">
+                <img id="profile-preview" class="profile-preview" src="{{ optional($user->profile)->img_url ? asset('storage/' . $user->profile->img_url) : asset('images/default-placeholder.png') }}" alt="プロフィール画像">
             <label for="profile_image" class="file-label">
                 画像を選択する
                 <input type="file" name="profile_image" id="profile_image" accept=".jpeg,.jpg,.png">

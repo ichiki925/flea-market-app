@@ -46,6 +46,10 @@ class ItemController extends Controller
             $itemsQuery->when($search, function ($query, $search) {
                 return $query->where('name', 'like', '%' . $search . '%');
             });
+
+            if (auth()->check()) {
+                $itemsQuery->where('user_id', '!=', auth()->id());
+            }
         }
 
         \Log::info("Generated SQL: " . $itemsQuery->toSql(), $itemsQuery->getBindings());

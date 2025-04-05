@@ -35,9 +35,9 @@ class SellController extends Controller
         $item->status = 'available';
         $item->condition_id = $validated['condition'];
 
-        if ($request->hasFile('item_image')) {
-            $path = $request->file('item_image')->store('items', 'public');
-            $item->item_image = $path;
+        if ($request->hasFile('img_url')) {
+            $path = $request->file('img_url')->store('items', 'public');
+            $item->img_url = $path;
 
         }
 

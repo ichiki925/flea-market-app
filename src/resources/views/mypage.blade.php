@@ -9,8 +9,8 @@
 
     <div class="profile-header">
         <div class="image-preview">
-            @if(auth()->user()->profile_image)
-                <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="プロフィール画像" class="profile-preview">
+            @if(optional(auth()->user()->profile)->img_url)
+                <img src="{{ asset('storage/' . auth()->user()->profile->img_url) }}" alt="プロフィール画像" class="profile-preview">
             @else
                 <img src="{{ asset('images/default-placeholder.png') }}" alt="デフォルト画像" class="profile-preview">
             @endif
@@ -36,7 +36,7 @@
                 @foreach ($items as $item)
                 <div class="item">
                     <div class="item-image">
-                        <img src="{{ Str::startsWith($item->item_image, 'images/') ? asset($item->item_image) : asset('storage/' . $item->item_image) }}" alt="{{ $item->name }}">
+                        <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
                     </div>
                     <div class="item-name">{{ $item->name }}</div>
                 </div>
