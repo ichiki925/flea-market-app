@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
-use App\Models\Purchase;
+use App\Models\SoldItem;
 use Stripe\Stripe;
 use Stripe\Checkout\Session as StripeSession;
 
@@ -41,11 +41,22 @@ class PurchaseController extends Controller
             return redirect()->route('mypage');
         }
 
+
+        $paymentMethod = $request->input('payment_method');
+
+        if ($paymentMethod === 'カード支払い') {
+            $stripePaymentMethod = 'card';
+        } elseif ($paymentMethod === 'コンビニ払い') {
+            $stripePaymentMethod = 'konbini';
+        } else {
+            return back()->withErrors(['payment_method' => '支払い方法を選択してください。']);
+        }
+
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
-            $session = StripeSession::create([
-                'payment_method_types' => ['card'],
+            $sessionData = [
+                'payment_method_types' => [$stripePaymentMethod],
                 'line_items' => [[
                     'price_data' => [
                         'currency' => 'jpy',
@@ -57,23 +68,21 @@ class PurchaseController extends Controller
                     'quantity' => 1,
                 ]],
                 'mode' => 'payment',
-                'success_url' => route('payment.success', ['item_id' => $item_id]),
-                'cancel_url' => route('payment.cancel', ['item_id' => $item_id]),
-            ]);
+                'success_url' => route('payment.success', ['item_id' => $item->id]),
+                'cancel_url' => route('payment.cancel', ['item_id' => $item->id]),
+            ];
 
-            // 商品のステータスを`sold`に更新
-            $item->update(['status' => 'sold']);
 
-            // 購入データを保存
-            Purchase::create([
-                'item_id' => $item->id,
-                'buyer_id' => auth()->id(),
-                'address' => $request->address,
-                'building' => $request->building ?? '',
-                'postcode' => $request->postcode,
-                'payment_method' => 'card',
-            ]);
+            if ($stripePaymentMethod === 'konbini') {
+                $sessionData['payment_method_options'] = [
+                    'konbini' => [
+                        'expires_after_days' => 3,
+                    ],
+                ];
+            }
 
+
+            $session = StripeSession::create($sessionData);
             return redirect($session->url);
 
         } catch (\Exception $e) {
@@ -81,16 +90,18 @@ class PurchaseController extends Controller
         }
     }
 
+
     public function paymentSuccess(Request $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
+        $user = Auth::user();
 
-        Purchase::create([
+        SoldItem::create([
             'item_id' => $item->id,
-            'buyer_id' => Auth::id(),
-            'address' => Auth::user()->address,
-            'building' => Auth::user()->building,
-            'postcode' => Auth::user()->postcode,
+            'user_id' => $user->id,
+            'sending_postcode' => $user->profile->postcode,
+            'sending_address' => $user->profile->address,
+            'sending_building' => $user->profile->building,
             'payment_method' => 'card',
         ]);
 

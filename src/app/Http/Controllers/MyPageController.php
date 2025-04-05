@@ -20,17 +20,17 @@ class MyPageController extends Controller
         if ($tab === 'sell') {
             $items = Item::where('user_id', $user->id)->get();
         } else {
-            $items = $user->purchases()->with('item')->get()->pluck('item');
+            $items = $user->soldItems()->with('item')->get()->pluck('item');
         }
 
-        return view('mypage', compact('items', 'tab'));
+        return view('mypage', compact('items', 'tab', 'user'));
     }
 
     public function purchases()
     {
         $user = auth()->user();
 
-        $items = $user->purchases()->with('item')->get()->pluck('item');
+        $items = $user->soldItems()->with('item')->get()->pluck('item');
 
         return view('mypage', [
             'items' => $items,

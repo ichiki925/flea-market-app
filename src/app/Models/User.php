@@ -42,9 +42,9 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
-    public function purchases()
+    public function soldItems()
     {
-        return $this->hasMany(Purchase::class, 'buyer_id');
+        return $this->hasMany(SoldItem::class, 'user_id');
     }
 
     public function likes()

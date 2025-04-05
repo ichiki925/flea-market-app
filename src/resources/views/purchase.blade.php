@@ -59,7 +59,8 @@
         </div>
         <form action="{{ route('purchase.store', ['item_id' => $item->id]) }}" method="POST">
             @csrf
-        <button type="submit" class="btn-purchase">購入する</button>
+            <input type="hidden" name="payment_method" value="{{ request('payment_method') }}">
+            <button type="submit" class="btn-purchase">購入する</button>
         </form>
     </div>
 </div>

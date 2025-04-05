@@ -96,13 +96,6 @@
 }
 
 
-@media screen and (max-width: 768px) {
-    .custom-select-wrapper {
-        width: 100%;
-        margin-left: 0;
-    }
-}
-
 
 .shipping-header {
     display: flex;
@@ -177,4 +170,39 @@
 
 .btn-purchase:hover {
     background-color: #c0392b;
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+    .custom-select-wrapper {
+            width: 100%;
+            margin-left: 0;
+        }
+
+    .left-section {
+        flex: 4;
+        margin-right: 10px;
+    }
+
+    .right-section {
+        flex: 6;
+        max-width: 325px;
+        text-align: left;
+    }
+
+    .product-price {
+        font-size: 20px;
+    }
+
+    .payment-summary td {
+        font-size: 20px;
+    }
+
+    .product-info h2 {
+        font-size: 20px;
+    }
+
+    .payment-summary td {
+        padding: 10px;
+        font-size: 18px;
+    }
 }
