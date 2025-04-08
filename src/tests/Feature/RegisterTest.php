@@ -14,7 +14,7 @@ class RegisterTest extends TestCase
 
     public function test_can_open_register_page()
     {
-        $this->assertTrue(true);
+
 
         $response = $this->get('/register');
         $response->assertStatus(200);
@@ -90,7 +90,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        $response->assertRedirect('/login');
+        $response->assertRedirect('/email/verify');
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
         ]);

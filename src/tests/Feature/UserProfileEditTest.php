@@ -17,8 +17,12 @@ class UserProfileEditTest extends TestCase
     {
         $user = User::factory()->create([
             'name' => 'テストユーザー',
-            'profile_image' => 'profiles/test_image.png',
-            'postal_code' => '123-4567',
+        ]);
+
+        \App\Models\Profile::factory()->create([
+            'user_id' => $user->id,
+            'img_url' => 'profiles/test_image.png',
+            'postcode' => '123-4567',
             'address' => '東京都渋谷区',
             'building' => 'テストビル',
         ]);
@@ -28,7 +32,6 @@ class UserProfileEditTest extends TestCase
         $response = $this->get(route('mypage.profile'));
 
         $response->assertStatus(200);
-
         $response->assertSee('テストユーザー');
         $response->assertSee('123-4567');
         $response->assertSee('東京都渋谷区');
@@ -40,6 +43,10 @@ class UserProfileEditTest extends TestCase
     {
         $user = User::factory()->create();
 
+        \App\Models\Profile::factory()->create([
+            'user_id' => $user->id,
+        ]);
+
         $this->actingAs($user);
 
         Storage::fake('public');
@@ -49,7 +56,7 @@ class UserProfileEditTest extends TestCase
         $response = $this->put(route('mypage.update'), [
             'name' => '更新後ユーザー名',
             'profile_image' => $file,
-            'postal_code' => '987-6543',
+            'postcode' => '987-6543',
             'address' => '大阪市北区',
             'building' => '更新ビル',
         ]);
@@ -59,7 +66,11 @@ class UserProfileEditTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'name' => '更新後ユーザー名',
-            'postal_code' => '987-6543',
+        ]);
+
+        $this->assertDatabaseHas('profiles', [
+            'user_id' => $user->id,
+            'postcode' => '987-6543',
             'address' => '大阪市北区',
             'building' => '更新ビル',
         ]);

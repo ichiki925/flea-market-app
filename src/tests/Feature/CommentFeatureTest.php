@@ -21,7 +21,7 @@ class CommentFeatureTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('comments.store', ['item_id' => $item->id]), [
-            'content' => 'This is a test comment.',
+            'comment' => 'This is a test comment.',
         ]);
 
         $response->assertStatus(302);
@@ -29,7 +29,7 @@ class CommentFeatureTest extends TestCase
         $this->assertDatabaseHas('comments', [
             'item_id' => $item->id,
             'user_id' => $user->id,
-            'content' => 'This is a test comment.',
+            'comment' => 'This is a test comment.',
         ]);
     }
 
@@ -38,7 +38,7 @@ class CommentFeatureTest extends TestCase
         $item = Item::factory()->create();
 
         $response = $this->postJson(route('comments.store', ['item_id' => $item->id]), [
-            'content' => 'This is a test comment.',
+            'comment' => 'This is a test comment.',
         ]);
 
         $response->assertStatus(401);
@@ -52,10 +52,10 @@ class CommentFeatureTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('comments.store', ['item_id' => $item->id]), [
-            'content' => '',
+            'comment' => '',
         ]);
 
-        $response->assertSessionHasErrors(['content']);
+        $response->assertSessionHasErrors(['comment']);
     }
 
     public function test_comment_cannot_exceed_255_characters()
@@ -66,10 +66,10 @@ class CommentFeatureTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('comments.store', ['item_id' => $item->id]), [
-            'content' => str_repeat('a', 256),
+            'comment' => str_repeat('a', 256),
         ]);
 
-        $response->assertSessionHasErrors(['content']);
+        $response->assertSessionHasErrors(['comment']);
     }
 
 }

@@ -8,7 +8,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Item;
 use App\Models\Like;
-use App\Models\Purchase;
+
 
 class MylistTest extends TestCase
 {

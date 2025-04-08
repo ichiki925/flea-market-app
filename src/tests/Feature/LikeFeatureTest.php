@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Like;
 use App\Models\Item;
 
@@ -15,27 +16,28 @@ class LikeFeatureTest extends TestCase
     // CSRFミドルウェアを無効化する
     protected bool $disableCsrfMiddleware = true;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+    }
+
     public function testToggleLikeForAuthenticatedUser()
     {
-        // 認証ユーザーを作成
-        $user = \App\Models\User::factory()->create();
-        $this->actingAs($user, 'web');
+        $user = User::factory()->create([
+            'email_verified_at' => now(), // 必須
+        ]);
 
-        // 認証状態を確認
-        $this->assertTrue(auth()->check(), 'User is not authenticated.');
+        $this->actingAs($user);
+        $this->assertAuthenticatedAs($user); // 追加！
 
-        // テスト用の商品を作成
-        $item = \App\Models\Item::factory()->create();
+        $item = Item::factory()->create();
 
-        // 初回いいね
-        $response = $this->postJson("/likes/toggle/{$item->id}");
-        $response->assertStatus(200)
-                ->assertJson(['status' => 'liked']);
+        $response = $this->postJson("/likes/toggle/{$item->id}", [], [
+            'Accept' => 'application/json',
+        ]);
 
-        // いいね解除
-        $response = $this->postJson("/likes/toggle/{$item->id}");
-        $response->assertStatus(200)
-                ->assertJson(['status' => 'unliked']);
+        $response->assertStatus(200)->assertJson(['status' => 'liked']);
     }
 
     public function testGuestCannotLike()

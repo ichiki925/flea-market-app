@@ -31,7 +31,7 @@ class PurchaseController extends Controller
             !$user->profile->postcode ||
             !$user->profile->address
         ) {
-            return redirect()->route('mypage.editProfile')
+            return redirect()->route('mypage.profile')
                 ->withErrors(['address' => '配送先情報が未登録です。プロフィールを設定してください。']);
         }
 

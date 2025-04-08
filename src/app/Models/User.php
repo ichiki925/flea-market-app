@@ -62,4 +62,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->created_at->eq($this->updated_at);
     }
+
+
+    public function purchases()
+    {
+        return $this->hasMany(\App\Models\SoldItem::class);
+    }
+
 }

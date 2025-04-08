@@ -15,8 +15,12 @@ class UserProfileRetrievalTest extends TestCase
     public function test_user_profile_page_displays_user_information()
     {
         $user = User::factory()->create([
-            'profile_image' => 'profiles/example.png',
             'name' => 'テストユーザー',
+        ]);
+
+        $profile = \App\Models\Profile::factory()->create([
+            'user_id' => $user->id,
+            'img_url' => 'profiles/example.png',
         ]);
 
         $items = Item::factory()->count(3)->create([
@@ -28,15 +32,16 @@ class UserProfileRetrievalTest extends TestCase
         $response = $this->get(route('mypage', ['tab' => 'sell']));
 
         $response->assertStatus(200);
-
         $response->assertSee('テストユーザー');
-        $response->assertSee(asset('storage/profiles/example.png'));
+        $response->assertSee(asset('storage/' . $profile->img_url));
 
         foreach ($items as $item) {
             $response->assertSee($item->name);
-            $response->assertSee(asset('storage/' . $item->item_image));
+            $response->assertSee(asset('storage/' . $item->img_url));
         }
     }
+
+
 
     public function test_user_profile_page_displays_purchased_items()
     {
@@ -46,9 +51,9 @@ class UserProfileRetrievalTest extends TestCase
         foreach ($purchasedItems as $item) {
             $user->purchases()->create([
                 'item_id' => $item->id,
-                'address' => 'テスト住所',
-                'building' => 'テスト建物名',
-                'postal_code' => '123-4567',
+                'sending_address' => 'テスト住所',
+                'sending_building' => 'テスト建物名',
+                'sending_postcode' => '123-4567',
                 'payment_method' => 'card',
             ]);
         }
@@ -61,7 +66,7 @@ class UserProfileRetrievalTest extends TestCase
 
         foreach ($purchasedItems as $item) {
             $response->assertSee($item->name);
-            $response->assertSee(asset('storage/' . $item->item_image));
+            $response->assertSee(asset('storage/' . $item->img_url));
         }
     }
 }
