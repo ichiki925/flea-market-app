@@ -24,14 +24,7 @@ class FortifyServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
-            public function toResponse($request)
-            {
-                return redirect('/mypage/profile');
-            }
-        });
 
-        // 自作のLoginRequestに差し替え
         $this->app->bind(FortifyLoginRequest::class, LoginRequest::class);
     }
 
@@ -46,7 +39,9 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::registerView(fn() => view('auth.register'));
         Fortify::loginView(fn() => view('auth.login'));
-        Fortify::verifyEmailView(fn() => view('auth.verify-email'));
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
 
 
         RateLimiter::for('login', function (Request $request) {
@@ -54,16 +49,18 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(10)->by($throttleKey);
         });
 
-        // ログイン成功時のリダイレクト先
+
         Fortify::redirects('login', '/?page=mylist');
 
-        // 認証ロジックのカスタマイズ
+
         Fortify::authenticateUsing(function (LoginRequest $request) {
             $credentials = $request->only('email', 'password');
+
 
             $user = User::where('email', $credentials['email'])->first();
 
             if (!$user || !Hash::check($credentials['password'], $user->password)) {
+
                 throw ValidationException::withMessages([
                     'email' => ['ログイン情報が登録されていません。'],
                 ]);
