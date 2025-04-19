@@ -36,6 +36,15 @@ class UserSeeder extends Seeder
                 'remember_token' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
+            ],
+            [
+                'name' => '未出品ユーザー',
+                'email' => 'noitems@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password3'),
+                'remember_token' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
             ]
         ]);
 
