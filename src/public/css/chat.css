@@ -1,0 +1,489 @@
+.chat-container {
+    display: flex;
+    width: 100%;
+    margin: 0;
+    background: white;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 220px;
+    background: #888888;
+    color: white;
+    text-align: center;
+    box-sizing: border-box;
+    min-height: 100vh;
+    padding: 20px 15px;
+}
+
+
+
+.user-icon img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: auto;
+    background-color: #f0f0f0;;
+
+}
+
+.sidebar-title {
+    font-weight: bold;
+    font-size: 25px;
+    margin: 10px 0;
+
+}
+
+
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 12px;
+}
+
+.sidebar a {
+    display: block;
+    /* background-color: #f1f1f1; */
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.sidebar a:hover {
+    background-color: #e0e0e0;
+}
+
+
+
+.sidebar-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-item {
+    background: #f5f5f5;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.sidebar-item:hover {
+    background: #ddd;
+}
+
+
+
+.chat-main {
+    flex: 1;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+}
+
+
+.user-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ccc;
+    
+}
+
+.user-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    text-indent: -9999px;
+}
+
+.item-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    border-bottom: 1px solid;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+}
+
+
+
+.chat-header h3 {
+    font-size: 27px;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+.item-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.item-text h2 {
+    font-size: 30px;
+    margin: 0 0 5px;
+}
+
+.item-text p {
+    font-size: 25px;
+    margin: 0 0 10px;
+}
+
+
+.complete-button {
+    background-color: #f06262;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+
+.chat-message {
+    padding-top: 20px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.message-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #ddd;
+}
+
+/* 共通の吹き出し部分 */
+.message-text {
+    padding: 10px;
+    border-radius: 3px;
+    display: inline-block;
+    word-wrap: break-word;
+    background: #ddd;
+    max-width: 70%;
+    border: none;
+    text-align: left;
+
+}
+
+/* 相手のメッセージ（左） */
+.chat-message.other {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.chat-message.other .message-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+
+/* 自分のメッセージ（右） */
+.chat-message.mine {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.chat-message.mine .message-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-direction: row-reverse;
+}
+
+
+.message-actions {
+    font-size: 12px;
+    color: #333;
+    margin: 5px 10px;
+    display: flex;
+    gap: 25px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+
+}
+
+.chat-message .message-actions a {
+    text-decoration: none;
+    color: #333;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+
+.message-actions form {
+    display: inline;
+}
+
+.message-actions button {
+    background: none;
+    border: none;
+    color: #333;
+    text-decoration: none;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    box-shadow: none;
+    transition: color 0.2s;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.message-actions button:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+.chat-form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.chat-form input[type="text"] {
+    flex: 1;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.chat-form.is-edit input[type="text"] {
+    width: 400px;
+    transition: all 0.3s ease;
+}
+
+.message-image img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    object-fit: contain;
+}
+
+.image-upload {
+    color: #ff6b6b;
+    padding: 7px 20px;
+    border: 1px solid;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.image-upload input[type="file"] {
+    display: none;
+}
+
+.send-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.send-button .send-icon {
+    width: 60px;
+    /* お好みで調整 */
+    height: 80px;
+    object-fit: contain;
+}
+
+
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+
+
+
+
+/* モーダル全体の背景 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.modal:target {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* オーバーレイ背景 */
+.modal-overlay {
+    display: none;
+}
+
+/* モーダル本体 */
+.modal__inner {
+    background: #fefde9;
+    padding: 20px 40px;
+    border-radius: 12px;
+    width: 500px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: "Hiragino Kaku Gothic ProN", sans-serif;
+    border: 1px solid;
+    position: relative;
+    left: calc(-50vw + 50% + 110px);
+}
+
+/* タイトル */
+.modal__title {
+    font-size: 25px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* 区切り線 */
+.modal__divider {
+    margin: 20px -40px;
+    border: none;
+    border-top: 1px solid;
+}
+
+/* サブテキスト */
+.modal__text {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+/* 星評価 */
+.rating-stars {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+    display: flex;
+    justify-content: space-between ;
+    gap: 10px;
+}
+
+.rating-stars input[type="radio"] {
+    display: none;
+}
+
+.rating-stars label {
+    font-size: 60px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* クリック後に光る星 */
+.rating-stars input[type="radio"]:checked~label {
+    color: gold;
+}
+
+/* ホバー時にも光る星 */
+.rating-stars label:hover,
+.rating-stars label:hover~label {
+    color: gold;
+}
+/* 送信ボタン右下に */
+.submit-area {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.submit-rating {
+    background-color: #f06262;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
