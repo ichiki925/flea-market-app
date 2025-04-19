@@ -11,6 +11,7 @@ class SoldItem extends Model
 
     protected $fillable = [
         'user_id',
+        'buyer_id',
         'item_id',
         'sending_postcode',
         'sending_address',
@@ -26,5 +27,16 @@ class SoldItem extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+    public function buyer()
+    {
+        return $this->belongsTo(User::class, 'buyer_id');
     }
 }

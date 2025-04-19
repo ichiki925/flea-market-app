@@ -4,6 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Review;
+use App\Models\User;
+use App\Models\Condition;
+use App\Models\Category;
+use App\Models\Like;
+use App\Models\Comment;
+use App\Models\SoldItem;
+use App\Models\ChatMessage;
 
 class Item extends Model
 {
@@ -56,5 +64,21 @@ class Item extends Model
     {
         return $this->status === 'sold';
     }
+
+    public function chatMessages()
+    {
+        return $this->hasMany(ChatMessage::class);
+    }
+
+    public function soldItems()
+    {
+        return $this->hasMany(SoldItem::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
 }
 

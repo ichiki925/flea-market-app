@@ -9,34 +9,104 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Review;
+use App\Models\ChatMessage;
 
 class MyPageController extends Controller
 {
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $tab = $request->input('tab', 'sell');
 
+        
+
+        // 商品取得
         if ($tab === 'sell') {
-            $items = Item::where('user_id', $user->id)->get();
+            $items = $user->items()->get();
+        } elseif ($tab === 'purchase') {
+            $items = Item::whereHas('soldItems', function ($query) use ($user) {
+                $query->where('buyer_id', $user->id);
+            })->get();
         } else {
-            $items = $user->soldItems()->with('item')->get()->pluck('item');
+            $items = Item::whereHas('soldItems', function ($query) use ($user) {
+                $query->where('buyer_id', $user->id)
+                    ->orWhere('user_id', $user->id);
+            })
+            ->with('soldItems')
+            ->get();
         }
 
-        return view('mypage', compact('items', 'tab', 'user'));
+
+
+
+        // 未読件数を取得
+        $unreadCounts = $this->getUnreadCounts($user);
+
+        return view('mypage', [
+            'tab' => $tab,
+            'items' => $items,
+            'unreadCounts' => $unreadCounts,  // getUnreadCountsから取得した未読件数を渡す
+        ]);
     }
+
 
     public function purchases()
     {
         $user = auth()->user();
 
-        $items = $user->soldItems()->with('item')->get()->pluck('item');
+        // 購入した商品を取得する（buyer_idに基づいてフィルタリング）
+        $items = Item::whereHas('soldItems', function ($query) use ($user) {
+            $query->where('buyer_id', $user->id); // 購入者がユーザーであるアイテムを取得
+        })->get();
+
+        // 未読メッセージ数を取得
+        $unreadCounts = $this->getUnreadCounts($user);
+
+        $tradingCount = \App\Models\Item::where('status', 'trading')
+            ->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhereHas('soldItems', fn($q) => $q->where('user_id', $user->id));
+            })
+            ->count();
 
         return view('mypage', [
             'items' => $items,
             'tab' => 'purchase',
+            'tradingCount' => $tradingCount,
+            'unreadCounts' => $unreadCounts,
         ]);
     }
+
+
+    public function trading()
+    {
+        $user = auth()->user();
+
+        $items = Item::where('status', 'trading') // ←追加！
+            ->whereHas('soldItems', function ($query) use ($user) {
+                $query->where('buyer_id', $user->id)
+                    ->orWhere('user_id', $user->id);
+            })
+            ->with(['soldItems', 'chatMessages'])
+            ->get();
+
+        $unreadCounts = [];
+
+        foreach ($items as $item) {
+            $unreadCounts[$item->id] = \App\Models\ChatMessage::where('item_id', $item->id)
+                ->whereNull('read_at')
+                ->where('user_id', '!=', $user->id)
+                ->count();
+        }
+
+        return view('mypage', [
+            'tab' => 'trading',
+            'items' => $items,
+            'unreadCounts' => $unreadCounts,
+        ]);
+    }
+
 
 
 
@@ -144,4 +214,44 @@ class MyPageController extends Controller
 
         return redirect()->route('purchase.show', ['item_id' => $item_id]);
     }
+
+    private function getUnreadCounts($user)
+    {
+        $items = Item::where('status', 'trading') // ←追加
+            ->whereHas('soldItems', function ($query) use ($user) {
+                $query->where('buyer_id', $user->id)
+                    ->orWhere('user_id', $user->id);
+            })
+            ->with('soldItems')
+            ->get();
+
+        $unreadCounts = [];
+
+        foreach ($items as $item) {
+            // 未読メッセージ数を数える
+            $unreadCounts[$item->id] = ChatMessage::where('item_id', $item->id)
+                ->whereNull('read_at')
+                ->where('user_id', '!=', $user->id) // 他のユーザーのメッセージを未読とカウント
+                ->count();
+        }
+
+        return $unreadCounts;
+    }
+
+    public function showProfile()
+    {
+        $user = auth()->user();  // 現在ログインしているユーザーを取得
+
+        // 出品者のレビューを取得
+        $reviews = Review::where('reviewee_id', $user->id)->get();
+        $averageRating = $reviews->avg('rating'); // 平均評価を計算
+
+        // マイページのビューにデータを渡す
+        return view('mypage', [
+            'user' => $user,
+            'reviews' => $reviews,
+            'averageRating' => round($averageRating, 1) // 平均評価を表示
+        ]);
+    }
+
 }

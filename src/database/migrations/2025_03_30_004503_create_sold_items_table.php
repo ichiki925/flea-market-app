@@ -13,6 +13,7 @@ class CreateSoldItemsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('item_id')->unique()->constrained()->onDelete('cascade');
+            $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade');
             $table->string('sending_postcode', 255);
             $table->string('sending_address', 255);
             $table->string('sending_building', 255)->nullable();

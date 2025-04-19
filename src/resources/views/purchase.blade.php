@@ -34,9 +34,9 @@
                 <h3>配送先</h3>
                 <a href="{{ route('mypage.editAddress', ['item_id' => $item->id]) }}" class="change-address">変更する</a>
             </div>
-            <p>〒 {{ $user->profile->postcode }}</p>
-            <p>{{ $user->profile->address }}</p>
-            <p>{{ $user->profile->building }}</p>
+            <p>〒 {{ optional($user->profile)->postcode }}</p>
+            <p>{{ optional($user->profile)->address }}</p>
+            <p>{{ optional($user->profile)->building }}</p>
 
             @error('address')
                 <p class="error-message">{{ $message }}</p>

@@ -9,6 +9,9 @@ use App\Http\Controllers\MyPageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SellController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\RatingController;
+
 
 
 
@@ -37,6 +40,9 @@ Route::middleware(['auth'])->group(function () {
     // マイページ関係
     Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage');
     Route::get('/mypage/purchases', [MyPageController::class, 'purchases'])->name('mypage.purchases');
+    Route::get('/mypage/trading', [MyPageController::class, 'trading'])->name('mypage.trading');
+    Route::post('/rating/{item_id}', [RatingController::class, 'submitReview'])->name('rating.submit');
+
 
     // プロフィール
     Route::get('/mypage/profile/create', [MyPageController::class, 'createProfile'])->name('mypage.create');
@@ -52,6 +58,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sell', [SellController::class, 'index'])->name('sell.index');
     Route::post('/sell/store', [SellController::class, 'store'])->name('sell.store');
 
+    // 取引チャット
+    Route::get('/chat/{item}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{item}/send', [ChatController::class, 'send'])->name('chat.send');
+    Route::post('/chat/{item}/complete', [ChatController::class, 'complete'])->name('chat.complete');
+    Route::post('/review/{item_id}', [ChatController::class, 'submitReview'])->name('review.submit');
+    Route::post('/chat/complete/{item}', [ChatController::class, 'completeTransaction'])->name('chat.completeTransaction');
+
+    // 編集フォーム表示（再入力用）
+    Route::get('/chat/message/{message}/edit', [ChatController::class, 'edit'])->name('chat.edit');
+    // 更新処理（再送信）
+    Route::put('/chat/message/{message}', [ChatController::class, 'update'])->name('chat.update');
+    // メッセージの削除
+    Route::delete('/chat/message/{message}', [ChatController::class, 'destroy'])->name('chat.destroy');
+
     // マイリスト・コメント・いいね
     Route::get('/mylist', [ItemController::class, 'mylist'])->name('mylist');
     Route::post('/likes/toggle/{itemId}', [LikeController::class, 'toggleLike'])->name('likes.toggle');
@@ -66,6 +86,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cancel/{item_id}', [PurchaseController::class, 'paymentCancel'])->name('payment.cancel');
     });
 
+
+
     // ログアウト
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+
+
