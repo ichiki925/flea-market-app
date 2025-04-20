@@ -50,35 +50,39 @@ class AddressChangeTest extends TestCase
 
     public function test_purchased_item_is_registered_with_delivery_address()
     {
-        $user = User::factory()->create();
+        $buyer = User::factory()->create();
+        $seller = User::factory()->create(); // 出品者
 
         Profile::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $buyer->id,
             'postcode' => '123-4567',
             'address' => '登録住所',
             'building' => '登録建物名',
         ]);
 
-        $item = Item::factory()->create(['status' => 'available']);
+        $item = Item::factory()->create([
+            'status' => 'available',
+            'user_id' => $seller->id, // 出品者を明示
+        ]);
 
-        $this->actingAs($user);
-
+        $this->actingAs($buyer);
 
         $response = $this->get(route('payment.success', ['item_id' => $item->id]));
 
         $response->assertStatus(302);
         $response->assertRedirect(route('mypage', ['tab' => 'purchase']));
 
-
         $this->assertDatabaseHas('sold_items', [
             'item_id' => $item->id,
-            'user_id' => $user->id,
+            'user_id' => $seller->id,              // ← 出品者
+            'buyer_id' => $buyer->id,              // ← 購入者
             'sending_postcode' => '123-4567',
             'sending_address' => '登録住所',
             'sending_building' => '登録建物名',
             'payment_method' => 'card',
         ]);
     }
+
 
 
 }

@@ -3,33 +3,24 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use App\Models\Condition;
 use Illuminate\Support\Facades\DB;
+
+
 
 class ConditionSeeder extends Seeder
 {
-
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        DB::table('conditions')->truncate();
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-
-
         $conditions = [
-            ['condition' => '良好'],
-            ['condition' => '目立った傷や汚れなし'],
-            ['condition' => 'やや傷や汚れあり'],
-            ['condition' => '状態が悪い'],
+            '良好',
+            '目立った傷や汚れなし',
+            'やや傷や汚れあり',
+            '状態が悪い',
         ];
 
-        $now = now();
-        foreach ($conditions as &$condition) {
-            $condition['created_at'] = $now;
-            $condition['updated_at'] = $now;
+        foreach ($conditions as $condition) {
+            Condition::firstOrCreate(['condition' => $condition]);
         }
-
-        DB::table('conditions')->insert($conditions);
     }
 }

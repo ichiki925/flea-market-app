@@ -22,7 +22,8 @@ class ItemRegistrationTest extends TestCase
         $user = User::factory()->create();
         $category1 = Category::factory()->create();
         $category2 = Category::factory()->create();
-        $condition = Condition::factory()->create();
+
+        $condition = Condition::firstOrCreate(['condition' => '良好']);
 
         $this->actingAs($user);
 

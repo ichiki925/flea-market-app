@@ -22,7 +22,10 @@ class ItemDetailTest extends TestCase
 
         $user = User::factory()->create();
         $category = Category::factory()->create(['category' => 'Electronics']);
-        $condition = Condition::factory()->create(['id' => 1, 'condition' => '良好']);
+        $condition = \App\Models\Condition::firstOrCreate(
+            ['condition' => '良好'],
+            ['id' => 1]
+        );
 
         $item = Item::factory()->create([
             'name' => 'Test Item',

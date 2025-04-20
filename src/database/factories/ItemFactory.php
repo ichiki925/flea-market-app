@@ -13,15 +13,11 @@ class ItemFactory extends Factory
 
     public function definition(): array
     {
+        $condition = Condition::first() ?? Condition::create(['condition' => '良好']);
+
         return [
             'user_id' => User::factory(),
-            'condition_id' => function () {
-                $condition = Condition::inRandomOrder()->first();
-                if ($condition) {
-                    return $condition->id;
-                }
-                return Condition::factory()->create()->id;
-            },
+            'condition_id' => $condition->id,
             'name' => $this->faker->word(),
             'price' => $this->faker->numberBetween(1000, 10000),
             'brand' => $this->faker->company(),
