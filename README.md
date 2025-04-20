@@ -52,8 +52,6 @@ php artisan migrate
 php artisan db:seed
 ```
 
-
-
 ## メール認証について（開発環境）
 
 本アプリケーションでは、開発環境でのメール送信確認のために **MailHog** を使用しています。
@@ -101,11 +99,18 @@ php artisan storage:link
 
 
 ## テストアカウント
-
-| 名前             | メールアドレス         | パスワード     |
-|------------------|------------------------|----------------|
-| テストユーザー1  | test1@example.com      | password1      |
-| テストユーザー2  | test2@example.com      | password2      |
+name: テストユーザー1
+email: test1@example.com
+password: password1
+-------------------------
+name: テストユーザー2
+email: test2@example.com
+password: password2
+-------------------------
+name: 未出品ユーザー
+email: noitems@example.com
+password: password3
+-------------------------
 
 
 ## PHPUnitを利用したテストについて
