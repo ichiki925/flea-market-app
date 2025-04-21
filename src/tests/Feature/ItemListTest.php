@@ -15,7 +15,7 @@ class ItemListTest extends TestCase
 
     public function test_all_items_are_displayed()
     {
-        $this->seed(ConditionSeeder::class); // 💡 追加
+        $this->seed(ConditionSeeder::class);
         Item::factory()->count(5)->create();
 
         $response = $this->get('/');
@@ -24,7 +24,7 @@ class ItemListTest extends TestCase
 
     public function test_sold_items_are_displayed_as_sold()
     {
-        $this->seed(ConditionSeeder::class); // 💡 追加
+        $this->seed(ConditionSeeder::class);
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -47,7 +47,7 @@ class ItemListTest extends TestCase
 
     public function test_user_items_are_not_displayed()
     {
-        $this->seed(ConditionSeeder::class); // 💡 追加
+        $this->seed(ConditionSeeder::class);
         $user = User::factory()->create();
         $this->actingAs($user);
 

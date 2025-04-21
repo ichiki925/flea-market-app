@@ -32,14 +32,14 @@ class ErrorMessageTest extends TestCase
             'item_id' => $item->id,
         ]);
 
-        // エラーメッセージがセッションに格納されてビューに表示されるかチェック
+
         $response = $this->actingAs($buyer)->from(route('chat.show', $item->id))
             ->post(route('rating.submit', $item->id), []);
 
-        // リダイレクト先のページにエラーメッセージが含まれていることを確認
+
         $response->assertRedirect(route('chat.show', $item->id));
 
         $response = $this->get(route('chat.show', $item->id));
-        $response->assertSee('rating', false); // false = HTMLエスケープなしで確認
+        $response->assertSee('rating', false);
     }
 }

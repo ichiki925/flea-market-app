@@ -35,11 +35,10 @@ class ItemPurchaseTest extends TestCase
 
         $response->assertStatus(302);
 
-        // ✅ ここを buyer → seller に修正！
         $this->assertDatabaseHas('sold_items', [
             'item_id' => $item->id,
-            'user_id' => $seller->id, // ← 出品者
-            'buyer_id' => $buyer->id, // ← 購入者（必要ならチェック追加）
+            'user_id' => $seller->id,
+            'buyer_id' => $buyer->id,
             'payment_method' => 'card',
         ]);
 
@@ -55,7 +54,6 @@ class ItemPurchaseTest extends TestCase
         $item = Item::factory()->create(['status' => 'available', 'user_id' => User::factory()->create()->id]);
 
 
-        // ユーザープロフィールの作成が必要ならここで追加
         $user->profile()->create([
             'postcode' => '106-0032',
             'address' => '東京都港区六本木1-1-1',
@@ -65,15 +63,11 @@ class ItemPurchaseTest extends TestCase
         $this->actingAs($user);
 
         $response = $this->post(route('purchase.store', ['item_id' => $item->id]), [
-            'payment_method' => 'コンビニ払い', // ← ここがポイント
+            'payment_method' => 'コンビニ払い',
         ]);
 
-        // Stripeのリダイレクトがある場合は 302 でOK
         $response->assertStatus(302);
 
-        // 仮に決済後に paymentSuccess が呼ばれるなら、下記の確認はそちらのテストで実施
-        // DBにレコードが保存されたか確認（実際は paymentSuccess 内で行われる）
-        // なのでここでは assertDatabaseHas は不要なこともあります
     }
 
 

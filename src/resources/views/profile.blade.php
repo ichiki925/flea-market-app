@@ -64,8 +64,8 @@
         if (file) {
             const preview = document.getElementById('profile-preview');
             if (preview) {
-                preview.src = URL.createObjectURL(file); // 選択された画像をプレビュー
-                preview.style.display = 'block'; // プレビューを表示
+                preview.src = URL.createObjectURL(file);
+                preview.style.display = 'block';
             }
         }
     });

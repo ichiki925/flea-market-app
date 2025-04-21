@@ -56,13 +56,11 @@
 .star {
     font-size: 24px;
     color: #ccc;
-    /* 灰色：未評価 */
     margin-right: 2px;
 }
 
 .star.filled {
     color: #f7d23b;
-    /* 黄色：評価済み */
 }
 
 .file-label {
@@ -95,7 +93,6 @@ a {
     flex-direction: column;
 }
 
-/* タブ */
 
 
 .tabs-container {

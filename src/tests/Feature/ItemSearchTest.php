@@ -18,7 +18,7 @@ class ItemSearchTest extends TestCase
     {
         parent::setUp();
 
-        // 一意制約エラーを防ぐ
+
         $this->seed(ConditionSeeder::class);
     }
 
@@ -38,22 +38,22 @@ class ItemSearchTest extends TestCase
         $response->assertDontSee('AnotherProduct');
     }
 
-    // public function test_search_state_is_retained_in_mylist_tab()
-    // {
-    //     $user = User::factory()->create();
-    //     $item = Item::factory()->create(['name' => 'FavoriteProduct']);
+    public function test_search_state_is_retained_in_mylist_tab()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create(['name' => 'FavoriteProduct']);
 
-    //     $user->likes()->create([
-    //         'item_id' => $item->id
-    //     ]);
+        $user->likes()->create([
+            'item_id' => $item->id
+        ]);
 
-    //     $this->actingAs($user);
+        $this->actingAs($user);
 
-    //     $response = $this->get('/mylist?tab=mylist&search=Favorite');
+        $response = $this->get('/mylist?tab=mylist&search=Favorite');
 
-    //     $response->assertStatus(200);
+        $response->assertStatus(200);
 
-    //     $response->assertSee('FavoriteProduct');
-    // }
+        $response->assertSee('FavoriteProduct');
+    }
 
 }

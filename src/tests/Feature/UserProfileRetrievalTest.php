@@ -51,8 +51,8 @@ class UserProfileRetrievalTest extends TestCase
         foreach ($purchasedItems as $item) {
             \App\Models\SoldItem::create([
                 'item_id' => $item->id,
-                'user_id' => $item->user_id, // 出品者
-                'buyer_id' => $user->id,      // 購入者
+                'user_id' => $item->user_id,
+                'buyer_id' => $user->id,
                 'sending_address' => 'テスト住所',
                 'sending_building' => 'テスト建物名',
                 'sending_postcode' => '123-4567',

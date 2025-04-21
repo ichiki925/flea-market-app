@@ -19,9 +19,7 @@ class MyPageController extends Controller
         $user = Auth::user();
         $tab = $request->input('tab', 'sell');
 
-        
 
-        // 商品取得
         if ($tab === 'sell') {
             $items = $user->items()->get();
         } elseif ($tab === 'purchase') {
@@ -38,15 +36,12 @@ class MyPageController extends Controller
         }
 
 
-
-
-        // 未読件数を取得
         $unreadCounts = $this->getUnreadCounts($user);
 
         return view('mypage', [
             'tab' => $tab,
             'items' => $items,
-            'unreadCounts' => $unreadCounts,  // getUnreadCountsから取得した未読件数を渡す
+            'unreadCounts' => $unreadCounts,
         ]);
     }
 
@@ -55,12 +50,12 @@ class MyPageController extends Controller
     {
         $user = auth()->user();
 
-        // 購入した商品を取得する（buyer_idに基づいてフィルタリング）
+
         $items = Item::whereHas('soldItems', function ($query) use ($user) {
-            $query->where('buyer_id', $user->id); // 購入者がユーザーであるアイテムを取得
+            $query->where('buyer_id', $user->id);
         })->get();
 
-        // 未読メッセージ数を取得
+
         $unreadCounts = $this->getUnreadCounts($user);
 
         $tradingCount = \App\Models\Item::where('status', 'trading')
@@ -83,7 +78,7 @@ class MyPageController extends Controller
     {
         $user = auth()->user();
 
-        $items = Item::where('status', 'trading') // ←追加！
+        $items = Item::where('status', 'trading')
             ->whereHas('soldItems', function ($query) use ($user) {
                 $query->where('buyer_id', $user->id)
                     ->orWhere('user_id', $user->id);
@@ -123,18 +118,18 @@ class MyPageController extends Controller
         $user = auth()->user();
         $validated = $request->validated();
 
-        // ユーザー名などはusersテーブルに
+
         $user->name = $validated['name'];
         $user->save();
 
-        // 画像保存
+
         if ($request->hasFile('profile_image')) {
             $path = $request->file('profile_image')->store('profiles', 'public');
         } else {
             $path = null;
         }
 
-        // Profileテーブルに保存
+
         $user->profile()->create([
             'img_url' => $path,
             'postcode' => $validated['postcode'],
@@ -217,7 +212,7 @@ class MyPageController extends Controller
 
     private function getUnreadCounts($user)
     {
-        $items = Item::where('status', 'trading') // ←追加
+        $items = Item::where('status', 'trading')
             ->whereHas('soldItems', function ($query) use ($user) {
                 $query->where('buyer_id', $user->id)
                     ->orWhere('user_id', $user->id);
@@ -228,10 +223,9 @@ class MyPageController extends Controller
         $unreadCounts = [];
 
         foreach ($items as $item) {
-            // 未読メッセージ数を数える
             $unreadCounts[$item->id] = ChatMessage::where('item_id', $item->id)
                 ->whereNull('read_at')
-                ->where('user_id', '!=', $user->id) // 他のユーザーのメッセージを未読とカウント
+                ->where('user_id', '!=', $user->id)
                 ->count();
         }
 
@@ -240,17 +234,16 @@ class MyPageController extends Controller
 
     public function showProfile()
     {
-        $user = auth()->user();  // 現在ログインしているユーザーを取得
+        $user = auth()->user();
 
-        // 出品者のレビューを取得
+
         $reviews = Review::where('reviewee_id', $user->id)->get();
-        $averageRating = $reviews->avg('rating'); // 平均評価を計算
+        $averageRating = $reviews->avg('rating');
 
-        // マイページのビューにデータを渡す
         return view('mypage', [
             'user' => $user,
             'reviews' => $reviews,
-            'averageRating' => round($averageRating, 1) // 平均評価を表示
+            'averageRating' => round($averageRating, 1)
         ]);
     }
 

@@ -18,24 +18,12 @@
 
 
 
-.user-icon img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: auto;
-    background-color: #f0f0f0;;
-
-}
-
 .sidebar-title {
     font-weight: bold;
     font-size: 25px;
     margin: 10px 0;
 
 }
-
-
 
 .sidebar ul {
     list-style: none;
@@ -48,7 +36,6 @@
 
 .sidebar a {
     display: block;
-    /* background-color: #f1f1f1; */
     color: #333;
     padding: 8px 12px;
     border-radius: 5px;
@@ -59,8 +46,6 @@
 .sidebar a:hover {
     background-color: #e0e0e0;
 }
-
-
 
 .sidebar-items {
     display: flex;
@@ -83,8 +68,6 @@
     background: #ddd;
 }
 
-
-
 .chat-main {
     flex: 1;
     padding: 20px;
@@ -106,15 +89,11 @@
     margin-right: -20px;
 }
 
-
-
 .user-info {
     display: flex;
     align-items: center;
     gap: 10px;
-    
 }
-
 
 .user-icon {
     width: 60px;
@@ -122,7 +101,6 @@
     border-radius: 50%;
     overflow: hidden;
     background-color: #ccc;
-    
 }
 
 .user-icon img {
@@ -131,6 +109,7 @@
     object-fit: cover;
     text-indent: -9999px;
 }
+
 
 .item-info {
     display: flex;
@@ -143,15 +122,11 @@
     margin-right: -20px;
 }
 
-
-
 .chat-header h3 {
     font-size: 27px;
     margin: 0;
     padding: 0;
 }
-
-
 
 .item-image {
     width: 150px;
@@ -170,7 +145,6 @@
     margin: 0 0 10px;
 }
 
-
 .complete-button {
     background-color: #f06262;
     color: white;
@@ -182,13 +156,11 @@
     cursor: pointer;
 }
 
-
 .chat-messages {
     flex: 1;
     overflow-y: auto;
     margin-bottom: 10px;
 }
-
 
 .chat-message {
     padding-top: 20px;
@@ -198,7 +170,6 @@
     gap: 10px;
 }
 
-
 .message-icon {
     width: 50px;
     height: 50px;
@@ -207,7 +178,6 @@
     background-color: #ddd;
 }
 
-/* 共通の吹き出し部分 */
 .message-text {
     padding: 10px;
     border-radius: 3px;
@@ -217,10 +187,8 @@
     max-width: 70%;
     border: none;
     text-align: left;
-
 }
 
-/* 相手のメッセージ（左） */
 .chat-message.other {
     align-items: flex-start;
     text-align: left;
@@ -232,9 +200,6 @@
     gap: 20px;
 }
 
-
-
-/* 自分のメッセージ（右） */
 .chat-message.mine {
     align-items: flex-end;
     text-align: right;
@@ -246,7 +211,6 @@
     gap: 20px;
     flex-direction: row-reverse;
 }
-
 
 .message-actions {
     font-size: 12px;
@@ -265,7 +229,6 @@
     cursor: pointer;
     transition: 0.2s;
 }
-
 
 .message-actions form {
     display: inline;
@@ -344,12 +307,9 @@
 
 .send-button .send-icon {
     width: 60px;
-    /* お好みで調整 */
     height: 80px;
     object-fit: contain;
 }
-
-
 
 .error-message {
     color: red;
@@ -378,12 +338,10 @@
     align-items: center;
 }
 
-/* オーバーレイ背景 */
 .modal-overlay {
     display: none;
 }
 
-/* モーダル本体 */
 .modal__inner {
     background: #fefde9;
     padding: 20px 40px;
@@ -397,28 +355,24 @@
     left: calc(-50vw + 50% + 110px);
 }
 
-/* タイトル */
 .modal__title {
     font-size: 25px;
     font-weight: bold;
     margin: 0;
 }
 
-/* 区切り線 */
 .modal__divider {
     margin: 20px -40px;
     border: none;
     border-top: 1px solid;
 }
 
-/* サブテキスト */
 .modal__text {
     color: #666;
     font-size: 16px;
     margin-bottom: 20px;
 }
 
-/* 星評価 */
 .rating-stars {
     direction: rtl;
     unicode-bidi: bidi-override;
@@ -438,17 +392,15 @@
     transition: color 0.2s;
 }
 
-/* クリック後に光る星 */
 .rating-stars input[type="radio"]:checked~label {
     color: gold;
 }
 
-/* ホバー時にも光る星 */
 .rating-stars label:hover,
 .rating-stars label:hover~label {
     color: gold;
 }
-/* 送信ボタン右下に */
+
 .submit-area {
     text-align: right;
     margin-top: 20px;
@@ -466,7 +418,83 @@
 }
 
 
+@media (max-width: 850px) and (min-width: 768px) {
 
+    .sidebar-title {
+        font-size: 17px;
+        margin: 10px 0;
+    }
+
+    .sidebar a {
+        padding: 5px 5px;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+
+    .sidebar-item {
+        padding: 5px 5px;
+    }
+
+    .sidebar {
+        width: 180px;
+    }
+
+    .chat-main {
+        flex: 0.9;
+    }
+
+    .user-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .chat-header h3 {
+        font-size: 17px;
+    }
+
+    .complete-button {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    .chat-header-top {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .message-text {
+        font-size: 12px;
+    }
+
+    .item-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .item-text h2 {
+        font-size: 25px;
+    }
+
+    .item-text p {
+        font-size: 20px;
+    }
+
+    .modal__inner {
+        padding: 10px 20px;
+        border-radius: 12px;
+        width: 400px;
+        left: calc(-60vw + 50% + 100px);
+    }
+
+    .modal__title {
+        font-size: 25px;
+    }
+
+    .modal__divider {
+        margin: 20px -20px;
+    }
+
+}
 
 
 

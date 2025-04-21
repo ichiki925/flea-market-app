@@ -62,7 +62,6 @@
                             <div class="item-image">
                                 <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
 
-                                {{-- 未読件数があれば表示 --}}
                                 @if (!empty($unreadCounts[$item->id]) && $unreadCounts[$item->id] > 0)
                                     <span class="unread-badge">{{ $unreadCounts[$item->id] }}</span>
                                 @endif

@@ -31,13 +31,13 @@
 
 .image-placeholder {
     width: 450px;
-        height: 450px;
-        background-color: #e8e8e8;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.2rem;
-        color: #666;
+    height: 450px;
+    background-color: #e8e8e8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #666;
 }
 
 .price {
@@ -149,7 +149,6 @@
     font-size: 14px;
     padding: 2px 25px;
 }
-
 
 .comment-header {
     display: flex;

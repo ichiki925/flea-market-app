@@ -24,30 +24,27 @@ class TradeChatTest extends TestCase
             'building' => 'テストビル',
         ]);
 
-        // 🟡 パートナー（チャットの相手）を作成
         $partner = User::factory()->create(['email_verified_at' => now()]);
         Profile::factory()->create([
             'user_id' => $partner->id,
             'postcode' => '987-6543',
             'address' => '別の市',
             'building' => '別のビル',
-            'img_url' => 'dummy.jpg', // テスト用画像（public/storage/dummy.jpg があればOK）
+            'img_url' => 'dummy.jpg',
         ]);
 
-        // ユーザーが出品した商品
         $item = Item::factory()->create(['user_id' => $user->id]);
 
         SoldItem::factory()->create([
             'item_id' => $item->id,
-            'user_id' => $user->id,     // 出品者
-            'buyer_id' => $partner->id, // 購入者
+            'user_id' => $user->id,
+            'buyer_id' => $partner->id,
             'payment_method' => 'card',
             'sending_postcode' => $partner->profile->postcode,
             'sending_address' => $partner->profile->address,
             'sending_building' => $partner->profile->building,
         ]);
 
-        // 相手が送信したメッセージ
         ChatMessage::factory()->create([
             'item_id' => $item->id,
             'user_id' => $partner->id,
@@ -63,7 +60,6 @@ class TradeChatTest extends TestCase
 
     public function test_guest_cannot_view_trade_chat()
     {
-        // 👇 これを追加！
         $item = Item::factory()->create();
 
         $response = $this->get(route('chat.show', ['item' => $item->id]));

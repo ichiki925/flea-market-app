@@ -82,13 +82,12 @@
 </main>
 
 <script>
-    // 動的画像プレビューの設定
     document.getElementById('item-image').addEventListener('change', function (event) {
-        const [file] = event.target.files; // 選択されたファイルを取得
+        const [file] = event.target.files;
         if (file) {
             const preview = document.querySelector('.preview-image');
-            preview.src = URL.createObjectURL(file); // プレビュー用にファイルのURLを生成
-            preview.style.display = 'block'; // プレビューを表示
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
         }
     });
 </script>

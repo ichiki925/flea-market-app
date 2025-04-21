@@ -9,7 +9,7 @@ class CategoryItem extends Model
 {
     use HasFactory;
 
-    public $incrementing = false; // 主キーが自動増分ではない
+    public $incrementing = false;
 
     protected $fillable = [
         'category_id',

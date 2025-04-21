@@ -17,10 +17,9 @@ class ChatController extends Controller
     {
         $user = Auth::user();
 
-        // ✅ 未読メッセージを既読にする
         ChatMessage::where('item_id', $item->id)
-            ->where('user_id', '!=', $user->id) // 自分以外が送った
-            ->whereNull('read_at')             // 未読のみ
+            ->where('user_id', '!=', $user->id)
+            ->whereNull('read_at')
             ->update(['read_at' => now()]);
 
         $messages = $item->chatMessages()->with('user.profile')->get();
@@ -40,7 +39,7 @@ class ChatController extends Controller
         }
 
         // サイドバー用
-        $myItems = Item::where('status', 'trading') // ← ここ追加！
+        $myItems = Item::where('status', 'trading')
             ->where(function ($query) use ($user) {
                 $query->where('user_id', $user->id)
                     ->orWhereHas('soldItems', function ($q) use ($user) {
@@ -63,7 +62,6 @@ class ChatController extends Controller
 
         $isEditMode = false;
 
-        // 編集モード時のメッセージ取得
         if (request()->routeIs('chat.edit') && $message = ChatMessage::find(request()->route('message'))) {
             $isEditMode = true;
         }

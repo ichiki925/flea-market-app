@@ -1,4 +1,4 @@
-/* リセット */
+
 body,
 h1,
 p,
@@ -18,7 +18,6 @@ body {
     width: 100%;
 }
 
-/* 全体の設定 */
 body {
     font-family: Arial, sans-serif;
     background-color: #fff;
@@ -26,14 +25,9 @@ body {
     line-height: 1.6;
 }
 
-
-/* メイン */
 .main {
     padding: 0px;
 }
-
-/* タブ */
-
 
 .tabs-container {
     margin-top: 10px;

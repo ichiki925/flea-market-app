@@ -1,4 +1,4 @@
-/* リセット */
+
 body,
 h1,
 p,
@@ -18,7 +18,6 @@ body {
     width: 100%;
 }
 
-/* 全体の設定 */
 body {
     font-family: Arial, sans-serif;
     background-color: #fff;
@@ -26,7 +25,6 @@ body {
     line-height: 1.6;
 }
 
-/* ヘッダー */
 .header {
     background-color: #000;
     color: #fff;
@@ -98,6 +96,7 @@ body {
     text-decoration: none;
     text-align: center;
 }
+
 @media (max-width: 850px) and (min-width: 768px) {
     .header .logo img {
             max-height: 23px;
@@ -107,38 +106,31 @@ body {
 
     .header {
         flex-direction: row;
-        /* 横並びを明示 */
         height: auto;
         padding: 5px;
     }
 
     .container {
         flex-direction: row;
-        /* 横並びに調整 */
         align-items: center;
         justify-content: space-between;
-        /* 子要素を均等に配置 */
     }
 
     .search-form input {
         width: 100%;
-        /* 検索フォームの幅を調整 */
     }
 
     .nav {
         justify-content: flex-end;
-        /* ナビゲーションを右揃え */
         gap: 10px;
     }
 
     #logout-form button {
         font-size: 13px;
-        /* ボタンのフォントサイズ */
     }
 
     .nav a {
         font-size: 13px;
-        /* ナビゲーションリンクのフォントサイズ */
     }
 
     .nav .sell-btn {

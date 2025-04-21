@@ -33,7 +33,7 @@ class ValidationTest extends TestCase
         ]);
 
         $response = $this->actingAs($buyer)->post(route('rating.submit', $item->id), [
-            // 'rating' => 5, // あえて送らない
+
         ]);
 
         $response->assertSessionHasErrors(['rating']);
@@ -59,7 +59,7 @@ class ValidationTest extends TestCase
         ]);
 
         $response = $this->actingAs($buyer)->post(route('rating.submit', $item->id), [
-            'rating' => 0, // 無効値
+            'rating' => 0,
         ]);
 
         $response->assertSessionHasErrors(['rating']);

@@ -7,7 +7,6 @@
 @section('content')
 
     <main class="main">
-        <!-- タブ -->
         <div class="tabs-container">
             <div class="tabs">
                 <a href="{{ route('index', ['search' => request('search')]) }}"
@@ -21,7 +20,6 @@
             </div>
         </div>
 
-        <!-- 商品一覧 -->
         <div class="item-list grid-container">
             @if(request('tab') === 'mylist')
             @if(auth()->check())

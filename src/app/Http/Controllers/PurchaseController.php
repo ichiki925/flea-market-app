@@ -96,23 +96,23 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
 
-        // 商品が既に購入済みでないか確認
+
         if ($item->status === 'sold' || SoldItem::where('item_id', $item->id)->exists()) {
             return redirect()->route('mypage')->with('error', 'この商品は既に売れています。');
         }
 
-        // SoldItemを作成する
+
         SoldItem::create([
             'item_id' => $item->id,
-            'user_id' => $item->user_id, // 出品者
-            'buyer_id' => $user->id,    // 現在ログインしている購入者
+            'user_id' => $item->user_id,
+            'buyer_id' => $user->id,
             'sending_postcode' => $user->profile->postcode,
             'sending_address' => $user->profile->address,
             'sending_building' => $user->profile->building,
             'payment_method' => 'card',
         ]);
 
-        // 商品のステータスを'sold'に更新
+
         $item->update(['status' => 'trading']);
 
         return redirect()->route('mypage', ['tab' => 'purchase'])->with('success', '購入が完了しました！');

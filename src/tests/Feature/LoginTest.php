@@ -61,13 +61,11 @@ class LoginTest extends TestCase
             'email_verified_at' => now(),
         ]);
 
-        $this->actingAs($user); // ← これを追加することでログイン状態に！
+        $this->actingAs($user);
 
-        $response = $this->get('/?page=mylist'); // ← 遷移先のページにアクセス
+        $response = $this->get('/?page=mylist');
 
-        $response->assertStatus(200); // 表示されることを確認
+        $response->assertStatus(200);
     }
-
-
 
 }

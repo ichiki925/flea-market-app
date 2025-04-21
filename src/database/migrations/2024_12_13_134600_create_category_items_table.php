@@ -14,7 +14,7 @@ class CreateCategoryItemsTable extends Migration
             $table->foreignId('item_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
-            $table->primary(['category_id', 'item_id']); // IDカラム不要で複合PKでもOK
+            $table->primary(['category_id', 'item_id']);
         });
     }
 

@@ -17,7 +17,7 @@ class ItemRegistrationTest extends TestCase
 
     public function test_item_registration_saves_data_correctly()
     {
-        Condition::query()->delete(); 
+        Condition::query()->delete();
 
         $user = User::factory()->create();
         $category1 = Category::factory()->create();

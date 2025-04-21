@@ -51,7 +51,7 @@ class AddressChangeTest extends TestCase
     public function test_purchased_item_is_registered_with_delivery_address()
     {
         $buyer = User::factory()->create();
-        $seller = User::factory()->create(); // 出品者
+        $seller = User::factory()->create();
 
         Profile::factory()->create([
             'user_id' => $buyer->id,
@@ -62,7 +62,7 @@ class AddressChangeTest extends TestCase
 
         $item = Item::factory()->create([
             'status' => 'available',
-            'user_id' => $seller->id, // 出品者を明示
+            'user_id' => $seller->id,
         ]);
 
         $this->actingAs($buyer);
@@ -74,8 +74,8 @@ class AddressChangeTest extends TestCase
 
         $this->assertDatabaseHas('sold_items', [
             'item_id' => $item->id,
-            'user_id' => $seller->id,              // ← 出品者
-            'buyer_id' => $buyer->id,              // ← 購入者
+            'user_id' => $seller->id,
+            'buyer_id' => $buyer->id,
             'sending_postcode' => '123-4567',
             'sending_address' => '登録住所',
             'sending_building' => '登録建物名',

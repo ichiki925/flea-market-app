@@ -23,7 +23,6 @@
 
 <main class="chat-main">
 
-    {{-- 商品情報 --}}
     <div class="chat-header">
         <div class="chat-header-top">
             <div class="user-info">
@@ -46,7 +45,6 @@
         </div>
     </div>
 
-    {{-- メッセージ表示 --}}
     <div class="chat-messages">
             @foreach ($messages as $msg)
                 @php
@@ -104,7 +102,6 @@
             <div id="preview-container"></div>
         </div>
 
-        {{-- バリデーションエラー表示 --}}
         @if ($errors->any())
             <div class="error-messages">
                 @foreach ($errors->all() as $error)
@@ -113,7 +110,6 @@
             </div>
         @endif
 
-        {{-- 通常の送信フォーム（編集モードでないときだけ） --}}
         @if (!isset($message))
         <form class="chat-form {{ $isEditMode ? 'is-edit' : '' }}"
         method="POST"
@@ -134,7 +130,7 @@
     </main>
 </div>
 
-{{-- モーダル（評価用） --}}
+
 <div class="modal" id="rating-modal">
     <a href="#!" class="modal-overlay"></a>
     <div class="modal__inner">
@@ -163,7 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileInput = document.querySelector('input[name="image"]');
     const textInput = document.querySelector('input[name="message"]');
 
-    // テキスト入力時にエンターで仮メッセージを出す（送信前プレビュー）
     textInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -185,7 +180,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 画像選択時に仮の画像吹き出しを追加
     fileInput.addEventListener('change', function () {
         const file = this.files[0];
         if (!file) return;

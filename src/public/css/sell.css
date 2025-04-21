@@ -32,10 +32,8 @@ form section {
 }
 
 h2 {
-
     color: #777;
     margin-bottom: 0;
-
 }
 
 hr {
@@ -67,12 +65,10 @@ label {
 }
 
 
-/* ラジオボタンを隠す */
 .category-checkbox {
     display: none;
 }
 
-/* ラベルのスタイル */
 .category-label {
     display: inline-block;
     background-color: white;
@@ -86,19 +82,16 @@ label {
     font-weight: lighter;
 }
 
-/* 選択されたときのスタイル */
 .category-checkbox:checked+.category-label {
     background-color: #f77;
     color: white;
     border-color: #f77;
 }
 
-
 .custom-select-wrapper {
     position: relative;
     display: inline-block;
     width: 100%;
-
 }
 
 .custom-select {

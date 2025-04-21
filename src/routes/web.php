@@ -26,18 +26,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify', function () {
         return view('auth.verify-email');
     })->name('verification.notice');
-
     Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
         return redirect('/mypage/profile');
     })->middleware(['signed'])->name('verification.verify');
-
     Route::post('/email/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
         return back()->with('message', '認証メールを再送しました');
     })->middleware(['throttle:6,1'])->name('verification.send');
 
-    // マイページ関係
+    // マイページ
     Route::get('/mypage', [MyPageController::class, 'index'])->name('mypage');
     Route::get('/mypage/purchases', [MyPageController::class, 'purchases'])->name('mypage.purchases');
     Route::get('/mypage/trading', [MyPageController::class, 'trading'])->name('mypage.trading');
@@ -64,12 +62,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chat/{item}/complete', [ChatController::class, 'complete'])->name('chat.complete');
     Route::post('/review/{item_id}', [ChatController::class, 'submitReview'])->name('review.submit');
     Route::post('/chat/complete/{item}', [ChatController::class, 'completeTransaction'])->name('chat.completeTransaction');
-
-    // 編集フォーム表示（再入力用）
     Route::get('/chat/message/{message}/edit', [ChatController::class, 'edit'])->name('chat.edit');
-    // 更新処理（再送信）
     Route::put('/chat/message/{message}', [ChatController::class, 'update'])->name('chat.update');
-    // メッセージの削除
     Route::delete('/chat/message/{message}', [ChatController::class, 'destroy'])->name('chat.destroy');
 
     // マイリスト・コメント・いいね
@@ -77,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/likes/toggle/{itemId}', [LikeController::class, 'toggleLike'])->name('likes.toggle');
     Route::post('/comments', [ItemController::class, 'storeComment'])->name('comments.store');
 
-    // 購入系
+    // 購入
     Route::prefix('purchase')->group(function () {
         Route::get('/{item_id}', [PurchaseController::class, 'show'])->name('purchase.show');
         Route::post('/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');

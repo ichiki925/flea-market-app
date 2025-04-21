@@ -13,7 +13,7 @@ class LikeFeatureTest extends TestCase
 {
     use RefreshDatabase;
 
-    // CSRFミドルウェアを無効化する
+
     protected bool $disableCsrfMiddleware = true;
 
     protected function setUp(): void
@@ -25,11 +25,11 @@ class LikeFeatureTest extends TestCase
     public function testToggleLikeForAuthenticatedUser()
     {
         $user = User::factory()->create([
-            'email_verified_at' => now(), // 必須
+            'email_verified_at' => now(),
         ]);
 
         $this->actingAs($user);
-        $this->assertAuthenticatedAs($user); // 追加！
+        $this->assertAuthenticatedAs($user);
 
         $item = Item::factory()->create();
 
@@ -44,7 +44,7 @@ class LikeFeatureTest extends TestCase
     {
         $item = \App\Models\Item::factory()->create();
 
-        // 認証なしでいいねを試みる
+
         $response = $this->postJson("/likes/toggle/{$item->id}");
         $response->assertStatus(401)
                 ->assertJson(['message' => 'Unauthenticated.']);

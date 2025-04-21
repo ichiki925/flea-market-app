@@ -18,7 +18,7 @@ class ItemDetailTest extends TestCase
 
     public function test_item_detail_displays_required_information()
     {
-        Condition::query()->delete(); 
+        Condition::query()->delete();
 
         $user = User::factory()->create();
         $category = Category::factory()->create(['category' => 'Electronics']);

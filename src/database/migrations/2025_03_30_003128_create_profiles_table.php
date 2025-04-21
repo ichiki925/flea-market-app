@@ -12,7 +12,7 @@ class CreateProfilesTable extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->unique();
-            $table->string('img_url', 255)->nullable(); // 画像は任意でOK
+            $table->string('img_url', 255)->nullable();
             $table->string('postcode', 255);
             $table->string('address', 255);
             $table->string('building', 255)->nullable();
