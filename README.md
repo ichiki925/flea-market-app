@@ -118,7 +118,7 @@ password: password3
 ```
 docker-compose exec mysql bash
 mysql -u root -p
-CREATE DATABASE test_database;
+CREATE DATABASE demo_test;
 exit
 exit
 

@@ -52,7 +52,7 @@ class PurchaseController extends Controller
             return back()->withErrors(['payment_method' => '支払い方法を選択してください。']);
         }
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         try {
             $sessionData = [

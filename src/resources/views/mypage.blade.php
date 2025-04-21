@@ -61,6 +61,9 @@
                         <a href="{{ route('chat.show', $item->id) }}">
                             <div class="item-image">
                                 <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
+                                @if(in_array($item->status, ['sold', 'trading']))
+                                    <div class="item-status">Sold</div>
+                                @endif
 
                                 @if (!empty($unreadCounts[$item->id]) && $unreadCounts[$item->id] > 0)
                                     <span class="unread-badge">{{ $unreadCounts[$item->id] }}</span>

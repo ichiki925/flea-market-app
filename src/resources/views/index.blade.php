@@ -28,7 +28,7 @@
                     <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                         <div class="item-image">
                             <img src="{{ asset('storage/' . $item->img_url) }}" alt="商品画像：{{ $item->name }}" loading="lazy">
-                            @if($item->status === 'sold')
+                            @if(in_array($item->status, ['sold', 'trading']))
                                 <div class="item-status">Sold</div>
                             @endif
                         </div>
@@ -49,7 +49,7 @@
                         <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                             <div class="item-image">
                                 <img src="{{ asset('storage/' . $item->img_url) }}" alt="商品画像：{{ $item->name }}" loading="lazy">
-                                @if($item->status === 'sold')
+                                @if(in_array($item->status, ['sold', 'trading']))
                                     <div class="item-status">Sold</div>
                                 @endif
                             </div>

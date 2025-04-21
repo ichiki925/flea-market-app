@@ -31,25 +31,18 @@
         @if(auth()->check() && $items->isNotEmpty())
             @foreach ($items as $item)
             <div class="item">
-                @if($item->status !== 'sold')
-                    <a href="{{ route('item.detail', ['id' => $item->id]) }}">
-                        <div class="item-image">
-                            <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
-                        </div>
-                        <div class="item-name">{{ $item->name }}</div>
-                    </a>
-                @else
+                <a href="{{ route('item.detail', ['id' => $item->id]) }}">
                     <div class="item-image">
                         <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
+                        @if(in_array($item->status, ['sold', 'trading']))
+                            <div class="item-status">Sold</div>
+                        @endif
                     </div>
                     <div class="item-name">{{ $item->name }}</div>
-                    <div class="item-status">Sold</div>
-                @endif
+                </a>
             </div>
             @endforeach
         @endif
-
-
     </div>
 </main>
 
