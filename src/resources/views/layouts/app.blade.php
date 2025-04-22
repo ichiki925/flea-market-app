@@ -22,6 +22,7 @@
             </div>
             <form class="search-form" action="{{ route('mylist') }}" method="GET">
                 <input type="text" name="search" placeholder="なにをお探しですか？" value="{{ request('search') }}">
+                <input type="hidden" name="tab" value="{{ request('tab', 'index') }}">
             </form>
             <nav class="nav">
                 <form id="logout-form" action="{{ route('logout') }}" method="POST">

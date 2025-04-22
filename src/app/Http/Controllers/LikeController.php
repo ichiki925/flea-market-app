@@ -11,12 +11,15 @@ class LikeController extends Controller
     {
         $user = auth()->user();
 
-        $like = Like::where('item_id', $itemId)
-                    ->where('user_id', $user->id)
-                    ->first();
+        // 明示的に where 条件で削除（$like->delete()は使わない）
+        $existing = Like::where('item_id', $itemId)
+                        ->where('user_id', $user->id)
+                        ->first();
 
-        if ($like) {
-            $like->delete();
+        if ($existing) {
+            Like::where('item_id', $itemId)
+                ->where('user_id', $user->id)
+                ->delete(); // ← これなら OK！
 
             if (request()->expectsJson()) {
                 return response()->json(['status' => 'unliked'], 200);

@@ -18,7 +18,7 @@ class ItemFactory extends Factory
         return [
             'user_id' => User::factory(),
             'condition_id' => $condition->id,
-            'name' => $this->faker->word(),
+            'name' => $this->faker->lexify('商品名????'),
             'price' => $this->faker->numberBetween(1000, 10000),
             'brand' => $this->faker->company(),
             'description' => $this->faker->sentence(),

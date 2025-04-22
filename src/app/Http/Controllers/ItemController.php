@@ -14,9 +14,17 @@ class ItemController extends Controller
     {
         $search = $request->input('search');
 
-        $items = Item::when($search, function ($query, $search) {
-            return $query->where('name', 'like', '%' . $search . '%');
-        })->get();
+        $itemsQuery = Item::query();
+
+        if (auth()->check()) {
+            $itemsQuery->where('user_id', '!=', auth()->id());
+        }
+
+        if ($search) {
+            $itemsQuery->where('name', 'like', '%' . $search . '%');
+        }
+
+        $items = $itemsQuery->get();
 
         $layout = auth()->check() ? 'layouts.app' : 'layouts.guest';
 
@@ -27,7 +35,8 @@ class ItemController extends Controller
     {
         $user = auth()->user();
         $search = $request->input('search');
-        $tab = $request->input('tab', $request->has('search') ? 'index' : 'mylist');
+        $tab = $request->input('tab') ?? 'mylist';
+
 
 
         $itemsQuery = Item::query();
@@ -35,20 +44,22 @@ class ItemController extends Controller
         if ($tab === 'mylist') {
             $itemsQuery->whereHas('likes', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })
-            ->orWhere(function ($query) use ($search) {
-                $query->where('status', 'sold')
-                        ->when($search, function ($query, $search) {
-                            return $query->where('name', 'like', '%' . $search . '%');
-                        });
-            });
-        } else {
+            })->where('user_id', '!=', $user->id);
+
+            if ($search) {
+                $itemsQuery->where('name', 'like', '%' . $search . '%');
+            }
+        } elseif ($tab === 'index') {
             $itemsQuery->when($search, function ($query, $search) {
                 return $query->where('name', 'like', '%' . $search . '%');
             });
 
-            if (auth()->check()) {
-                $itemsQuery->where('user_id', '!=', auth()->id());
+            if ($user) {
+                $itemsQuery->where('user_id', '!=', $user->id);
+
+                $itemsQuery->whereDoesntHave('soldItems', function ($query) use ($user) {
+                    $query->where('buyer_id', $user->id);
+                });
             }
         }
 
