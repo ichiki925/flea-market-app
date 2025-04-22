@@ -33,10 +33,12 @@ class ChatController extends Controller
             $partner = $item->user;
         } elseif ($isSeller) {
             $soldItem = $item->soldItems()->with('buyer')->first();
-            $partner = optional($soldItem)->buyer;
+            // 購入者がまだいない可能性もあるので null 安全に取得
+            $partner = $soldItem ? $soldItem->buyer : null;
         } else {
             abort(403, 'この取引に関与していません');
         }
+
 
         // サイドバー用
         $myItems = Item::where('status', 'trading')

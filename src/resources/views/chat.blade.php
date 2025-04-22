@@ -27,9 +27,17 @@
         <div class="chat-header-top">
             <div class="user-info">
                 <div class="user-icon">
-                    <img src="{{ optional($partner->profile)->img_url ? asset('storage/' . $partner->profile->img_url) : asset('images/default-placeholder.png') }}" alt="">
+                    @if ($partner && $partner->profile && $partner->profile->img_url)
+                        <img src="{{ asset('storage/' . $partner->profile->img_url) }}" alt="">
+                    @else
+                        <img src="{{ asset('images/default-placeholder.png') }}" alt="">
+                    @endif
+
                 </div>
-                <h3>「{{ $partner->name }}」さんとの取引画面</h3>
+                <h3>
+                    「{{ $partner ? $partner->name : '取引相手なし' }}」さんとの取引画面
+                </h3>
+
             </div>
             @if ($isBuyer)
                 <a href="#rating-modal" class="complete-button">取引を完了する</a>
@@ -54,12 +62,15 @@
 
                 <div class="chat-message {{ $msg->user_id === auth()->id() ? 'mine' : 'other' }}">
                     <div class="message-header">
-                        <img
-                            src="{{ optional($msg->user->profile)->img_url
-                                ? asset('storage/' . $msg->user->profile->img_url)
-                                : asset('images/default-placeholder.png') }}"
-                            class="message-icon">
-                        <span class="message-user">{{ $msg->user->name }}</span>
+                        @if ($msg->user && $msg->user->profile && $msg->user->profile->img_url)
+                            <img src="{{ asset('storage/' . $msg->user->profile->img_url) }}" class="message-icon">
+                        @else
+                            <img src="{{ asset('images/default-placeholder.png') }}" class="message-icon">
+                        @endif
+
+                        <span class="message-user">
+                            {{ $msg->user ? $msg->user->name : '不明なユーザー' }}
+                        </span>
                     </div>
 
                     @if ($isEditMode)
