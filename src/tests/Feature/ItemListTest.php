@@ -41,7 +41,26 @@ class ItemListTest extends TestCase
             'status' => 'sold',
         ]);
 
-        $response = $this->get('/mylist');
+        $response = $this->get('/mylist?tab=index');
+        $response->assertSee('Sold');
+    }
+
+    public function test_sold_item_in_mylist_is_displayed_with_sold_label()
+    {
+        $this->seed(ConditionSeeder::class);
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $item = Item::factory()->create();
+        $item->update(['status' => 'sold']);
+
+
+        \App\Models\Like::create([
+            'item_id' => $item->id,
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->get('/mylist?tab=mylist');
         $response->assertSee('Sold');
     }
 
