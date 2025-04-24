@@ -16,9 +16,18 @@ class ChatMessageRequest extends FormRequest
     public function rules()
     {
         return [
-            'message' => 'required_without:image|string|max:400',
+            'message' => 'nullable|string|max:400',
             'image' => 'nullable|image|mimes:jpeg,png',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if (!$this->filled('message') && !$this->hasFile('image')) {
+                $validator->errors()->add('message', '本文を入力してください');
+            }
+        });
     }
 
     public function messages()
@@ -27,7 +36,7 @@ class ChatMessageRequest extends FormRequest
             'message.required_without' => '本文を入力してください',
             'message.max' => '本文は400文字以内で入力してください',
             'image.image' => '画像ファイルを指定してください',
-            'image.mimes' => '".png"または".jpeg"形式でアップロードしてください',
+            'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
         ];
     }
 

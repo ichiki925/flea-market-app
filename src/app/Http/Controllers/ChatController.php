@@ -24,23 +24,30 @@ class ChatController extends Controller
 
         $messages = $item->chatMessages()->with('user.profile')->get();
 
-
-        $isBuyer = $item->soldItems()->where('buyer_id', $user->id)->exists();
+        $soldItem = $item->soldItems()->with('buyer')->first();
+        $isBuyer = $soldItem && $soldItem->buyer_id === $user->id;
         $isSeller = $item->user_id === $user->id;
-
 
         if ($isBuyer) {
             $partner = $item->user;
         } elseif ($isSeller) {
-            $soldItem = $item->soldItems()->with('buyer')->first();
-            // 購入者がまだいない可能性もあるので null 安全に取得
             $partner = $soldItem ? $soldItem->buyer : null;
         } else {
             abort(403, 'この取引に関与していません');
         }
 
 
-        // サイドバー用
+        $buyerReviewDone = $soldItem
+            ? Review::where('item_id', $item->id)
+                ->where('reviewer_id', $soldItem->buyer_id)
+                ->exists()
+            : false;
+
+        $sellerReviewDone = Review::where('item_id', $item->id)
+            ->where('reviewer_id', $user->id)
+            ->exists();
+
+        // サイドバーの商品リスト
         $myItems = Item::where('status', 'trading')
             ->where(function ($query) use ($user) {
                 $query->where('user_id', $user->id)
@@ -49,7 +56,7 @@ class ChatController extends Controller
                     });
             })
             ->with([
-                'chatMessages' => fn($q) => $q->latest(),
+                'chatMessages' => fn($q) => $q->orderBy('created_at', 'desc'),
                 'user.profile',
             ])
             ->withCount(['chatMessages as unread_count' => function ($query) use ($user) {
@@ -57,20 +64,19 @@ class ChatController extends Controller
                     ->whereNull('read_at');
             }])
             ->get()
-            ->sortByDesc(fn($item) => optional($item->chatMessages->last())->created_at);
-
-
+            ->sortByDesc(fn($item) => optional($item->chatMessages->first())->created_at);
 
 
         $isEditMode = false;
-
         if (request()->routeIs('chat.edit') && $message = ChatMessage::find(request()->route('message'))) {
             $isEditMode = true;
         }
 
-        return view('chat', compact('item', 'messages', 'isBuyer', 'isSeller', 'myItems', 'partner', 'isEditMode'));
+        return view('chat', compact(
+            'item', 'messages', 'isBuyer', 'isSeller', 'myItems', 'partner',
+            'isEditMode', 'buyerReviewDone', 'sellerReviewDone'
+        ));
     }
-
 
     public function send(ChatMessageRequest $request, Item $item)
     {
@@ -84,11 +90,16 @@ class ChatController extends Controller
             $chatMessage->image_path = $path;
         }
 
-
         $chatMessage->save();
 
-        return redirect()->route('chat.show', $item->id)->with('status', 'メッセージを送信しました');
+
+        session(['message_input' => '']);
+        return redirect()->route('chat.show', $item->id)
+                        ->with('status', 'メッセージを送信しました')
+                        ->withInput();
     }
+
+
 
     public function destroy(ChatMessage $message)
     {
@@ -146,8 +157,6 @@ class ChatController extends Controller
 
         return redirect()->route('chat.show', $message->item_id)->with('status', 'メッセージを更新しました');
     }
-
-
 
 
 

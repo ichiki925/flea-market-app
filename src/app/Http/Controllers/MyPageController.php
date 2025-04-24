@@ -23,9 +23,11 @@ class MyPageController extends Controller
         if ($tab === 'sell') {
             $items = $user->items()->get();
         } elseif ($tab === 'purchase') {
-            $items = Item::whereHas('soldItems', function ($query) use ($user) {
-                $query->where('buyer_id', $user->id);
-            })->get();
+            $items = Item::select('items.*')
+                ->join('sold_items', 'items.id', '=', 'sold_items.item_id')
+                ->where('sold_items.buyer_id', $user->id)
+                ->orderByDesc('sold_items.created_at')
+                ->get();
         } else {
             $items = Item::whereHas('soldItems', function ($query) use ($user) {
                 $query->where('buyer_id', $user->id)
@@ -51,9 +53,11 @@ class MyPageController extends Controller
         $user = auth()->user();
 
 
-        $items = Item::whereHas('soldItems', function ($query) use ($user) {
-            $query->where('buyer_id', $user->id);
-        })->get();
+        $items = Item::select('items.*')
+            ->join('sold_items', 'items.id', '=', 'sold_items.item_id')
+            ->where('sold_items.buyer_id', $user->id)
+            ->orderByDesc('sold_items.created_at')
+            ->get();
 
 
         $unreadCounts = $this->getUnreadCounts($user);
@@ -83,11 +87,16 @@ class MyPageController extends Controller
                 $query->where('buyer_id', $user->id)
                     ->orWhere('user_id', $user->id);
             })
-            ->with(['soldItems', 'chatMessages'])
+            ->with(['soldItems', 'chatMessages' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }])
             ->get();
 
-        $unreadCounts = [];
+        $items = $items->sortByDesc(function ($item) {
+            return optional($item->chatMessages->first())->created_at;
+        });
 
+        $unreadCounts = [];
         foreach ($items as $item) {
             $unreadCounts[$item->id] = \App\Models\ChatMessage::where('item_id', $item->id)
                 ->whereNull('read_at')
@@ -101,6 +110,8 @@ class MyPageController extends Controller
             'unreadCounts' => $unreadCounts,
         ]);
     }
+
+
 
 
 
