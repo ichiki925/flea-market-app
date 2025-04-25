@@ -58,20 +58,22 @@
             <div class="grid-container">
                 @foreach ($items as $item)
                     <div class="item">
-                        <a href="{{ route('chat.show', $item->id) }}">
+                        @if ($tab === 'trading')
+                            <a href="{{ route('chat.show', $item->id) }}">
+                        @endif
                             <div class="item-image">
                                 <img src="{{ asset('storage/' . $item->img_url) }}" alt="{{ $item->name }}" loading="lazy">
                                 @if(in_array($item->status, ['sold', 'trading']))
                                     <div class="item-status">Sold</div>
                                 @endif
-
-                                @if (!empty($unreadCounts[$item->id]) && $unreadCounts[$item->id] > 0)
+                                @if ($tab === 'trading' && !empty($unreadCounts[$item->id]) && $unreadCounts[$item->id] > 0)
                                     <span class="unread-badge">{{ $unreadCounts[$item->id] }}</span>
                                 @endif
-
                             </div>
                             <div class="item-name">{{ $item->name }}</div>
-                        </a>
+                        @if ($tab === 'trading')
+                            </a>
+                        @endif
                     </div>
                 @endforeach
             </div>

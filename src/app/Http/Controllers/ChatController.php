@@ -17,6 +17,10 @@ class ChatController extends Controller
     {
         $user = Auth::user();
 
+        if ($item->status !== 'trading') {
+            abort(403, 'この商品は取引中ではありません');
+        }
+
         ChatMessage::where('item_id', $item->id)
             ->where('user_id', '!=', $user->id)
             ->whereNull('read_at')
@@ -37,11 +41,14 @@ class ChatController extends Controller
         }
 
 
-        $buyerReviewDone = $soldItem
-            ? Review::where('item_id', $item->id)
+        if ($soldItem) {
+            $buyerReviewDone = Review::where('item_id', $item->id)
                 ->where('reviewer_id', $soldItem->buyer_id)
-                ->exists()
-            : false;
+                ->exists();
+        } else {
+            $buyerReviewDone = false;
+        }
+
 
         $sellerReviewDone = Review::where('item_id', $item->id)
             ->where('reviewer_id', $user->id)
@@ -122,21 +129,41 @@ class ChatController extends Controller
 
         $item = Item::with(['chatMessages.user.profile'])->find($message->item_id);
         $messages = $item->chatMessages;
-
         $user = auth()->user();
+
+        $isBuyer = $item->soldItems()->where('buyer_id', $user->id)->exists();
+        $isSeller = $item->user_id === $user->id;
+
+        $soldItem = $item->soldItems()->first();
+
+        if ($soldItem) {
+            $buyerReviewDone = Review::where('item_id', $item->id)
+                ->where('reviewer_id', $soldItem->buyer_id)
+                ->exists();
+        } else {
+            $buyerReviewDone = false;
+        }
+
+
+        $sellerReviewDone = Review::where('item_id', $item->id)
+            ->where('reviewer_id', $user->id)
+            ->exists();
 
         $myItems = Item::where(function ($query) use ($user) {
             $query->where('user_id', $user->id)
                 ->orWhereHas('soldItems', fn($q) => $q->where('user_id', $user->id));
         })->where('status', 'trading')->get();
 
-        $isBuyer = $item->soldItems()->where('user_id', $user->id)->exists();
-        $isSeller = $item->user_id === $user->id;
+        $partner = $isBuyer
+            ? $item->user
+            : ($soldItem ? $soldItem->buyer : null);
 
-        $partner = $isBuyer ? $item->user : optional($item->soldItems()->with('user')->first())->user;
-
-        return view('chat', compact('item', 'messages', 'isBuyer', 'isSeller', 'myItems', 'partner', 'message'));
+        return view('chat', compact(
+            'item', 'messages', 'isBuyer', 'isSeller', 'myItems',
+            'partner', 'message', 'buyerReviewDone', 'sellerReviewDone'
+        ));
     }
+
 
     public function update(ChatMessageRequest $request, ChatMessage $message)
     {
