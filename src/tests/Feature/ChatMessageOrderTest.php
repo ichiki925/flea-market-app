@@ -18,7 +18,11 @@ class ChatMessageOrderTest extends TestCase
         $seller = User::factory()->create();
         $buyer = User::factory()->create();
 
-        $item = Item::factory()->create(['user_id' => $seller->id]);
+        $item = Item::factory()->create([
+            'user_id' => $seller->id,
+            'status' => 'trading',
+        ]);
+
         SoldItem::factory()->create([
             'item_id' => $item->id,
             'user_id' => $seller->id,

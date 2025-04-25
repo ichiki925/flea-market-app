@@ -36,6 +36,13 @@ class MailNotificationTest extends TestCase
             'item_id' => $item->id,
         ]);
 
+        \App\Models\Review::factory()->create([
+            'reviewer_id' => $seller->id,
+            'reviewee_id' => $buyer->id,
+            'item_id' => $item->id,
+        ]);
+
+
         $response = $this->actingAs($buyer)->post(route('rating.submit', $item->id), [
             'rating' => 5,
         ]);

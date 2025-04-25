@@ -16,47 +16,37 @@ class TradeChatTest extends TestCase
 
     public function test_authenticated_user_can_view_trade_chat()
     {
-        $user = User::factory()->create(['email_verified_at' => now()]);
-        Profile::factory()->create([
-            'user_id' => $user->id,
-            'postcode' => '123-4567',
-            'address' => 'テスト市',
-            'building' => 'テストビル',
-        ]);
+        $seller = User::factory()->create(['email_verified_at' => now()]);
+        Profile::factory()->create(['user_id' => $seller->id]);
 
-        $partner = User::factory()->create(['email_verified_at' => now()]);
-        Profile::factory()->create([
-            'user_id' => $partner->id,
-            'postcode' => '987-6543',
-            'address' => '別の市',
-            'building' => '別のビル',
-            'img_url' => 'dummy.jpg',
-        ]);
+        $buyer = User::factory()->create(['email_verified_at' => now()]);
+        Profile::factory()->create(['user_id' => $buyer->id]);
 
-        $item = Item::factory()->create(['user_id' => $user->id]);
+        $item = Item::factory()->create([
+            'user_id' => $seller->id,
+            'status' => 'trading',
+        ]);
 
         SoldItem::factory()->create([
             'item_id' => $item->id,
-            'user_id' => $user->id,
-            'buyer_id' => $partner->id,
-            'payment_method' => 'card',
-            'sending_postcode' => $partner->profile->postcode,
-            'sending_address' => $partner->profile->address,
-            'sending_building' => $partner->profile->building,
+            'user_id' => $seller->id,
+            'buyer_id' => $buyer->id,
         ]);
 
         ChatMessage::factory()->create([
             'item_id' => $item->id,
-            'user_id' => $partner->id,
+            'user_id' => $buyer->id,
             'message' => 'こんにちは！これはテストです。',
         ]);
 
-        $response = $this->actingAs($user)->get(route('chat.show', ['item' => $item->id]));
+        $response = $this->actingAs($seller)->get(route('chat.show', ['item' => $item->id]));
 
         $response->assertStatus(200);
         $response->assertSee('こんにちは！これはテストです。');
         $response->assertSee($item->name);
     }
+
+
 
     public function test_guest_cannot_view_trade_chat()
     {
@@ -66,4 +56,36 @@ class TradeChatTest extends TestCase
 
         $response->assertRedirect('/login');
     }
+
+    public function test_unread_badge_shows_only_in_trading_tab()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create([
+            'user_id' => $user->id,
+            'status' => 'trading',
+        ]);
+
+
+        SoldItem::factory()->create([
+            'item_id' => $item->id,
+            'buyer_id' => $user->id,
+            'user_id' => $user->id,
+        ]);
+
+
+        ChatMessage::factory()->create([
+            'item_id' => $item->id,
+            'user_id' => User::factory()->create()->id,
+            'read_at' => null,
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get('/mypage?tab=trading');
+        $response->assertSee('unread-badge');
+
+        $response = $this->get('/mypage?tab=sell');
+        $response->assertDontSee('unread-badge');
+    }
+
 }
