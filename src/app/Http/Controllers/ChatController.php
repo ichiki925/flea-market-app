@@ -90,7 +90,10 @@ class ChatController extends Controller
         $chatMessage = new ChatMessage();
         $chatMessage->user_id = auth()->id();
         $chatMessage->item_id = $item->id;
-        $chatMessage->message = $request->input('message');
+
+        if ($request->filled('message')) {
+            $chatMessage->message = $request->input('message');
+        }
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('chat_images', 'public');
@@ -99,11 +102,9 @@ class ChatController extends Controller
 
         $chatMessage->save();
 
-
         session(['message_input' => '']);
         return redirect()->route('chat.show', $item->id)
-                        ->with('status', 'メッセージを送信しました')
-                        ->withInput();
+                        ->with('status', 'メッセージを送信しました');
     }
 
 
